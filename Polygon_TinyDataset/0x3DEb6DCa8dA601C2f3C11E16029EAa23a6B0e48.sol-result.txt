@@ -1,0 +1,69 @@
+
+GMICO.claim() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#349-367) ignores return value by _token.transfer(msg.sender,PerClaim) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#363)
+GMICO.takeTokens(IERC20) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#383-395) ignores return value by tokenBEP.transfer(wallet,tokenAmt) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#393)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+GMICO.claim() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#349-367) uses a dangerous strict equality:
+	- _token.balanceOf(address(this)) == 0 (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#357)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+GMICO.withdraw().wallet (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#375) lacks a zero-check on :
+		- wallet.transfer(address(this).balance) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#377)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+GMICO.startICO(IERC20) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#315-323) compares to a boolean constant:
+	-require(bool,string)(airdropLive == false,Airdrop already started) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#317)
+GMICO.claim() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#349-367) compares to a boolean constant:
+	-require(bool,string)(airdropLive == true,Claim not started yet) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#351)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Context._msgData() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#27-33) is never used and should be removed
+SafeMath.add(uint256,uint256) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#109-119) is never used and should be removed
+SafeMath.div(uint256,uint256) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#169-173) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#177-189) is never used and should be removed
+SafeMath.mod(uint256,uint256) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#193-197) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#201-207) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#145-163) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#123-127) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#131-141) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.4 (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable GMICO.Claimed (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#289) is not in mixedCase
+Variable GMICO.PerClaim (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#295) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Redundant expression "this (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#29)" inContext (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#17-35)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#redundant-statements
+
+GMICO.slitherConstructorVariables() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#283-400) uses literals with too many digits:
+	- PerClaim = 10000000 * (10 ** 9) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#295)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+Ownable._previousOwner (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#219) is never used in GMICO (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#283-400)
+GMICO._isWhitelist (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#291) is never used in GMICO (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#283-400)
+GMICO._valDrop (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#293) is never used in GMICO (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#283-400)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+GMICO.PerClaim (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#295) should be constant
+Ownable._previousOwner (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#219) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+owner() should be declared external:
+	- Ownable.owner() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#239-243)
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#257-263)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#267-275)
+startICO(IERC20) should be declared external:
+	- GMICO.startICO(IERC20) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#315-323)
+claim() should be declared external:
+	- GMICO.claim() (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#349-367)
+takeTokens(IERC20) should be declared external:
+	- GMICO.takeTokens(IERC20) (0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol#383-395)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x3DEb6DCa8dA601C2f3C11E16029EAa23a6B0e48.sol analyzed (6 contracts with 75 detectors), 32 result(s) found
+

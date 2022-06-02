@@ -1,0 +1,123 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/4_UltimateResult/0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol:
+/home/cowie/VersionClassification_Polygon/4_UltimateResult/0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol:28:20: Warning: This looks like an address but has an invalid checksum. If this is not used as an address, please prepend '00'. Correct checksummed address: '0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4'. For more information please see https://solidity.readthedocs.io/en/develop/types.html#address-literals
+    address cake = 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4; 
+
+                   ^----------------------------------------^
+0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol:28:20: Warning: This looks like an address but has an invalid checksum. If this is not used as an address, please prepend '00'. Correct checksummed address: '0xA1c57f48F0Deb89f569dFbE6E2B7f46D33606fD4'. For more information please see https://solidity.readthedocs.io/en/develop/types.html#address-literals
+    address cake = 0xa1c57f48f0deb89f569dfbe6e2b7f46d33606fd4; 
+
+                   ^----------------------------------------^
+
+
+MANA_MINER.sellEggs() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#127-151) ignores return value by ERC20(cake).transfer(ceoAddress,fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#145)
+MANA_MINER.sellEggs() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#127-151) ignores return value by ERC20(cake).transfer(ceoAddress2,fee - fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#147)
+MANA_MINER.sellEggs() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#127-151) ignores return value by ERC20(cake).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#149)
+MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181) ignores return value by ERC20(cake).transferFrom(address(msg.sender),address(this),amount) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#159)
+MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181) ignores return value by ERC20(cake).transfer(ceoAddress,fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#173)
+MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181) ignores return value by ERC20(cake).transfer(ceoAddress2,fee - fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#175)
+MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227) ignores return value by ERC20(cake).transferFrom(address(msg.sender),address(this),amount) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#219)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#221)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181):
+	External calls:
+	- ERC20(cake).transferFrom(address(msg.sender),address(this),amount) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#159)
+	- balance = ERC20(cake).balanceOf(address(this)) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#163)
+	- ERC20(cake).transfer(ceoAddress,fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#173)
+	- ERC20(cake).transfer(ceoAddress2,fee - fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#175)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#179)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#123)
+Reentrancy in MANA_MINER.sellEggs() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#127-151):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#133)
+		- calculateTrade(eggs,marketEggs,ERC20(cake).balanceOf(address(this))) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#195)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#139)
+	- lastHatch[msg.sender] = now (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#141)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181):
+	External calls:
+	- ERC20(cake).transferFrom(address(msg.sender),address(this),amount) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#159)
+	- balance = ERC20(cake).balanceOf(address(this)) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#163)
+	- ERC20(cake).transfer(ceoAddress,fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#173)
+	- ERC20(cake).transfer(ceoAddress2,fee - fee2) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#175)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#177)
+	- hatchEggs(ref) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#179)
+		- claimedEggs[msg.sender] = 0 (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#109)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,7)) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#117)
+	- hatchEggs(ref) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#179)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#107)
+	- hatchEggs(ref) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#179)
+		- lastHatch[msg.sender] = now (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#111)
+	- hatchEggs(ref) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#179)
+		- referrals[msg.sender] = ref (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#99)
+Reentrancy in MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227):
+	External calls:
+	- ERC20(cake).transferFrom(address(msg.sender),address(this),amount) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#219)
+	State variables written after the call(s):
+	- initialized = true (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#223)
+	- marketEggs = 259200000000 (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#225)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#221)
+MANA_MINER.min(uint256,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#255-259) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#25) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract MANA_MINER (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#51-261) is not in CapWords
+Variable MANA_MINER.EGGS_TO_HATCH_1MINERS (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#57) is not in mixedCase
+Variable MANA_MINER.PSN (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#59) is not in mixedCase
+Variable MANA_MINER.PSNH (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#61) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227) uses literals with too many digits:
+	- marketEggs = 259200000000 (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#225)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+MANA_MINER.EGGS_TO_HATCH_1MINERS (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#57) should be constant
+MANA_MINER.PSN (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#59) should be constant
+MANA_MINER.PSNH (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#61) should be constant
+MANA_MINER.cake (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#55) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#31)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#33)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#35)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#37)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#39)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#41)
+sellEggs() should be declared external:
+	- MANA_MINER.sellEggs() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#127-151)
+buyEggs(address,uint256) should be declared external:
+	- MANA_MINER.buyEggs(address,uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#153-181)
+calculateEggBuySimple(uint256) should be declared external:
+	- MANA_MINER.calculateEggBuySimple(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#205-209)
+seedMarket(uint256) should be declared external:
+	- MANA_MINER.seedMarket(uint256) (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#217-227)
+getBalance() should be declared external:
+	- MANA_MINER.getBalance() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#229-233)
+getMyMiners() should be declared external:
+	- MANA_MINER.getMyMiners() (0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol#235-239)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/4_UltimateResult/0xac5f8cab92a23e1ce3efc12e1968dbb301f2e72.sol analyzed (3 contracts with 75 detectors), 37 result(s) found
+

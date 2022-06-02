@@ -1,0 +1,54 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol:
+Warning: This contract has a payable fallback function, but no receive ether function. Consider adding a receive ether function.
+  --> 0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol:70:1:
+   |
+70 | contract singletonDepositAddress is sweeper{
+   | ^ (Relevant source part starts here and spans across multiple lines).
+Note: The payable fallback function is defined here.
+   --> 0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol:154:2:
+    |
+154 | 	fallback() payable external{
+    | 	^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+singletonDepositAddress.functionCallWithValue(address,bytes,uint256,string) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#231-253) sends eth to arbitrary user
+	Dangerous calls:
+	- (success,returndata) = target.call{value: value}(data) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#249)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+IERC20 (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#23-29) has incorrect ERC20 function interface:IERC20.transfer(address,uint256) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#25)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+singletonDepositManager.deploy(uint256,bytes32,bytes) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#53-79) uses assembly
+	- INLINE ASM (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#69-73)
+singletonDepositAddress.verifyCallResult(bool,bytes,string) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#195-229) uses assembly
+	- INLINE ASM (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#213-219)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+singletonDepositAddress.functionCall(address,bytes) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#149-153) is never used and should be removed
+singletonDepositAddress.functionCallWithValue(address,bytes,uint256) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#179-191) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in singletonDepositAddress.functionCallWithValue(address,bytes,uint256,string) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#231-253):
+	- (success,returndata) = target.call{value: value}(data) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#249)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Contract sweeper (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#31-35) is not in CapWords
+Contract singletonDepositManager (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#37-137) is not in CapWords
+Contract singletonDepositAddress (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#139-314) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+singletonDepositManager.constructor() (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#41-45) uses literals with too many digits:
+	- codehash = keccak256(bytes)(type()(singletonDepositAddress).creationCode) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#43)
+singletonDepositManager.sweep(address,bytes32) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#109-125) uses literals with too many digits:
+	- deploy(0,realsalt,type()(singletonDepositAddress).creationCode) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#119)
+singletonDepositAddress.sweep(address,address) (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#289-305) uses literals with too many digits:
+	- token == 0x0000000000000000000000000000000000000000 (0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol#293)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x1a7566bbb62dac33d8e546be454b2bf723c3713.sol analyzed (4 contracts with 75 detectors), 15 result(s) found
+

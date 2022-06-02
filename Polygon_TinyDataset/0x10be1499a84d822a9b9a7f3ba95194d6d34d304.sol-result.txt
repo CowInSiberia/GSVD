@@ -1,0 +1,22 @@
+
+Base64.encode(bytes) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#12-62) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 2,0x3d3d << 240) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#52)
+Base64.encode(bytes) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#12-62) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 1,0x3d << 248) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#55)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#shift-parameter-mixup
+
+Base64.encode(bytes) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#12-62) performs a multiplication on the result of a division:
+	-encodedLen = 4 * ((len + 2) / 3) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#17)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Base64.encode(bytes) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#12-62) uses assembly
+	- INLINE ASM (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#24-59)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Pragma version^0.8.2 (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+tokenURI(uint256) should be declared external:
+	- TokenURI.tokenURI(uint256) (0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol#150-177)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x10be1499a84d822a9b9a7f3ba95194d6d34d304.sol analyzed (2 contracts with 75 detectors), 7 result(s) found
+

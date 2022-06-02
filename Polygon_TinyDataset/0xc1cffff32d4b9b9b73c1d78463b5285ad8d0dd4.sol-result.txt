@@ -1,0 +1,37 @@
+
+Base64.encode(bytes) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#33-133) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 2,0x3d3d << 240) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#113)
+Base64.encode(bytes) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#33-133) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 1,0x3d << 248) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#119)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#shift-parameter-mixup
+
+Base64.encode(bytes) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#33-133) performs a multiplication on the result of a division:
+	-encodedLen = 4 * ((len + 2) / 3) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#43)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Base64.encode(bytes) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#33-133) uses assembly
+	- INLINE ASM (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#57-127)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Pragma version^0.8.0 (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+MorphedCard (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#157-352) should inherit from SquidGameCard (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#139-153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-inheritance
+
+Parameter MorphedCard.updateMainCardAddress(address)._mainCardAddress (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#179) is not in mixedCase
+Parameter MorphedCard.ownerOf(uint256)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#191) is not in mixedCase
+Parameter MorphedCard.getGenes(uint256)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#199) is not in mixedCase
+Parameter MorphedCard.tokenURI(uint256)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#207) is not in mixedCase
+Parameter MorphedCard.getConsonants(uint256)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#215) is not in mixedCase
+Parameter MorphedCard.getConsonantsIndex(uint256)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#221) is not in mixedCase
+Parameter MorphedCard.customizedTokenURI(uint256,string,string)._tokenId (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#229) is not in mixedCase
+Parameter MorphedCard.addressToString(address)._addr (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#323) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+tokenURI(uint256) should be declared external:
+	- MorphedCard.tokenURI(uint256) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#207-211)
+getConsonantsIndex(uint256) should be declared external:
+	- MorphedCard.getConsonantsIndex(uint256) (0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol#221-225)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xc1cffff32d4b9b9b73c1d78463b5285ad8d0dd4.sol analyzed (3 contracts with 75 detectors), 17 result(s) found
+

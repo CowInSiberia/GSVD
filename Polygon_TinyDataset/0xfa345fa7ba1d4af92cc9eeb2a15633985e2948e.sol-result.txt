@@ -1,0 +1,47 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> 0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol:20:5:
+   |
+20 |     constructor(address _uniswap, address _bridge) public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91) uses delegatecall to a input-controlled function id
+	- (success,result) = bridge.delegatecall(abi.encodeWithSignature(transferTokens(0xe6469ba6d2fd6130788e0ea9c0a0515900563b59, 1000000, 4, 0x0dD6f5dB21e9cd83409F4DF9e2f791748CF5359d,0,block.timestamp(uint32))) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#controlled-delegatecall
+
+MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91) ignores return value by uniswap.swapExactETHForTokens{value: msg.value}(amountOut,path,receipient,deadline) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#59)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+MyDefi.constructor(address,address)._bridge (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#39) lacks a zero-check on :
+		- bridge = _bridge (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#43)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91) uses assembly
+	- INLINE ASM (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#77-81)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Pragma version^0.8.2 (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91):
+	- (success,result) = bridge.delegatecall(abi.encodeWithSignature(transferTokens(0xe6469ba6d2fd6130788e0ea9c0a0515900563b59, 1000000, 4, 0x0dD6f5dB21e9cd83409F4DF9e2f791748CF5359d,0,block.timestamp(uint32))) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Function IUniswap.WETH() (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#23) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91) uses literals with too many digits:
+	- (success,result) = bridge.delegatecall(abi.encodeWithSignature(transferTokens(0xe6469ba6d2fd6130788e0ea9c0a0515900563b59, 1000000, 4, 0x0dD6f5dB21e9cd83409F4DF9e2f791748CF5359d,0,block.timestamp(uint32))) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+tastSwapExactETHForTokens(uint256,address,uint256,address) should be declared external:
+	- MyDefi.tastSwapExactETHForTokens(uint256,address,uint256,address) (0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol#51-91)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xfa345fa7ba1d4af92cc9eeb2a15633985e2948e.sol analyzed (2 contracts with 75 detectors), 10 result(s) found
+

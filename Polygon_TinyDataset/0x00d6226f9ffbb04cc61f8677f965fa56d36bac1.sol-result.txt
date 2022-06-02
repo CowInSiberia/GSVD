@@ -1,0 +1,29 @@
+
+BatchTransfer.send(address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#19-37) sends eth to arbitrary user
+	Dangerous calls:
+	- address(to[i]).transfer(amount[i]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#25)
+	- address(tx.origin).transfer(address(this).balance) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#33)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+BatchTransfer.sendToken(address,address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#41-61) ignores return value by IERC20(token).transferFrom(msg.sender,to[i],amount[i]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#47)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BatchTransfer.send(address[],uint256[]).i (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#23) is a local variable never initialized
+BatchTransfer.sendToken(address,address[],uint256[]).i (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#45) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+BatchTransfer.send(address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#19-37) has external calls inside a loop: address(to[i]).transfer(amount[i]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#25)
+BatchTransfer.sendToken(address,address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#41-61) has external calls inside a loop: IERC20(token).transferFrom(msg.sender,to[i],amount[i]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#47)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Pragma version^0.8.12 (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+send(address[],uint256[]) should be declared external:
+	- BatchTransfer.send(address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#19-37)
+sendToken(address,address[],uint256[]) should be declared external:
+	- BatchTransfer.sendToken(address,address[],uint256[]) (0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol#41-61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x00d6226f9ffbb04cc61f8677f965fa56d36bac1.sol analyzed (2 contracts with 75 detectors), 10 result(s) found
+

@@ -1,0 +1,93 @@
+
+Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329) ignores return value by token.transferFrom(msg.sender,recipient,paidAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#305)
+Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329) ignores return value by IERC20(pTokenAddress).transfer(msg.sender,tokenAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#315)
+Presale_SPC.getUnsoldTokens(address) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#333-341) ignores return value by IERC20(pTokenAddress).transfer(to,IERC20(pTokenAddress).balanceOf(address(this))) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#339)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329) performs a multiplication on the result of a division:
+	-tokenAmount = paidAmount.div(10 ** mTokenDecimal).div(tokenPrice).mul(10 ** pTokenDecimal) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#309)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#305)
+	- IERC20(pTokenAddress).transfer(msg.sender,tokenAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#315)
+	State variables written after the call(s):
+	- _paidTotal[msg.sender] += paidAmount (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#319)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Presale_SPC.set_pTokenDecimal(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#183-187) should emit an event for: 
+	- pTokenDecimal = _pTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#185) 
+Presale_SPC.set_mTokenDecimal(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#191-195) should emit an event for: 
+	- mTokenDecimal = _mTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#193) 
+Presale_SPC.setTokenPriceInMia(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#251-255) should emit an event for: 
+	- tokenPrice = price (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#253) 
+Presale_SPC.setMinMiaLimit(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#259-263) should emit an event for: 
+	- minMiaLimit = amount (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#261) 
+Presale_SPC.setMaxMiaLimit(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#267-271) should emit an event for: 
+	- maxMiaLimit = amount (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#269) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Presale_SPC.constructor(address,address)._recipient (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#173) lacks a zero-check on :
+		- recipient = _recipient (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#175)
+Presale_SPC.constructor(address,address)._pTokenAddress (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#173) lacks a zero-check on :
+		- pTokenAddress = _pTokenAddress (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#177)
+Presale_SPC.setRecipient(address)._recipient (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#199) lacks a zero-check on :
+		- recipient = _recipient (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#201)
+Presale_SPC.setPresaleTokenAddress(address)._pTokenAddress (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#207) lacks a zero-check on :
+		- pTokenAddress = _pTokenAddress (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#305)
+	- IERC20(pTokenAddress).transfer(msg.sender,tokenAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#315)
+	State variables written after the call(s):
+	- tokenSold += tokenAmount (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#321)
+	- totalMIAAmount += paidAmount (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#323)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#305)
+	- IERC20(pTokenAddress).transfer(msg.sender,tokenAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#315)
+	Event emitted after the call(s):
+	- Presale(paidAmount) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#327)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329) compares to a boolean constant:
+	-require(bool,string)(whiteListed[msg.sender] == true,You were't allowed) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#291)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Presale_SPC.minMiaLimit (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#155) is set pre-construction with a non-constant function or state variable:
+	- 5 * (10 ** mTokenDecimal)
+Presale_SPC.maxMiaLimit (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#157) is set pre-construction with a non-constant function or state variable:
+	- 1000 * (10 ** mTokenDecimal)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#function-initializing-state
+
+Pragma version^0.8.0 (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract Presale_SPC (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#125-344) is not in CapWords
+Function Presale_SPC.set_pTokenDecimal(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#183-187) is not in mixedCase
+Parameter Presale_SPC.set_pTokenDecimal(uint256)._pTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#183) is not in mixedCase
+Function Presale_SPC.set_mTokenDecimal(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#191-195) is not in mixedCase
+Parameter Presale_SPC.set_mTokenDecimal(uint256)._mTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#191) is not in mixedCase
+Parameter Presale_SPC.setRecipient(address)._recipient (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#199) is not in mixedCase
+Parameter Presale_SPC.setPresaleTokenAddress(address)._pTokenAddress (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#207) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable Presale_SPC.set_mTokenDecimal(uint256)._mTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#191) is too similar to Presale_SPC.set_pTokenDecimal(uint256)._pTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#183)
+Variable Presale_SPC.mTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#139) is too similar to Presale_SPC.pTokenDecimal (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#103-117)
+setWhitelist(address[],bool) should be declared external:
+	- Presale_SPC.setWhitelist(address[],bool) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#275-283)
+buy(uint256) should be declared external:
+	- Presale_SPC.buy(uint256) (0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol#287-329)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x4dd66c34ac9856c5708865af943f0c32b27fd8d.sol analyzed (4 contracts with 75 detectors), 33 result(s) found
+

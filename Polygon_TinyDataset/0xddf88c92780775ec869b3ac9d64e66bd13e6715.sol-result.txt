@@ -1,0 +1,33 @@
+
+test.random() (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#119-125) uses a weak PRNG: "randomHash = uint256(keccak256(bytes)(abi.encodePacked(block.timestamp))) % 8 + 1 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#121)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+test.excludeID(uint256) (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#71-117) contains a tautology or contradiction:
+	- (tokenID - i) >= 0 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#97)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#tautology-or-contradiction
+
+test.excludeID(uint256).newID (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#75) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+test.excludeID(uint256) (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#71-117) uses timestamp for comparisons
+	Dangerous comparisons:
+	- (i + tokenID) <= 8 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#83)
+	- (tokenID - i) >= 0 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#97)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version>=0.7.0<0.9.0 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#21) is too complex
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract test (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#27-138) is not in CapWords
+Function test.RandomID_get() (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#47-57) is not in mixedCase
+Function test.RandomID_get2() (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#59-69) is not in mixedCase
+Variable test.START (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#29) is not in mixedCase
+Variable test.RandomID (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#31) is not in mixedCase
+Variable test.RandomID2 (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#33) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+RandomID_get2() should be declared external:
+	- test.RandomID_get2() (0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol#59-69)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/7_UltimateResult/0xddf88c92780775ec869b3ac9d64e66bd13e6715.sol analyzed (1 contracts with 75 detectors), 12 result(s) found
+

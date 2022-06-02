@@ -1,0 +1,68 @@
+
+StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69) ignores return value by lpToken.transferFrom(msg.sender,address(this),amount) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#51)
+StakingRewards.claimRewards(uint256,address[]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73-111) ignores return value by rewardsToken.transfer(msg.sender,rewardAmount) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#109)
+StakingRewards.unstake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#115-125) ignores return value by lpToken.transfer(msg.sender,stakeAmount[msg.sender]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#121)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69) uses a dangerous strict equality:
+	- require(bool)(rewardTime[msg.sender] == 0) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#47)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69):
+	External calls:
+	- lpToken.transferFrom(msg.sender,address(this),amount) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#51)
+	State variables written after the call(s):
+	- rewardTime[msg.sender] = block.timestamp (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#55)
+	- stakeAmount[msg.sender] = amount (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#57)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69) ignores return value by lpToken.approve(0x0769fd68dFb93167989C6f7254cd0D766Fb2841F,amount) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#61)
+StakingRewards.claimRewards(uint256,address[]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73-111) ignores return value by sushiT.approve(0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506,1000000000000000) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#87)
+StakingRewards.claimRewards(uint256,address[]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73-111) ignores return value by tokenSwap.swapExactTokensForTokens(amountToCashOut,0,path,address(this),block.timestamp) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#89-101)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(rewardTime[msg.sender] == 0) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#47)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8 (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#11) is too complex
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter StakingRewards.stake(uint256,uint256)._pid (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43) is not in mixedCase
+Parameter StakingRewards.claimRewards(uint256,address[])._pid (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73) is not in mixedCase
+Parameter StakingRewards.unstake(uint256,uint256)._pid (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#115) is not in mixedCase
+Parameter StakingRewards.unstake(uint256,uint256)._amount (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#115) is not in mixedCase
+Parameter StakingRewards.changeRate(uint256,uint256).new_rateH (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#129) is not in mixedCase
+Parameter StakingRewards.changeRate(uint256,uint256).new_rateL (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#129) is not in mixedCase
+Parameter StakingRewards.checkRewards(uint256)._pid (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#143) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable StakingRewards.tokenRewardRateH (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#17) is too similar to StakingRewards.tokenRewardRateL (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#19)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+StakingRewards.claimRewards(uint256,address[]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73-111) uses literals with too many digits:
+	- sushiT.approve(0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506,1000000000000000) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#87)
+StakingRewards.slitherConstructorVariables() (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#15-173) uses literals with too many digits:
+	- tokenRewardRateH = 100000000 (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#17)
+StakingRewards.slitherConstructorVariables() (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#15-173) uses literals with too many digits:
+	- tokenRewardRateL = 100000000 (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#19)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+StakingRewards.owner (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#21) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+stake(uint256,uint256) should be declared external:
+	- StakingRewards.stake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#43-69)
+claimRewards(uint256,address[]) should be declared external:
+	- StakingRewards.claimRewards(uint256,address[]) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#73-111)
+unstake(uint256,uint256) should be declared external:
+	- StakingRewards.unstake(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#115-125)
+changeRate(uint256,uint256) should be declared external:
+	- StakingRewards.changeRate(uint256,uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#129-141)
+checkRewards(uint256) should be declared external:
+	- StakingRewards.checkRewards(uint256) (0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol#143-155)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x71e2ed8acee13b66005c01ad6b2edc1968775b4.sol analyzed (4 contracts with 75 detectors), 28 result(s) found
+

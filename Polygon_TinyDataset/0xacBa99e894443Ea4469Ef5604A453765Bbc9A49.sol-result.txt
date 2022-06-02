@@ -1,0 +1,118 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol
+
+Warning: Visibility for constructor is ignored. If you want the contract to be non-deployable, making it "abstract" is sufficient.
+  --> 0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol:32:5:
+   |
+32 |     constructor() public {
+   |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191) ignores return value by token.transfer(msg.sender,row.amount) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#185)
+LockUp.massUnlock(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195-221) ignores return value by token.transfer(_target,sum) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#219)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191):
+	External calls:
+	- token.transfer(msg.sender,row.amount) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#185)
+	State variables written after the call(s):
+	- lockup[id].complete = true (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#187)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in LockUp.lockUp(address,address,uint256,uint256,string) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101-159):
+	External calls:
+	- balance = token.balanceOf(address(this)) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#111)
+	State variables written after the call(s):
+	- count = count + 1 (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#157)
+	- lockup[count] = LockUpRecord(count,_token,_target,_amount,_unlock_time,description,false) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#125-141)
+	- lockupCount[_token] = lockupCount[_token] + _amount (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#147)
+	- lockupCount[_token] = _amount (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#151)
+Reentrancy in LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191):
+	External calls:
+	- token.transfer(msg.sender,row.amount) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#185)
+	State variables written after the call(s):
+	- lockupCount[row.token] = lockupCount[row.token] - row.amount (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#189)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+LockUp.lockUp(address,address,uint256,uint256,string) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101-159) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(block.timestamp <= _unlock_time) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#121)
+LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(row.unlock_time <= block.timestamp) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#179)
+LockUp.massUnlock(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195-221) uses timestamp for comparisons
+	Dangerous comparisons:
+	- row.owner == _target && row.unlock_time <= block.timestamp && row.complete == false && row.token == _token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#203)
+LockUp.unlockAvailable(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#287-305) uses timestamp for comparisons
+	Dangerous comparisons:
+	- row.owner == _target && row.unlock_time <= block.timestamp && row.complete == false && row.token == _token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#295)
+LockUp.checkLockUp(uint256,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#331-335) uses timestamp for comparisons
+	Dangerous comparisons:
+	- lockup[id].owner == _target && lockup[id].unlock_time <= block.timestamp && lockup[id].complete == false (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#333)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191) compares to a boolean constant:
+	-require(bool)(row.complete == false) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#181)
+LockUp.massUnlock(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195-221) compares to a boolean constant:
+	-row.owner == _target && row.unlock_time <= block.timestamp && row.complete == false && row.token == _token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#203)
+LockUp.unlockAvailable(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#287-305) compares to a boolean constant:
+	-row.owner == _target && row.unlock_time <= block.timestamp && row.complete == false && row.token == _token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#295)
+LockUp.lockUpBalance(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#309-327) compares to a boolean constant:
+	-row.owner == _target && row.complete == false && row.token == _token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#317)
+LockUp.checkLockUp(uint256,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#331-335) compares to a boolean constant:
+	-lockup[id].owner == _target && lockup[id].unlock_time <= block.timestamp && lockup[id].complete == false (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#333)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.0 (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#1) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter LockUp.lockUp(address,address,uint256,uint256,string)._token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101) is not in mixedCase
+Parameter LockUp.lockUp(address,address,uint256,uint256,string)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101) is not in mixedCase
+Parameter LockUp.lockUp(address,address,uint256,uint256,string)._amount (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101) is not in mixedCase
+Parameter LockUp.lockUp(address,address,uint256,uint256,string)._unlock_time (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101) is not in mixedCase
+Parameter LockUp.delegate(uint256,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#163) is not in mixedCase
+Parameter LockUp.massUnlock(uint256[],address,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195) is not in mixedCase
+Parameter LockUp.massUnlock(uint256[],address,address)._token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195) is not in mixedCase
+Parameter LockUp.recordsAddress(address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#243) is not in mixedCase
+Parameter LockUp.recordsAddressToken(address,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#265) is not in mixedCase
+Parameter LockUp.recordsAddressToken(address,address)._token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#265) is not in mixedCase
+Parameter LockUp.unlockAvailable(uint256[],address,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#287) is not in mixedCase
+Parameter LockUp.unlockAvailable(uint256[],address,address)._token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#287) is not in mixedCase
+Parameter LockUp.lockUpBalance(uint256[],address,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#309) is not in mixedCase
+Parameter LockUp.lockUpBalance(uint256[],address,address)._token (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#309) is not in mixedCase
+Parameter LockUp.checkLockUp(uint256,address)._target (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#331) is not in mixedCase
+Variable LockUp._owner (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#59) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+totalSupply() should be declared external:
+	- ERC20Basic.totalSupply() (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#19)
+balanceOf(address) should be declared external:
+	- ERC20Basic.balanceOf(address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#21)
+transfer(address,uint256) should be declared external:
+	- ERC20Basic.transfer(address,uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#23)
+lockUp(address,address,uint256,uint256,string) should be declared external:
+	- LockUp.lockUp(address,address,uint256,uint256,string) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#101-159)
+delegate(uint256,address) should be declared external:
+	- LockUp.delegate(uint256,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#163-169)
+unlock(uint256) should be declared external:
+	- LockUp.unlock(uint256) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#173-191)
+massUnlock(uint256[],address,address) should be declared external:
+	- LockUp.massUnlock(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#195-221)
+records() should be declared external:
+	- LockUp.records() (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#225-239)
+recordsAddress(address) should be declared external:
+	- LockUp.recordsAddress(address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#243-261)
+recordsAddressToken(address,address) should be declared external:
+	- LockUp.recordsAddressToken(address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#265-283)
+unlockAvailable(uint256[],address,address) should be declared external:
+	- LockUp.unlockAvailable(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#287-305)
+lockUpBalance(uint256[],address,address) should be declared external:
+	- LockUp.lockUpBalance(uint256[],address,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#309-327)
+checkLockUp(uint256,address) should be declared external:
+	- LockUp.checkLockUp(uint256,address) (0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol#331-335)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xacBa99e894443Ea4469Ef5604A453765Bbc9A49.sol analyzed (2 contracts with 75 detectors), 46 result(s) found
+

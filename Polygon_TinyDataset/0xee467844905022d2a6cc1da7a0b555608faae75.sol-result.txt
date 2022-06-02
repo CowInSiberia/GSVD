@@ -1,0 +1,59 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0xee467844905022d2a6cc1da7a0b555608faae75.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xee467844905022d2a6cc1da7a0b555608faae75.sol
+
+
+
+Season.isLeapYear(uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#47-58) uses a weak PRNG: "year % 100 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#51)" 
+Season.isLeapYear(uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#47-58) uses a weak PRNG: "year % 4 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#48)" 
+Season.isLeapYear(uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#47-58) uses a weak PRNG: "year % 400 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#54)" 
+Season.getHour(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#157-159) uses a weak PRNG: "uint8((timestamp / 60 / 60) % 24) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#158)" 
+Season.getMinute(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#161-163) uses a weak PRNG: "uint8((timestamp / 60) % 60) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#162)" 
+Season.getSecond(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#165-167) uses a weak PRNG: "uint8(timestamp % 60) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#166)" 
+Season.getWeekday(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#169-171) uses a weak PRNG: "uint8((timestamp / DAY_IN_SECONDS + 4) % 7) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#170)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+Season.getDaysInMonth(uint8,uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#65-78) uses a dangerous strict equality:
+	- month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#66)
+Season.getDaysInMonth(uint8,uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#65-78) uses a dangerous strict equality:
+	- month == 4 || month == 6 || month == 9 || month == 11 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#69)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Season.isLeapYear(uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#47-58) uses timestamp for comparisons
+	Dangerous comparisons:
+	- year % 4 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#48)
+	- year % 100 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#51)
+	- year % 400 != 0 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#54)
+Season.getDaysInMonth(uint8,uint16) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#65-78) uses timestamp for comparisons
+	Dangerous comparisons:
+	- month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#66)
+	- month == 4 || month == 6 || month == 9 || month == 11 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#69)
+Season.parseTimestamp(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#80-123) uses timestamp for comparisons
+	Dangerous comparisons:
+	- secondsInMonth + secondsAccountedFor > timestamp (0xee467844905022d2a6cc1da7a0b555608faae75.sol#96)
+	- DAY_IN_SECONDS + secondsAccountedFor > timestamp (0xee467844905022d2a6cc1da7a0b555608faae75.sol#105)
+Season.getYear(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#125-147) uses timestamp for comparisons
+	Dangerous comparisons:
+	- secondsAccountedFor > timestamp (0xee467844905022d2a6cc1da7a0b555608faae75.sol#137)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.4 (0xee467844905022d2a6cc1da7a0b555608faae75.sol#1) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Struct Season._DateTime (0xee467844905022d2a6cc1da7a0b555608faae75.sol#28-36) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+getCurrentSeason() should be declared external:
+	- Season.getCurrentSeason() (0xee467844905022d2a6cc1da7a0b555608faae75.sol#4-18)
+getDay(uint256) should be declared external:
+	- Season.getDay(uint256) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#153-155)
+toTimestamp(uint16,uint8,uint8) should be declared external:
+	- Season.toTimestamp(uint16,uint8,uint8) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#173-175)
+toTimestamp(uint16,uint8,uint8,uint8) should be declared external:
+	- Season.toTimestamp(uint16,uint8,uint8,uint8) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#177-179)
+toTimestamp(uint16,uint8,uint8,uint8,uint8) should be declared external:
+	- Season.toTimestamp(uint16,uint8,uint8,uint8,uint8) (0xee467844905022d2a6cc1da7a0b555608faae75.sol#181-183)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xee467844905022d2a6cc1da7a0b555608faae75.sol analyzed (1 contracts with 75 detectors), 21 result(s) found
+

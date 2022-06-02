@@ -1,0 +1,33 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0xB06010D72d0B5BCfec6238185D92B4118D10631.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xB06010D72d0B5BCfec6238185D92B4118D10631.sol
+
+
+
+base64mod.base64(bytes) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#45-149) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_base64_asm_0 - 2,0x3d3d << 240) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#139)
+base64mod.base64(bytes) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#45-149) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_base64_asm_0 - 1,0x3d << 248) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#141)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#shift-parameter-mixup
+
+base64mod.base64(bytes) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#45-149) performs a multiplication on the result of a division:
+	-encodedLen = 4 * ((data.length + 2) / 3) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#59)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+base64mod.base64(bytes) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#45-149) uses assembly
+	- INLINE ASM (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#69-143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Pragma version^0.8.0 (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract base64mod (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#23-152) is not in CapWords
+Parameter base64mod.showRole(uint8)._role (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#31) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+showRole(uint8) should be declared external:
+	- base64mod.showRole(uint8) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#31-41)
+base64(bytes) should be declared external:
+	- base64mod.base64(bytes) (0xB06010D72d0B5BCfec6238185D92B4118D10631.sol#45-149)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xB06010D72d0B5BCfec6238185D92B4118D10631.sol analyzed (1 contracts with 75 detectors), 10 result(s) found
+

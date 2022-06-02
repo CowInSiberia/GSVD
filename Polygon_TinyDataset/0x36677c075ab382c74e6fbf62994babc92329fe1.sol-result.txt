@@ -1,0 +1,30 @@
+
+Randomizer.random(uint256) (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#89-93) uses a weak PRNG: "uint256(keccak256(bytes)(abi.encode(seed))) % totalAddresses (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#91)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+Randomizer.generateWinners() (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#69-85) uses a dangerous strict equality:
+	- require(bool,string)(seed == 0,already generated) (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#73)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Randomizer.generateWinners() (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#69-85) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(seed == 0,already generated) (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#73)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.6.0 (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#11) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Randomizer.addAddresses(address[])._addresses (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#43) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+addAddresses(address[]) should be declared external:
+	- Randomizer.addAddresses(address[]) (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#43-55)
+setReady() should be declared external:
+	- Randomizer.setReady() (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#59-65)
+generateWinners() should be declared external:
+	- Randomizer.generateWinners() (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#69-85)
+airdrop(address[],uint256) should be declared external:
+	- Randomizer.airdrop(address[],uint256) (0x36677c075ab382c74e6fbf62994babc92329fe1.sol#97-101)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/6_UltimateResult/0x36677c075ab382c74e6fbf62994babc92329fe1.sol analyzed (1 contracts with 75 detectors), 9 result(s) found
+

@@ -1,0 +1,64 @@
+
+OpList.ReOp() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#81-103) uses delegatecall to a input-controlled function id
+	- (success,data) = PARENT.delegatecall(abi.encodeWithSignature(TheOpListList,msg.sender)) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#89-93)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#controlled-delegatecall
+
+TheOpList.TheOpListList (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#181) is never initialized. It is used in:
+	- TheOpList.getList(address) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#229-235)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state-variables
+
+OpList.ReOp().success (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#89) is written in both
+	(success,data) = PARENT.delegatecall(abi.encodeWithSignature(TheOpListList,msg.sender)) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#89-93)
+	require(bool,string)(success = true,Call did not succeed) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#95)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#write-after-write
+
+OpList.constructor(address).creator (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#57) lacks a zero-check on :
+		- OWNER = address(creator) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#59)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in OpList.ReOp() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#81-103):
+	External calls:
+	- (success,data) = PARENT.delegatecall(abi.encodeWithSignature(TheOpListList,msg.sender)) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#89-93)
+	Event emitted after the call(s):
+	- OpCreated(OWNER,_op,block.timestamp) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#97)
+	- ReOpCreated(OWNER,_op,block.timestamp) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#99)
+Reentrancy in OpList.Rug() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#137-149):
+	External calls:
+	- (sent) = OWNER.call{value: _amt}() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#143)
+	Event emitted after the call(s):
+	- Rugged(OWNER,_amt) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+TheOpList.create() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#201-211) compares to a boolean constant:
+	-require(bool,string)(created[msg.sender] == false,You have a list.) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.0 (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in OpList.ReOp() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#81-103):
+	- (success,data) = PARENT.delegatecall(abi.encodeWithSignature(TheOpListList,msg.sender)) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#89-93)
+Low level call in OpList.Rug() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#137-149):
+	- (sent) = OWNER.call{value: _amt}() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Function OpList.ReOp() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#81-103) is not in mixedCase
+Parameter OpList.postOp(string)._op (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#117) is not in mixedCase
+Function OpList.Rug() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#137-149) is not in mixedCase
+Variable OpList.OWNER (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#21) is not in mixedCase
+Variable OpList.PARENT (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#23) is not in mixedCase
+Variable TheOpList.TheOpListList (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#181) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+ReOp() should be declared external:
+	- OpList.ReOp() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#81-103)
+postOp(string) should be declared external:
+	- OpList.postOp(string) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#117-127)
+create() should be declared external:
+	- TheOpList.create() (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#201-211)
+getList(address) should be declared external:
+	- TheOpList.getList(address) (0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol#229-235)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x3D7aB668610d8b3e50dA39cE94882Dec761d376.sol analyzed (2 contracts with 75 detectors), 21 result(s) found
+

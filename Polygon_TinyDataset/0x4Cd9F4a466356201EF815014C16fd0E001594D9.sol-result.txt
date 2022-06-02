@@ -1,0 +1,67 @@
+
+Base64.encode(bytes) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#175-225) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 2,0x3d3d << 240) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#215)
+Base64.encode(bytes) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#175-225) contains an incorrect shift operation: mstore(uint256,uint256)(resultPtr_encode_asm_0 - 1,0x3d << 248) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#218)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#shift-parameter-mixup
+
+Base64.encode(bytes) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#175-225) performs a multiplication on the result of a division:
+	-encodedLen = 4 * ((len + 2) / 3) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#180)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+rarity_attributes.tokenURI(uint256).output (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#118) is written in both
+	output = string(abi.encodePacked(parts[0],parts[1],parts[2],parts[3],parts[4],parts[5],parts[6])) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#136)
+	output = string(abi.encodePacked(data:application/json;base64,,json)) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#139)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#write-after-write
+
+Base64.encode(bytes) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#175-225) uses assembly
+	- INLINE ASM (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#187-222)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Pragma version^0.8.7 (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract rarity (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#4-8) is not in CapWords
+Contract rarity_attributes (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#10-165) is not in CapWords
+Struct rarity_attributes.ability_score (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#15-22) is not in CapWords
+Function rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39-47) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._str (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._dex (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._const (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._int (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._wis (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Parameter rarity_attributes.point_buy(uint256,uint32,uint32,uint32,uint32,uint32,uint32)._cha (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#39) is not in mixedCase
+Function rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49-51) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._str (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._dex (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._const (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._int (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._wis (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Parameter rarity_attributes.calculate_point_buy(uint256,uint256,uint256,uint256,uint256,uint256)._cha (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#49) is not in mixedCase
+Function rarity_attributes._increase_base(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#61-67) is not in mixedCase
+Parameter rarity_attributes._increase_base(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#61) is not in mixedCase
+Function rarity_attributes.increase_strength(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#69-74) is not in mixedCase
+Parameter rarity_attributes.increase_strength(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#69) is not in mixedCase
+Function rarity_attributes.increase_dexterity(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#76-81) is not in mixedCase
+Parameter rarity_attributes.increase_dexterity(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#76) is not in mixedCase
+Function rarity_attributes.increase_constitution(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#83-88) is not in mixedCase
+Parameter rarity_attributes.increase_constitution(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#83) is not in mixedCase
+Function rarity_attributes.increase_intelligence(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#90-95) is not in mixedCase
+Parameter rarity_attributes.increase_intelligence(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#90) is not in mixedCase
+Function rarity_attributes.increase_wisdom(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#97-102) is not in mixedCase
+Parameter rarity_attributes.increase_wisdom(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#97) is not in mixedCase
+Function rarity_attributes.increase_charisma(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#104-109) is not in mixedCase
+Parameter rarity_attributes.increase_charisma(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#104) is not in mixedCase
+Function rarity_attributes.abilities_by_level(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#112-114) is not in mixedCase
+Parameter rarity_attributes.abilities_by_level(uint256).current_level (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#112) is not in mixedCase
+Parameter rarity_attributes.tokenURI(uint256)._summoner (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#117) is not in mixedCase
+Variable rarity_attributes.ability_scores (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#24) is not in mixedCase
+Variable rarity_attributes.level_points_spent (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#25) is not in mixedCase
+Variable rarity_attributes.character_created (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#26) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+tokenURI(uint256) should be declared external:
+	- rarity_attributes.tokenURI(uint256) (0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol#117-142)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x4Cd9F4a466356201EF815014C16fd0E001594D9.sol analyzed (3 contracts with 75 detectors), 46 result(s) found
+

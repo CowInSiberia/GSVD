@@ -1,0 +1,26 @@
+
+tokenSwap.swap(address,address,uint256,uint256,address) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175-231) ignores return value by IERC20(_tokenIn).transferFrom(msg.sender,address(this),_amountIn) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#183)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+tokenSwap.swap(address,address,uint256,uint256,address) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175-231) ignores return value by IERC20(_tokenIn).approve(UNISWAP_V2_ROUTER,_amountIn) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#191)
+tokenSwap.swap(address,address,uint256,uint256,address) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175-231) ignores return value by IUniswapV2Router(UNISWAP_V2_ROUTER).swapExactTokensForTokens(_amountIn,_amountOutMin,path,_to,block.timestamp) (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#229)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.7.0 (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#11) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract tokenSwap (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#137-282) is not in CapWords
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._tokenIn (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._tokenOut (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._amountIn (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._amountOutMin (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._to (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._tokenIn (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#241) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._tokenOut (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#241) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._amountIn (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#241) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable tokenSwap.swap(address,address,uint256,uint256,address)._amountOutMin (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#175) is too similar to tokenSwap.getAmountOutMin(address,address,uint256).amountOutMins (0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol#275)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+/home/cowie/VersionClassification_Polygon/7_UltimateResult/0xa2e20bbe18b5824ee26fc3bbbfbe00d45b64f4c.sol analyzed (5 contracts with 75 detectors), 14 result(s) found
+
