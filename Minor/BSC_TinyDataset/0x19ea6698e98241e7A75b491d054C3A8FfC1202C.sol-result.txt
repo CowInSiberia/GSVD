@@ -1,0 +1,242 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:9:5: Warning: Functions in interfaces should be declared external.
+    function approve(address _spender, uint256 _value) public returns (bool success);
+
+    ^-------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:10:5: Warning: Functions in interfaces should be declared external.
+    function allowance(address _owner, address _spender) public view returns (uint256 remaining);
+
+    ^-------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:11:5: Warning: Functions in interfaces should be declared external.
+    function transfer(address to, uint tokens) public returns (bool success);
+
+    ^-----------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:12:5: Warning: Functions in interfaces should be declared external.
+    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+
+    ^-----------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:15:5: Warning: Functions in interfaces should be declared external.
+    function getAmountsOut(uint amountIn, address[] memory path)
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:35:5: Warning: Functions in interfaces should be declared external.
+    function swapExactTokensForTokens( uint amountIn, uint amountOutMin, address[]   path, address to, uint deadline);
+
+    ^----------------------------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:54:5: Warning: Functions in interfaces should be declared external.
+    function addAccepted(address _adr) public returns(bool);
+
+    ^------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:55:5: Warning: Functions in interfaces should be declared external.
+    function CheckAccepted(address adr) public view returns(bool); 
+
+    ^------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:56:5: Warning: Functions in interfaces should be declared external.
+    function EthtoToken(address _str,address _t2) public payable returns(bool);
+
+    ^-------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:57:5: Warning: Functions in interfaces should be declared external.
+    function TokentoToken(address _str,address _t1,address _t2, uint _amounts) public returns(bool);
+
+    ^----------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:58:5: Warning: Functions in interfaces should be declared external.
+    function TokentoEth(address _str,address _t1,uint _amounts) public returns(bool);
+
+    ^-------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:60:5: Warning: Functions in interfaces should be declared external.
+    function GetAllow(address _str,address _t2) public view returns(uint);
+
+    ^--------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:61:5: Warning: Functions in interfaces should be declared external.
+    function GetReturnAmountOut(uint256 amountIns,address _t1,address _t2)  public returns(uint256[]);
+
+    ^------------------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:9:5: Warning: Functions in interfaces should be declared external.
+    function approve(address _spender, uint256 _value) public returns (bool success);
+
+    ^-------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:10:5: Warning: Functions in interfaces should be declared external.
+    function allowance(address _owner, address _spender) public view returns (uint256 remaining);
+
+    ^-------------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:11:5: Warning: Functions in interfaces should be declared external.
+    function transfer(address to, uint tokens) public returns (bool success);
+
+    ^-----------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:12:5: Warning: Functions in interfaces should be declared external.
+    function transferFrom(address from, address to, uint tokens) public returns (bool success);
+
+    ^-----------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:15:5: Warning: Functions in interfaces should be declared external.
+    function getAmountsOut(uint amountIn, address[] memory path)
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:35:5: Warning: Functions in interfaces should be declared external.
+    function swapExactTokensForTokens( uint amountIn, uint amountOutMin, address[]   path, address to, uint deadline);
+
+    ^----------------------------------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:54:5: Warning: Functions in interfaces should be declared external.
+    function addAccepted(address _adr) public returns(bool);
+
+    ^------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:55:5: Warning: Functions in interfaces should be declared external.
+    function CheckAccepted(address adr) public view returns(bool); 
+
+    ^------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:56:5: Warning: Functions in interfaces should be declared external.
+    function EthtoToken(address _str,address _t2) public payable returns(bool);
+
+    ^-------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:57:5: Warning: Functions in interfaces should be declared external.
+    function TokentoToken(address _str,address _t1,address _t2, uint _amounts) public returns(bool);
+
+    ^----------------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:58:5: Warning: Functions in interfaces should be declared external.
+    function TokentoEth(address _str,address _t1,uint _amounts) public returns(bool);
+
+    ^-------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:60:5: Warning: Functions in interfaces should be declared external.
+    function GetAllow(address _str,address _t2) public view returns(uint);
+
+    ^--------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:61:5: Warning: Functions in interfaces should be declared external.
+    function GetReturnAmountOut(uint256 amountIns,address _t1,address _t2)  public returns(uint256[]);
+
+    ^------------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:35:5: Warning: No visibility specified. Defaulting to "public". In interfaces it defaults to external.
+    function swapExactTokensForTokens( uint amountIn, uint amountOutMin, address[]   path, address to, uint deadline);
+
+    ^----------------------------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:73:5: Warning: No visibility specified. Defaulting to "public". 
+    constructor(){
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:35:5: Warning: No visibility specified. Defaulting to "public". In interfaces it defaults to external.
+    function swapExactTokensForTokens( uint amountIn, uint amountOutMin, address[]   path, address to, uint deadline);
+
+    ^----------------------------------------------------------------------------------------------------------------^
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:73:5: Warning: No visibility specified. Defaulting to "public". 
+    constructor(){
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:108:5: Warning: Function state mutability can be restricted to pure
+    function GeneratePath(address _t1, address _t2) private view returns (address[] memory) {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:149:5: Warning: Function state mutability can be restricted to view
+    function GetReturnAmountOut(uint256 amountIns,address _t1,address _t2) public  returns(uint256[]){
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:108:5: Warning: Function state mutability can be restricted to pure
+    function GeneratePath(address _t1, address _t2) private view returns (address[] memory) {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol:149:5: Warning: Function state mutability can be restricted to view
+    function GetReturnAmountOut(uint256 amountIns,address _t1,address _t2) public  returns(uint256[]){
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+
+CoreSwap.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253-265) ignores return value by Swap(_t1).transferFrom(msg.sender,address(this),_amounts) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#257)
+CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281) ignores return value by Swap(_t1).transferFrom(msg.sender,address(this),_amounts) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+CoreSwap.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229-249) ignores return value by Tokens.approve(_str,msg.value) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#237)
+CoreSwap.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229-249) ignores return value by PANCAKE.swapExactETHForTokens.value(msg.value)(OutAmount,GeneratePath(BNB,_t2),_str,deadline) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#245)
+CoreSwap.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253-265) ignores return value by Swap(_t1).approve(pancakeAddress,_amounts) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#259)
+CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281) ignores return value by Swap(_t1).approve(pancakeAddress,_amounts) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#273)
+CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281) ignores return value by Swap(pancakeAddress).swapExactTokensForETH(_amounts,0,GeneratePath(_t1,BNB),_str,block.timestamp) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#277)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+CoreSwap.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229-249) compares to a boolean constant:
+	-require(bool,string)(accepted[_str] == true,Not Allowed) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#231)
+CoreSwap.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253-265) compares to a boolean constant:
+	-require(bool,string)(accepted[_str] == true,Not Allowed) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#255)
+CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281) compares to a boolean constant:
+	-require(bool,string)(accepted[_str] == true,Not Allowed) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#269)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.4.24 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#11) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+CoreSwap (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#127-318) should inherit from Core (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#105-123)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-inheritance
+
+Function Core.CheckAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#109) is not in mixedCase
+Function Core.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#111) is not in mixedCase
+Function Core.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#113) is not in mixedCase
+Function Core.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#115) is not in mixedCase
+Function Core.GetAllow(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#119) is not in mixedCase
+Function Core.GetReturnAmountOut(uint256,address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#121) is not in mixedCase
+Parameter CoreSwap.addAccepted(address)._adr (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#163) is not in mixedCase
+Function CoreSwap.CheckAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#175-183) is not in mixedCase
+Function CoreSwap.RemoveAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#185-193) is not in mixedCase
+Function CoreSwap.GeneratePath(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#215-225) is not in mixedCase
+Parameter CoreSwap.GeneratePath(address,address)._t1 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#215) is not in mixedCase
+Parameter CoreSwap.GeneratePath(address,address)._t2 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#215) is not in mixedCase
+Function CoreSwap.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229-249) is not in mixedCase
+Parameter CoreSwap.EthtoToken(address,address)._str (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229) is not in mixedCase
+Parameter CoreSwap.EthtoToken(address,address)._t2 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229) is not in mixedCase
+Function CoreSwap.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253-265) is not in mixedCase
+Parameter CoreSwap.TokentoToken(address,address,address,uint256)._str (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253) is not in mixedCase
+Parameter CoreSwap.TokentoToken(address,address,address,uint256)._t1 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253) is not in mixedCase
+Parameter CoreSwap.TokentoToken(address,address,address,uint256)._t2 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253) is not in mixedCase
+Parameter CoreSwap.TokentoToken(address,address,address,uint256)._amounts (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253) is not in mixedCase
+Function CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281) is not in mixedCase
+Parameter CoreSwap.TokentoEth(address,address,uint256)._str (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267) is not in mixedCase
+Parameter CoreSwap.TokentoEth(address,address,uint256)._t1 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267) is not in mixedCase
+Parameter CoreSwap.TokentoEth(address,address,uint256)._amounts (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267) is not in mixedCase
+Function CoreSwap.GetAllow(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#287-293) is not in mixedCase
+Parameter CoreSwap.GetAllow(address,address)._str (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#287) is not in mixedCase
+Parameter CoreSwap.GetAllow(address,address)._t2 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#287) is not in mixedCase
+Function CoreSwap.GetReturnAmountOut(uint256,address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#297-303) is not in mixedCase
+Parameter CoreSwap.GetReturnAmountOut(uint256,address,address)._t1 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#297) is not in mixedCase
+Parameter CoreSwap.GetReturnAmountOut(uint256,address,address)._t2 (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#297) is not in mixedCase
+Variable CoreSwap.USDT (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#133) is not in mixedCase
+Variable CoreSwap.BNB (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#135) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+approve(address,uint256) should be declared external:
+	- Swap.approve(address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#17)
+allowance(address,address) should be declared external:
+	- Swap.allowance(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#19)
+transfer(address,uint256) should be declared external:
+	- Swap.transfer(address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#21)
+transferFrom(address,address,uint256) should be declared external:
+	- Swap.transferFrom(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#23)
+getAmountsOut(uint256,address[]) should be declared external:
+	- Swap.getAmountsOut(uint256,address[]) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#29-35)
+swapExactTokensForTokens(uint256,uint256,address[],address,uint256) should be declared external:
+	- Swap.swapExactTokensForTokens(uint256,uint256,address[],address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#69)
+addAccepted(address) should be declared external:
+	- Core.addAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#107)
+CheckAccepted(address) should be declared external:
+	- Core.CheckAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#109)
+EthtoToken(address,address) should be declared external:
+	- Core.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#111)
+TokentoToken(address,address,address,uint256) should be declared external:
+	- Core.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#113)
+TokentoEth(address,address,uint256) should be declared external:
+	- Core.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#115)
+GetAllow(address,address) should be declared external:
+	- Core.GetAllow(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#119)
+GetReturnAmountOut(uint256,address,address) should be declared external:
+	- Core.GetReturnAmountOut(uint256,address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#121)
+addAccepted(address) should be declared external:
+	- CoreSwap.addAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#163-171)
+CheckAccepted(address) should be declared external:
+	- CoreSwap.CheckAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#175-183)
+RemoveAccepted(address) should be declared external:
+	- CoreSwap.RemoveAccepted(address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#185-193)
+EthtoToken(address,address) should be declared external:
+	- CoreSwap.EthtoToken(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#229-249)
+TokentoToken(address,address,address,uint256) should be declared external:
+	- CoreSwap.TokentoToken(address,address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#253-265)
+TokentoEth(address,address,uint256) should be declared external:
+	- CoreSwap.TokentoEth(address,address,uint256) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#267-281)
+GetAllow(address,address) should be declared external:
+	- CoreSwap.GetAllow(address,address) (0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol#287-293)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x19ea6698e98241e7A75b491d054C3A8FfC1202C.sol analyzed (3 contracts with 75 detectors), 65 result(s) found
+

@@ -1,0 +1,39 @@
+
+Reentrancy in SMALLADDLIQTEST2.launch() (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#103-113):
+	External calls:
+	- addLiquidity() (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#107)
+		- router.addLiquidityETH{value: amountETH}(address(this),_balances[address(this)],_balances[address(this)],amountETH,autoLiquidityReceiver,block.timestamp) (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#121-135)
+	State variables written after the call(s):
+	- launched = true (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#109)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities
+
+SMALLADDLIQTEST2.addLiquidity() (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#117-137) ignores return value by router.addLiquidityETH{value: amountETH}(address(this),_balances[address(this)],_balances[address(this)],amountETH,autoLiquidityReceiver,block.timestamp) (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#121-135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.11 (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Constant SMALLADDLIQTEST2.mainnetRouter (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#71) is not in UPPER_CASE_WITH_UNDERSCORES
+Variable SMALLADDLIQTEST2._balances (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#75) is not in mixedCase
+Variable SMALLADDLIQTEST2._allowances (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#77) is not in mixedCase
+Constant SMALLADDLIQTEST2._name (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#93) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant SMALLADDLIQTEST2._symbol (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#95) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant SMALLADDLIQTEST2._decimals (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#97) is not in UPPER_CASE_WITH_UNDERSCORES
+Variable SMALLADDLIQTEST2._totalSupply (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#99) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SMALLADDLIQTEST2.slitherConstructorVariables() (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#67-194) uses literals with too many digits:
+	- _totalSupply = 100000000000 * (10 ** _decimals) (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#99)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+SMALLADDLIQTEST2._totalSupply (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#99) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+balanceOf(address) should be declared external:
+	- SMALLADDLIQTEST2.balanceOf(address) (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#149)
+approve(address,uint256) should be declared external:
+	- SMALLADDLIQTEST2.approve(address,uint256) (0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol#155-163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xAc2204F54eF7738102B2b0DFfaD0c1b9DF5f4D0.sol analyzed (3 contracts with 75 detectors), 15 result(s) found
+

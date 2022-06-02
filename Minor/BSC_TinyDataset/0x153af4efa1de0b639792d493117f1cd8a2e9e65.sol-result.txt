@@ -1,0 +1,33 @@
+
+AlkomVault.Withdraw(address,address,uint256) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#205-217) ignores return value by IERC20(_token).transfer(to,amount) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract AlkomVault (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#171-230) has payable functions:
+	 - AlkomVault.receive() (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#193-199)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Reentrancy in AlkomVault.Withdraw(address,address,uint256) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#205-217):
+	External calls:
+	- IERC20(_token).transfer(to,amount) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#211)
+	Event emitted after the call(s):
+	- TransferSent(msg.sender,to,amount) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#213)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.8.10 (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#21) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Function AlkomVault.Withdraw(address,address,uint256) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#205-217) is not in mixedCase
+Parameter AlkomVault.Withdraw(address,address,uint256)._token (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#205) is not in mixedCase
+Parameter AlkomVault.getBalanceOfToken(address)._token (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#221) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Withdraw(address,address,uint256) should be declared external:
+	- AlkomVault.Withdraw(address,address,uint256) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#205-217)
+getBalanceOfToken(address) should be declared external:
+	- AlkomVault.getBalanceOfToken(address) (0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol#221-225)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x153af4efa1de0b639792d493117f1cd8a2e9e65.sol analyzed (2 contracts with 75 detectors), 10 result(s) found
+

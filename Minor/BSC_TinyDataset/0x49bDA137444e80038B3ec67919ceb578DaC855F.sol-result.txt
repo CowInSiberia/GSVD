@@ -1,0 +1,44 @@
+
+ElonStake.stake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#143-155) ignores return value by StakingToken.transferFrom(msg.sender,address(this),_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#151)
+ElonStake.unstake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#159-169) ignores return value by StakingToken.transfer(msg.sender,_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#165)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in ElonStake.stake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#143-155):
+	External calls:
+	- StakingToken.transferFrom(msg.sender,address(this),_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#151)
+	State variables written after the call(s):
+	- stakingValues[msg.sender] = balanceOfAddress.add(_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#153)
+Reentrancy in ElonStake.unstake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#159-169):
+	External calls:
+	- StakingToken.transfer(msg.sender,_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#165)
+	State variables written after the call(s):
+	- stakingValues[msg.sender] = balanceOfAddress.sub(_amount) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SafeMath.div(uint256,uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#69-73) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#75-83) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#49-67) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.7 (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter ElonStake.stake(uint256)._amount (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#143) is not in mixedCase
+Parameter ElonStake.unstake(uint256)._amount (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#159) is not in mixedCase
+Parameter ElonStake.setStakingToken(address)._tokenAddress (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#173) is not in mixedCase
+Parameter ElonStake.getStakingValue(address)._address (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#181) is not in mixedCase
+Variable ElonStake.StakingToken (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#127) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+stake(uint256) should be declared external:
+	- ElonStake.stake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#143-155)
+unstake(uint256) should be declared external:
+	- ElonStake.unstake(uint256) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#159-169)
+setStakingToken(address) should be declared external:
+	- ElonStake.setStakingToken(address) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#173-177)
+getStakingValue(address) should be declared external:
+	- ElonStake.getStakingValue(address) (0x49bDA137444e80038B3ec67919ceb578DaC855F.sol#181-185)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x49bDA137444e80038B3ec67919ceb578DaC855F.sol analyzed (3 contracts with 75 detectors), 18 result(s) found
+

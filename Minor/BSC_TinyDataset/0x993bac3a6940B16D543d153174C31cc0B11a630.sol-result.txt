@@ -1,0 +1,92 @@
+
+Genes.random(uint256,uint256) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#101-103) uses a weak PRNG: "uint256(keccak256(bytes)(abi.encodePacked(factor,block.difficulty,block.timestamp,msg.sender))) % _modulus (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#102)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+Genes.inArray(uint256[],uint256) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#195-202) uses a dangerous strict equality:
+	- arr[i] == n (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#197)
+Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#268-356) uses a dangerous strict equality:
+	- child[pos1] == _pet1[pos2] (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#323)
+Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#268-356) uses a dangerous strict equality:
+	- child[pos1] == _pet2[pos2] (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#326)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Genes.packGenes(uint256[42]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#105-112) uses timestamp for comparisons
+	Dangerous comparisons:
+	- i < _petProperty.length (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#107)
+Genes.mix(uint256,uint256,uint256) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#126-159) uses timestamp for comparisons
+	Dangerous comparisons:
+	- random(factor,100) < 50 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#135)
+	- r < 24 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#142)
+	- r < 48 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#144)
+	- r < 72 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#146)
+	- r < 96 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#148)
+	- r < 98 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#150)
+	- r < 100 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#152)
+Genes.pickNFromList(uint256,uint256,uint256[6],uint256[6]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#161-193) uses timestamp for comparisons
+	Dangerous comparisons:
+	- r < threshold (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#182)
+Genes.inArray(uint256[],uint256) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#195-202) uses timestamp for comparisons
+	Dangerous comparisons:
+	- arr[i] == n (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#197)
+Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#268-356) uses timestamp for comparisons
+	Dangerous comparisons:
+	- child[pos1] == _pet1[pos2] (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#323)
+	- child[pos1] == _pet2[pos2] (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#326)
+Genes.remix(uint256,uint256[6],uint256[]) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#358-380) uses timestamp for comparisons
+	Dangerous comparisons:
+	- inArray(_bGenes,chosen[0]) && random(factor,1000) < 997 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#365)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.0 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Genes.random(uint256,uint256)._modulus (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#101) is not in mixedCase
+Parameter Genes.packGenes(uint256[42])._petProperty (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#105) is not in mixedCase
+Parameter Genes.unPackGenes(uint256)._genes (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#114) is not in mixedCase
+Parameter Genes.mix(uint256,uint256,uint256)._genId1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#128) is not in mixedCase
+Parameter Genes.mix(uint256,uint256,uint256)._genId2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#129) is not in mixedCase
+Parameter Genes.pickNFromList(uint256,uint256,uint256[6],uint256[6])._number (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#163) is not in mixedCase
+Parameter Genes.pickNFromList(uint256,uint256,uint256[6],uint256[6])._list (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#164) is not in mixedCase
+Parameter Genes.pickNFromList(uint256,uint256,uint256[6],uint256[6])._ratio (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#165) is not in mixedCase
+Parameter Genes.notInt(uint256[6],uint256[])._list (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#204) is not in mixedCase
+Parameter Genes.notInt(uint256[6],uint256[])._exclude (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#204) is not in mixedCase
+Parameter Genes.beastGenes(uint256[42],uint256[42])._pet1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#224) is not in mixedCase
+Parameter Genes.beastGenes(uint256[42],uint256[42])._pet2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#224) is not in mixedCase
+Parameter Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42])._pet1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#270) is not in mixedCase
+Parameter Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42])._pet2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#271) is not in mixedCase
+Parameter Genes.remix(uint256,uint256[6],uint256[])._genes (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#360) is not in mixedCase
+Parameter Genes.remix(uint256,uint256[6],uint256[])._bGenes (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#361) is not in mixedCase
+Constant Genes.sumOfGeneBits (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#5) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_0 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#289) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_6 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#334)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_0 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#289) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#299)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#299) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_6 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#334)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_0 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#289) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_4 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#309)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#299) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_4 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#309)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_4 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#309) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_6 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#334)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_0 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#289) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_8 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#344)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_2 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#299) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_8 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#344)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_4 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#309) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_8 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#344)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_6 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#334) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).genes_scope_8 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#344)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#290) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_3 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#300)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#290) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_5 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#310)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#290) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_7 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#335)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_1 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#290) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_9 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#345)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_3 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#300) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_7 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#335)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_3 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#300) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_5 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#310)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_5 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#310) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_7 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#335)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_3 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#300) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_9 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#345)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_5 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#310) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_9 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#345)
+Variable Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_7 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#335) is too similar to Genes.mixGenes(uint256,uint256[42],uint256[42],uint256[42]).res_scope_9 (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#345)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+Genes.sumOfGeneBits (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#5) is never used in Genes (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#4-382)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+mix(uint256,uint256,uint256) should be declared external:
+	- Genes.mix(uint256,uint256,uint256) (0x993bac3a6940B16D543d153174C31cc0B11a630.sol#126-159)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x993bac3a6940B16D543d153174C31cc0B11a630.sol analyzed (1 contracts with 75 detectors), 51 result(s) found
+

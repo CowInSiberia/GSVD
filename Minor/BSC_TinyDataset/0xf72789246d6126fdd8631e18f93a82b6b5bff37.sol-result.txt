@@ -1,0 +1,121 @@
+
+busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143) ignores return value by ERC20(USD).transfer(ceoAddress,fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#135)
+busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143) ignores return value by ERC20(USD).transfer(ceoAddress2,fee - fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#137)
+busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143) ignores return value by ERC20(USD).transfer(ceoAddress3,mfee) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#139)
+busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143) ignores return value by ERC20(USD).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#141)
+busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177) ignores return value by ERC20(USD).transferFrom(address(msg.sender),address(this),amount) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#151)
+busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177) ignores return value by ERC20(USD).transfer(ceoAddress,fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#167)
+busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177) ignores return value by ERC20(USD).transfer(ceoAddress2,fee - fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#169)
+busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177) ignores return value by ERC20(USD).transfer(ceoAddress3,mfee) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#171)
+busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229) ignores return value by ERC20(USD).transferFrom(address(msg.sender),address(this),amount) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#221)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#223)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177):
+	External calls:
+	- ERC20(USD).transferFrom(address(msg.sender),address(this),amount) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#151)
+	- balance = ERC20(USD).balanceOf(address(this)) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#155)
+	- ERC20(USD).transfer(ceoAddress,fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#167)
+	- ERC20(USD).transfer(ceoAddress2,fee - fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#169)
+	- ERC20(USD).transfer(ceoAddress3,mfee) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#171)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#175)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#111)
+Reentrancy in busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#121)
+		- calculateTrade(eggs,marketEggs,ERC20(USD).balanceOf(address(this))) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#191)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#129)
+	- lastHatch[msg.sender] = now (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#131)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177):
+	External calls:
+	- ERC20(USD).transferFrom(address(msg.sender),address(this),amount) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#151)
+	- balance = ERC20(USD).balanceOf(address(this)) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#155)
+	- ERC20(USD).transfer(ceoAddress,fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#167)
+	- ERC20(USD).transfer(ceoAddress2,fee - fee2) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#169)
+	- ERC20(USD).transfer(ceoAddress3,mfee) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#171)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#173)
+	- hatchEggs(ref) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#175)
+		- claimedEggs[msg.sender] = 0 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#97)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,7)) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#105)
+	- hatchEggs(ref) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#175)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#95)
+	- hatchEggs(ref) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#175)
+		- lastHatch[msg.sender] = now (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#99)
+	- hatchEggs(ref) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#175)
+		- referrals[msg.sender] = ref (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#87)
+Reentrancy in busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229):
+	External calls:
+	- ERC20(USD).transferFrom(address(msg.sender),address(this),amount) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#221)
+	State variables written after the call(s):
+	- initialized = true (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#225)
+	- marketEggs = 259200000000 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#223)
+busdJet.min(uint256,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#257-261) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#259)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract busdJet (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#35-263) is not in CapWords
+Variable busdJet.USD (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#39) is not in mixedCase
+Variable busdJet.EGGS_TO_HATCH_1MINERS (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#41) is not in mixedCase
+Variable busdJet.PSN (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#43) is not in mixedCase
+Variable busdJet.PSNH (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable busdJet.ceoAddress2 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#51) is too similar to busdJet.ceoAddress3 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229) uses literals with too many digits:
+	- marketEggs = 259200000000 (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+busdJet.EGGS_TO_HATCH_1MINERS (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#41) should be constant
+busdJet.PSN (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#43) should be constant
+busdJet.PSNH (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#45) should be constant
+busdJet.USD (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#39) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#15)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#17)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#21)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#25)
+sellEggs() should be declared external:
+	- busdJet.sellEggs() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#115-143)
+buyEggs(address,uint256) should be declared external:
+	- busdJet.buyEggs(address,uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#145-177)
+calculateEggBuySimple(uint256) should be declared external:
+	- busdJet.calculateEggBuySimple(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#201-205)
+seedMarket(uint256) should be declared external:
+	- busdJet.seedMarket(uint256) (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#219-229)
+getBalance() should be declared external:
+	- busdJet.getBalance() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#231-235)
+getMyMiners() should be declared external:
+	- busdJet.getMyMiners() (0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol#237-241)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0xf72789246d6126fdd8631e18f93a82b6b5bff37.sol analyzed (3 contracts with 75 detectors), 41 result(s) found
+

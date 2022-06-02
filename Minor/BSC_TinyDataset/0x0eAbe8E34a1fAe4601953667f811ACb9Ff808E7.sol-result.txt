@@ -1,0 +1,45 @@
+
+GovernorAlpha.execute(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#200-209) sends eth to arbitrary user
+	Dangerous calls:
+	- timelock.executeTransaction{value: proposal.values[i]}(proposal.targets[i],proposal.values[i],proposal.signatures[i],proposal.calldatas[i],proposal.eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+GovernorAlpha._queueOrRevert(address,uint256,string,bytes,uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#195-198) ignores return value by timelock.queueTransaction(target,value,signature,data,eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#197)
+GovernorAlpha.execute(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#200-209) ignores return value by timelock.executeTransaction{value: proposal.values[i]}(proposal.targets[i],proposal.values[i],proposal.signatures[i],proposal.calldatas[i],proposal.eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+GovernorAlpha.constructor(address,address,address).guardian_ (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#135) lacks a zero-check on :
+		- guardian = guardian_ (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#138)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+GovernorAlpha.execute(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#200-209) has external calls inside a loop: timelock.executeTransaction{value: proposal.values[i]}(proposal.targets[i],proposal.values[i],proposal.signatures[i],proposal.calldatas[i],proposal.eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#205)
+GovernorAlpha.cancel(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#242-257) has external calls inside a loop: timelock.cancelTransaction(proposal.targets[i],proposal.values[i],proposal.signatures[i],proposal.calldatas[i],proposal.eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#253)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+GovernorAlpha._queueOrRevert(address,uint256,string,bytes,uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#195-198) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(! timelock.queuedTransactions(keccak256(bytes)(abi.encode(target,value,signature,data,eta))),GovernorAlpha::_queueOrRevert: proposal action already queued at eta) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#196)
+GovernorAlpha.state(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#220-240) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= add256(proposal.eta,timelock.GRACE_PERIOD()) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#235)
+GovernorAlpha.add256(uint256,uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#317-321) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(c >= a,addition overflow) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#319)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+GovernorAlpha.getChainId() (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#328-332) uses assembly
+	- INLINE ASM (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#330)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Function GovernorAlpha.__acceptAdmin() (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#306-309) is not in mixedCase
+Function GovernorAlpha.__abdicate() (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#311-314) is not in mixedCase
+Function TimelockInterface.GRACE_PERIOD() (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#338) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+getActions(uint256) should be declared external:
+	- GovernorAlpha.getActions(uint256) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#211-214)
+getReceipt(uint256,address) should be declared external:
+	- GovernorAlpha.getReceipt(uint256,address) (0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol#216-218)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/7_UltimateResult/0x0eAbe8E34a1fAe4601953667f811ACb9Ff808E7.sol analyzed (3 contracts with 75 detectors), 15 result(s) found
+

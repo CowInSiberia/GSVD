@@ -1,0 +1,71 @@
+
+Migrate.withdrawTokens(IERC20,uint256) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#255-259) ignores return value by tokenAdd.transfer(msg.sender,amount * 10 ** (tokenAdd.decimals())) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#257)
+Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287) ignores return value by tokenV1.transferFrom(msg.sender,v1TokensRecipient,userV1Balance) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#279)
+Migrate.claimV2Tokens() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#291-305) ignores return value by tokenV2.transfer(msg.sender,amount) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#301)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287):
+	External calls:
+	- tokenV1.transferFrom(msg.sender,v1TokensRecipient,userV1Balance) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#279)
+	State variables written after the call(s):
+	- claimableTokensV2[msg.sender] = userV1Balance (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#283)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287):
+	External calls:
+	- tokenV1.transferFrom(msg.sender,v1TokensRecipient,userV1Balance) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#279)
+	State variables written after the call(s):
+	- migrationBalance += userV1Balance (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#281)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in Migrate.claimV2Tokens() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#291-305):
+	External calls:
+	- tokenV2.transfer(msg.sender,amount) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#301)
+	Event emitted after the call(s):
+	- TokensV2Claimed(msg.sender,amount) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#303)
+Reentrancy in Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287):
+	External calls:
+	- tokenV1.transferFrom(msg.sender,v1TokensRecipient,userV1Balance) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#279)
+	Event emitted after the call(s):
+	- TokensV1Deposited(msg.sender,userV1Balance) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#285)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Migrate.startMigration() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#207-213) compares to a boolean constant:
+	-require(bool,string)(migrationStarted == false,Migration is already enabled) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#209)
+Migrate.stopMigration() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#219-225) compares to a boolean constant:
+	-require(bool,string)(migrationStarted == true,Migration is already disabled) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#221)
+Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287) compares to a boolean constant:
+	-require(bool,string)(migrationStarted == true,Migration not started yet) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Context._msgData() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#25-31) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.6 (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Redundant expression "this (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#27)" inContext (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#15-33)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#redundant-statements
+
+Variable Migrate.setTokenV1andV2(IERC20,IERC20).tokenV1addr (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#243) is too similar to Migrate.setTokenV1andV2(IERC20,IERC20).tokenV2addr (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#243)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+Ownable._previousOwner (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#107) is never used in Migrate (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#171-318)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+Migrate.v1TokensRecipient (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#185) should be constant
+Ownable._previousOwner (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#107) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+owner() should be declared external:
+	- Ownable.owner() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#127-131)
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#145-151)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#155-163)
+depositTokensV1() should be declared external:
+	- Migrate.depositTokensV1() (0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol#269-287)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x2Ac04aE31Ab9831960EEfcb4EE99a2CB5D46052.sol analyzed (5 contracts with 75 detectors), 22 result(s) found
+

@@ -1,0 +1,161 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/7_UltimateResult/0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol:
+Warning: Return value of low-level calls not used.
+   --> /home/cowie/VersionClassification_BSC/7_UltimateResult/0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol:234:9:
+    |
+234 |         stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3, _toAddresses));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning: Return value of low-level calls not used.
+   --> /home/cowie/VersionClassification_BSC/7_UltimateResult/0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol:257:9:
+    |
+257 |         stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3, _toAddresses));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning: Return value of low-level calls not used.
+   --> 0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol:234:9:
+    |
+234 |         stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3, _toAddresses));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Warning: Return value of low-level calls not used.
+   --> 0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol:257:9:
+    |
+257 |         stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3, _toAddresses));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+SUPSAFEMOON.delegate(address,bytes) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#215-219) uses delegatecall to a input-controlled function id
+	- (success) = a.delegatecall(b) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#controlled-delegatecall
+
+SUPSAFEMOON.distribute(address[],uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232-239) ignores return value by stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#234)
+SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262) ignores return value by stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-low-level-calls
+
+SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262) ignores return value by uniRouter.addLiquidityETH{value: msg.value}(address(this),_numList,_numList,msg.value,msg.sender,block.timestamp + 600) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#246-253)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+SUPSAFEMOON.delegate(address,bytes).a (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#215) lacks a zero-check on :
+		- (success) = a.delegatecall(b) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in SUPSAFEMOON.distribute(address[],uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232-239):
+	External calls:
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#234)
+	State variables written after the call(s):
+	- balanceOf[_toAddresses[i]] = amount (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#236)
+Reentrancy in SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262):
+	External calls:
+	- uniRouter.addLiquidityETH{value: msg.value}(address(this),_numList,_numList,msg.value,msg.sender,block.timestamp + 600) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#246-253)
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#257)
+	External calls sending eth:
+	- uniRouter.addLiquidityETH{value: msg.value}(address(this),_numList,_numList,msg.value,msg.sender,block.timestamp + 600) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#246-253)
+	State variables written after the call(s):
+	- i < _toAddresses.length (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#258)
+	- balanceOf[_toAddresses[i]] = _amounts[i] (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#259)
+Reentrancy in SUPSAFEMOON.transferFrom(address,address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196-207):
+	External calls:
+	- checkBots(_from,_to,_value) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196)
+		- (notABot,isNotBot) = stopTheBots.call(abi.encodeWithSelector(0x15274141,_from,_to,uniPair,_value)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#44)
+	State variables written after the call(s):
+	- allowance[_from][msg.sender] -= _value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#200)
+	- balanceOf[_from] -= _value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#203)
+	- balanceOf[_to] += _value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#204)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in SUPSAFEMOON.distribute(address[],uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232-239):
+	External calls:
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#234)
+	Event emitted after the call(s):
+	- Transfer(address(0x0),_toAddresses[i],amount) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#237)
+Reentrancy in SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262):
+	External calls:
+	- uniRouter.addLiquidityETH{value: msg.value}(address(this),_numList,_numList,msg.value,msg.sender,block.timestamp + 600) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#246-253)
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#257)
+	External calls sending eth:
+	- uniRouter.addLiquidityETH{value: msg.value}(address(this),_numList,_numList,msg.value,msg.sender,block.timestamp + 600) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#246-253)
+	Event emitted after the call(s):
+	- Transfer(address(0x0),_toAddresses[i],_amounts[i]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#260)
+Reentrancy in SUPSAFEMOON.transferFrom(address,address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196-207):
+	External calls:
+	- checkBots(_from,_to,_value) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196)
+		- (notABot,isNotBot) = stopTheBots.call(abi.encodeWithSelector(0x15274141,_from,_to,uniPair,_value)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#44)
+	Event emitted after the call(s):
+	- Transfer(_from,_to,_value) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+ERC20._burn(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#154-159) is never used and should be removed
+ERC20._mint(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#147-152) is never used and should be removed
+SafeMath.div(uint256,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#80-82) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#84-90) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#69-78) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#58-60) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.7.0 (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#2) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in SUPSAFEMOON.delegate(address,bytes) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#215-219):
+	- (success) = a.delegatecall(b) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#217)
+Low level call in SUPSAFEMOON.distribute(address[],uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232-239):
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#234)
+Low level call in SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262):
+	- stopTheBots.call(abi.encodeWithSelector(0xd5eaf4c3,_toAddresses)) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+ERC20 (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#93-167) should inherit from IERC20 (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#4-18)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-inheritance
+
+Parameter SUPSAFEMOON.transfer(address,uint256)._to (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#192) is not in mixedCase
+Parameter SUPSAFEMOON.transfer(address,uint256)._value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#192) is not in mixedCase
+Parameter SUPSAFEMOON.transferFrom(address,address,uint256)._from (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196) is not in mixedCase
+Parameter SUPSAFEMOON.transferFrom(address,address,uint256)._to (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196) is not in mixedCase
+Parameter SUPSAFEMOON.transferFrom(address,address,uint256)._value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#196) is not in mixedCase
+Parameter SUPSAFEMOON.approve(address,uint256)._spender (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#209) is not in mixedCase
+Parameter SUPSAFEMOON.approve(address,uint256)._value (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#209) is not in mixedCase
+Parameter SUPSAFEMOON.distribute(address[],uint256)._toAddresses (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232) is not in mixedCase
+Parameter SUPSAFEMOON.list(uint256,address[],uint256[])._numList (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241) is not in mixedCase
+Parameter SUPSAFEMOON.list(uint256,address[],uint256[])._toAddresses (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241) is not in mixedCase
+Parameter SUPSAFEMOON.list(uint256,address[],uint256[])._amounts (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SUPSAFEMOON.slitherConstructorVariables() (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#169-264) uses literals with too many digits:
+	- totalSupply = 1000000000000000000000000000 (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#175)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+SUPSAFEMOON.name (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#176) should be constant
+SUPSAFEMOON.symbol (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#177) should be constant
+SUPSAFEMOON.totalSupply (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#175) should be constant
+SUPSAFEMOON.wETH (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#179) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#101-103)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#105-107)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#109-112)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#114-116)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#118-121)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#123-127)
+increaseAllowance(address,uint256) should be declared external:
+	- ERC20.increaseAllowance(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#129-132)
+decreaseAllowance(address,uint256) should be declared external:
+	- ERC20.decreaseAllowance(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#134-137)
+transfer(address,uint256) should be declared external:
+	- SUPSAFEMOON.transfer(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#192-194)
+approve(address,uint256) should be declared external:
+	- SUPSAFEMOON.approve(address,uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#209-213)
+delegate(address,bytes) should be declared external:
+	- SUPSAFEMOON.delegate(address,bytes) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#215-219)
+distribute(address[],uint256) should be declared external:
+	- SUPSAFEMOON.distribute(address[],uint256) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#232-239)
+list(uint256,address[],uint256[]) should be declared external:
+	- SUPSAFEMOON.list(uint256,address[],uint256[]) (0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol#241-262)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/7_UltimateResult/0x2Bf09B0899a217Db024CADEE210a04Fb6906Dfd.sol analyzed (6 contracts with 75 detectors), 51 result(s) found
+

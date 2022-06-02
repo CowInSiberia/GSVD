@@ -1,0 +1,51 @@
+
+CryptoWolves._allowances (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#63) is never initialized. It is used in:
+	- CryptoWolves.allowance(address,address) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#227-231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state-variables
+
+Contract locking ether found:
+	Contract CryptoWolves (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#17-336) has payable functions:
+	 - CryptoWolves.deposit() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#281-293)
+	 - CryptoWolves.withdraw(uint256) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#297-309)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+CryptoWolves.withdraw(uint256) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#297-309) should emit an event for: 
+	- _totalSupply -= _value (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#305) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Pragma version^0.8.0 (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter CryptoWolves.withdraw(uint256)._value (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#297) is not in mixedCase
+Variable CryptoWolves._decimals (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#39) is not in mixedCase
+Variable CryptoWolves._totalSupply (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+CryptoWolves.constructor() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#67-81) uses literals with too many digits:
+	- _totalSupply = 10000000 * 10 ** 18 (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#77)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+CryptoWolves._owners (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#51) is never used in CryptoWolves (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#17-336)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+name() should be declared external:
+	- CryptoWolves.name() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#145-149)
+symbol() should be declared external:
+	- CryptoWolves.symbol() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#159-163)
+decimals() should be declared external:
+	- CryptoWolves.decimals() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#185-189)
+totalSupply() should be declared external:
+	- CryptoWolves.totalSupply() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#199-203)
+balanceOf(address) should be declared external:
+	- CryptoWolves.balanceOf(address) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#213-217)
+allowance(address,address) should be declared external:
+	- CryptoWolves.allowance(address,address) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#227-231)
+deposit() should be declared external:
+	- CryptoWolves.deposit() (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#281-293)
+withdraw(uint256) should be declared external:
+	- CryptoWolves.withdraw(uint256) (0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol#297-309)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xdf3ba77a03f23ca5d7c6e129d2f795afe7facc5.sol analyzed (1 contracts with 75 detectors), 18 result(s) found
+

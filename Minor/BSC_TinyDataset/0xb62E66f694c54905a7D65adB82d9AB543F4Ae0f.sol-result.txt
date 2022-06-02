@@ -1,0 +1,73 @@
+
+BladeMultisend.ethSendSameValue(address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#175-203) sends eth to arbitrary user
+	Dangerous calls:
+	- require(bool,string)(address(_to[i]).send(_value),failed to send) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#195)
+BladeMultisend.ethSendDifferentValue(address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#207-241) sends eth to arbitrary user
+	Dangerous calls:
+	- require(bool)(address(_to[i]).send(_value[i])) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+BladeMultisend.sendSameValue(address,address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249-277) ignores return value by token.transferFrom(from,_to[i],_value) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#269)
+BladeMultisend.sendDifferentValue(address,address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281-315) ignores return value by token.transferFrom(msg.sender,_to[i],_value[i]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#305)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BladeMultisend.sendDifferentValue(address,address[],uint256[256]).sendAmount (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#291) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+BladeMultisend.sendSameValue(address,address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249-277) ignores return value by token.approve(from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#263)
+BladeMultisend.sendDifferentValue(address,address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281-315) ignores return value by token.approve(from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#299)
+BladeMultisend.sendDifferentValue(address,address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281-315) ignores return value by sendAmount.add(_value[i]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#307)
+BladeMultisend.ApproveERC20Token(address,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#319-331) ignores return value by token.approve(address(this),_value) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#325)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+BladeMultisend.ethSendSameValue(address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#175-203) has external calls inside a loop: require(bool,string)(address(_to[i]).send(_value),failed to send) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#195)
+BladeMultisend.ethSendDifferentValue(address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#207-241) has external calls inside a loop: require(bool)(address(_to[i]).send(_value[i])) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#231)
+BladeMultisend.sendSameValue(address,address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249-277) has external calls inside a loop: token.transferFrom(from,_to[i],_value) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#269)
+BladeMultisend.sendDifferentValue(address,address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281-315) has external calls inside a loop: token.transferFrom(msg.sender,_to[i],_value[i]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#305)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Reentrancy in BladeMultisend.ApproveERC20Token(address,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#319-331):
+	External calls:
+	- token.approve(address(this),_value) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#325)
+	Event emitted after the call(s):
+	- LogTokenApproval(_tokenAddress,_value) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#329)
+Reentrancy in BladeMultisend.sendDifferentValue(address,address[],uint256[256]) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281-315):
+	External calls:
+	- token.approve(from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#299)
+	Event emitted after the call(s):
+	- LogTokenBulkSent(_tokenAddress,from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#311)
+Reentrancy in BladeMultisend.sendSameValue(address,address[],uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249-277):
+	External calls:
+	- token.approve(from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#263)
+	Event emitted after the call(s):
+	- LogTokenBulkSent(_tokenAddress,from,sendAmount) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#273)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SafeMath.div(uint256,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#99-109) is never used and should be removed
+SafeMath.max256(uint256,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#141-145) is never used and should be removed
+SafeMath.max64(uint64,uint64) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#129-133) is never used and should be removed
+SafeMath.min256(uint256,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#147-151) is never used and should be removed
+SafeMath.min64(uint64,uint64) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#135-139) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#111-117) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version>=0.8.0<0.9.0 (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#23) is too complex
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter BladeMultisend.ethSendSameValue(address[],uint256)._to (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#175) is not in mixedCase
+Parameter BladeMultisend.ethSendSameValue(address[],uint256)._value (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#175) is not in mixedCase
+Parameter BladeMultisend.ethSendDifferentValue(address[],uint256[256])._to (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#207) is not in mixedCase
+Parameter BladeMultisend.ethSendDifferentValue(address[],uint256[256])._value (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#207) is not in mixedCase
+Parameter BladeMultisend.sendSameValue(address,address[],uint256)._tokenAddress (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249) is not in mixedCase
+Parameter BladeMultisend.sendSameValue(address,address[],uint256)._to (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249) is not in mixedCase
+Parameter BladeMultisend.sendSameValue(address,address[],uint256)._value (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#249) is not in mixedCase
+Parameter BladeMultisend.sendDifferentValue(address,address[],uint256[256])._tokenAddress (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281) is not in mixedCase
+Parameter BladeMultisend.sendDifferentValue(address,address[],uint256[256])._to (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281) is not in mixedCase
+Parameter BladeMultisend.sendDifferentValue(address,address[],uint256[256])._value (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#281) is not in mixedCase
+Function BladeMultisend.ApproveERC20Token(address,uint256) (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#319-331) is not in mixedCase
+Parameter BladeMultisend.ApproveERC20Token(address,uint256)._tokenAddress (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#319) is not in mixedCase
+Parameter BladeMultisend.ApproveERC20Token(address,uint256)._value (0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol#319) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xb62E66f694c54905a7D65adB82d9AB543F4Ae0f.sol analyzed (3 contracts with 75 detectors), 37 result(s) found
+

@@ -1,0 +1,98 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/6_UltimateResult/0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> /home/cowie/VersionClassification_BSC/6_UltimateResult/0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol
+
+
+
+Reentrancy in NiranaMeta.buy(uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#83-111):
+	External calls:
+	- USDT20(USDTerc20).transferFrom(msg.sender,address(this),_value) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#93)
+	External calls sending eth:
+	- msg.sender.transfer(quota) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#95)
+	State variables written after the call(s):
+	- IDOtime[msg.sender] = block.timestamp + 86400 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#99)
+	- total -= quota (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#97)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities
+
+USDT20 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#17-25) has incorrect ERC20 function interface:USDT20.transfer(address,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#19)
+USDT20 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#17-25) has incorrect ERC20 function interface:USDT20.transferFrom(address,address,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#21)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+NiranaMeta.setpice(uint256,uint256,uint256,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171-181) should emit an event for: 
+	- pice = _pice (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#173) 
+	- quota = _quota (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#175) 
+	- total = _total (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#177) 
+	- buyTime = _buyTime (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#179) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+NiranaMeta.constructor(address)._USDTaddress (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#65) lacks a zero-check on :
+		- USDTerc20 = _USDTaddress (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#69)
+NiranaMeta.setRelease(address,uint256,uint256)._addr (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#129) lacks a zero-check on :
+		- _addr.transfer(1000000000000000000) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+NiranaMeta.buy(uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#83-111) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(total >= quota && block.timestamp >= buyTime) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#85)
+	- require(bool)(block.timestamp > IDOtime[msg.sender]) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#87)
+NiranaMeta.withdrawMNU() (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#147-163) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(_user.total > _user.releaseAmount,All released) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#151)
+	- require(bool,string)(block.timestamp > _user.time,It's not time yet) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+NiranaMeta.setReleaseUSDT(address,uint256,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#113-127) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version>=0.6.0<0.8.0 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#15) is too complex
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Struct NiranaMeta.user (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#49-59) is not in CapWords
+Parameter NiranaMeta.buy(uint256)._value (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#83) is not in mixedCase
+Parameter NiranaMeta.setReleaseUSDT(address,uint256,uint256)._addr (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#113) is not in mixedCase
+Parameter NiranaMeta.setReleaseUSDT(address,uint256,uint256)._total (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#113) is not in mixedCase
+Parameter NiranaMeta.setReleaseUSDT(address,uint256,uint256)._release (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#113) is not in mixedCase
+Parameter NiranaMeta.setRelease(address,uint256,uint256)._addr (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#129) is not in mixedCase
+Parameter NiranaMeta.setRelease(address,uint256,uint256)._total (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#129) is not in mixedCase
+Parameter NiranaMeta.setRelease(address,uint256,uint256)._release (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#129) is not in mixedCase
+Parameter NiranaMeta.withdrawUSDT(uint256)._value (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#165) is not in mixedCase
+Parameter NiranaMeta.setpice(uint256,uint256,uint256,uint256)._pice (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171) is not in mixedCase
+Parameter NiranaMeta.setpice(uint256,uint256,uint256,uint256)._quota (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171) is not in mixedCase
+Parameter NiranaMeta.setpice(uint256,uint256,uint256,uint256)._total (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171) is not in mixedCase
+Parameter NiranaMeta.setpice(uint256,uint256,uint256,uint256)._buyTime (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171) is not in mixedCase
+Variable NiranaMeta.USDTerc20 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#31) is not in mixedCase
+Variable NiranaMeta.IDOtime (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#63) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in NiranaMeta.buy(uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#83-111):
+	External calls:
+	- msg.sender.transfer(quota) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#95)
+	State variables written after the call(s):
+	- IDOtime[msg.sender] = block.timestamp + 86400 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#99)
+	- total -= quota (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#97)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+NiranaMeta.constructor(address) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#65-79) uses literals with too many digits:
+	- total = 1000000000000000000000000 (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#75)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+buy(uint256) should be declared external:
+	- NiranaMeta.buy(uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#83-111)
+setRelease(address,uint256,uint256) should be declared external:
+	- NiranaMeta.setRelease(address,uint256,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#129-145)
+withdrawMNU() should be declared external:
+	- NiranaMeta.withdrawMNU() (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#147-163)
+withdrawUSDT(uint256) should be declared external:
+	- NiranaMeta.withdrawUSDT(uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#165-169)
+setpice(uint256,uint256,uint256,uint256) should be declared external:
+	- NiranaMeta.setpice(uint256,uint256,uint256,uint256) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#171-181)
+getUser(address) should be declared external:
+	- NiranaMeta.getUser(address) (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#183-189)
+getbuyTime() should be declared external:
+	- NiranaMeta.getbuyTime() (0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol#191-195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x0e5E143A6a197dca26a985A8113DB917AD63d26.sol analyzed (2 contracts with 75 detectors), 34 result(s) found
+

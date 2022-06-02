@@ -1,0 +1,44 @@
+
+Swap.swap(uint256) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#61-83) ignores return value by inputToken.transferFrom(msg.sender,seller,inputAmount) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#67)
+Swap.swap(uint256) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#61-83) ignores return value by outputToken.transfer(msg.sender,outputAmount) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#69)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Swap.getOutput(uint256) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#87-125) performs a multiplication on the result of a division:
+	-priceTwo = price * 80 / 100 (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#109)
+	-(overflow,inputAmountOne * price + inputAmountTwo * priceTwo) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#111)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in Swap.swap(uint256) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#61-83):
+	External calls:
+	- inputToken.transferFrom(msg.sender,seller,inputAmount) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#67)
+	- outputToken.transfer(msg.sender,outputAmount) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#69)
+	State variables written after the call(s):
+	- price = price * 80 / 100 (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#79)
+	- sellTotalAmount += inputAmount (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#71)
+	- userBuyAmount[msg.sender] += inputAmount (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#73)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Swap.getOutput(uint256).overflow (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#91) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+Swap.constructor(address)._seller (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#53) lacks a zero-check on :
+		- seller = _seller (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#55)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Pragma version^0.8.0 (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Swap.slitherConstructorVariables() (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#29-130) uses literals with too many digits:
+	- price = 1000000000 (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#31)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+Swap.boundary (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#33) should be constant
+Swap.userMaxBuy (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#49) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+swap(uint256) should be declared external:
+	- Swap.swap(uint256) (0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol#61-83)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x5980ADcfd352522494F137a77Becb5DE4681eBA.sol analyzed (2 contracts with 75 detectors), 12 result(s) found
+

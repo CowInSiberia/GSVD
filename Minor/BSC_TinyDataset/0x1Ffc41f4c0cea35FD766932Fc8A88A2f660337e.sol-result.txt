@@ -1,0 +1,40 @@
+
+PresaleContract._deliverTokens(address,uint256) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#219-223) ignores return value by token.transfer(_beneficiary,_tokenAmount) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#221)
+PresaleContract.transferAnyERC20Token(address,uint256) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#257-263) ignores return value by IERC20(tokenAddress).transfer(admin,tokens) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#261)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in PresaleContract.buyTokens(address) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#171-197):
+	External calls:
+	- _processPurchase(_beneficiary,tokens) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#183)
+		- token.transfer(_beneficiary,_tokenAmount) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#221)
+	State variables written after the call(s):
+	- _updatePurchasingState(_beneficiary,weiAmount) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#187)
+		- purchasedBnb[_beneficiary] = _weiAmount.add(purchasedBnb[_beneficiary]) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#233)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in PresaleContract.buyTokens(address) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#171-197):
+	External calls:
+	- _processPurchase(_beneficiary,tokens) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#183)
+		- token.transfer(_beneficiary,_tokenAmount) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#221)
+	Event emitted after the call(s):
+	- TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#185)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SafeMath.mod(uint256,uint256) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#101-105) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#107-113) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Parameter PresaleContract.buyTokens(address)._beneficiary (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#171) is not in mixedCase
+Function PresaleContract._preValidatePurchase(address,uint256) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#199-217) is not in mixedCase
+Parameter PresaleContract._preValidatePurchase(address,uint256)._beneficiary (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#199) is not in mixedCase
+Parameter PresaleContract._preValidatePurchase(address,uint256)._weiAmount (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#199) is not in mixedCase
+Function PresaleContract._getTokenAmount(uint256) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#237-241) is not in mixedCase
+Parameter PresaleContract._getTokenAmount(uint256)._weiAmount (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#237) is not in mixedCase
+Parameter PresaleContract.maxBnb(address)._beneficiary (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#251) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+buyTokens(address) should be declared external:
+	- PresaleContract.buyTokens(address) (0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol#171-197)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x1Ffc41f4c0cea35FD766932Fc8A88A2f660337e.sol analyzed (3 contracts with 75 detectors), 14 result(s) found
+

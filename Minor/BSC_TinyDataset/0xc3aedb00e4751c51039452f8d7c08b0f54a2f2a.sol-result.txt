@@ -1,0 +1,113 @@
+
+MITHRIL_ONE.sellEggs() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#111-135) ignores return value by ERC20(mithril).transfer(ceoAddress,fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#129)
+MITHRIL_ONE.sellEggs() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#111-135) ignores return value by ERC20(mithril).transfer(ceoAddress2,fee - fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#131)
+MITHRIL_ONE.sellEggs() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#111-135) ignores return value by ERC20(mithril).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#133)
+MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165) ignores return value by ERC20(mithril).transferFrom(address(msg.sender),address(this),amount) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#143)
+MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165) ignores return value by ERC20(mithril).transfer(ceoAddress,fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#157)
+MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165) ignores return value by ERC20(mithril).transfer(ceoAddress2,fee - fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#159)
+MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211) ignores return value by ERC20(mithril).transferFrom(address(msg.sender),address(this),amount) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165):
+	External calls:
+	- ERC20(mithril).transferFrom(address(msg.sender),address(this),amount) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#143)
+	- balance = ERC20(mithril).balanceOf(address(this)) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#147)
+	- ERC20(mithril).transfer(ceoAddress,fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#157)
+	- ERC20(mithril).transfer(ceoAddress2,fee - fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#159)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#163)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#107)
+Reentrancy in MITHRIL_ONE.sellEggs() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#111-135):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#117)
+		- calculateTrade(eggs,marketEggs,ERC20(mithril).balanceOf(address(this))) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#179)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#123)
+	- lastHatch[msg.sender] = now (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#125)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#127)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165):
+	External calls:
+	- ERC20(mithril).transferFrom(address(msg.sender),address(this),amount) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#143)
+	- balance = ERC20(mithril).balanceOf(address(this)) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#147)
+	- ERC20(mithril).transfer(ceoAddress,fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#157)
+	- ERC20(mithril).transfer(ceoAddress2,fee - fee2) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#159)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#161)
+	- hatchEggs(ref) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#163)
+		- claimedEggs[msg.sender] = 0 (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#93)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,10)) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#101)
+	- hatchEggs(ref) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#163)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#91)
+	- hatchEggs(ref) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#163)
+		- lastHatch[msg.sender] = now (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#95)
+	- hatchEggs(ref) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#163)
+		- referrals[msg.sender] = ref (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#83)
+Reentrancy in MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211):
+	External calls:
+	- ERC20(mithril).transferFrom(address(msg.sender),address(this),amount) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#203)
+	State variables written after the call(s):
+	- initialized = true (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#207)
+	- marketEggs = 144000000000 (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#205)
+MITHRIL_ONE.min(uint256,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#239-243) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#241)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract MITHRIL_ONE (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#35-245) is not in CapWords
+Variable MITHRIL_ONE.EGGS_TO_HATCH_1MINERS (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#41) is not in mixedCase
+Variable MITHRIL_ONE.PSN (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#43) is not in mixedCase
+Variable MITHRIL_ONE.PSNH (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211) uses literals with too many digits:
+	- marketEggs = 144000000000 (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+MITHRIL_ONE.EGGS_TO_HATCH_1MINERS (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#41) should be constant
+MITHRIL_ONE.PSN (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#43) should be constant
+MITHRIL_ONE.PSNH (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#45) should be constant
+MITHRIL_ONE.mithril (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#39) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#15)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#17)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#21)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#25)
+sellEggs() should be declared external:
+	- MITHRIL_ONE.sellEggs() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#111-135)
+buyEggs(address,uint256) should be declared external:
+	- MITHRIL_ONE.buyEggs(address,uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#137-165)
+calculateEggBuySimple(uint256) should be declared external:
+	- MITHRIL_ONE.calculateEggBuySimple(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#189-193)
+seedMarket(uint256) should be declared external:
+	- MITHRIL_ONE.seedMarket(uint256) (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#201-211)
+getBalance() should be declared external:
+	- MITHRIL_ONE.getBalance() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#213-217)
+getMyMiners() should be declared external:
+	- MITHRIL_ONE.getMyMiners() (0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol#219-223)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0xc3aedb00e4751c51039452f8d7c08b0f54a2f2a.sol analyzed (3 contracts with 75 detectors), 37 result(s) found
+

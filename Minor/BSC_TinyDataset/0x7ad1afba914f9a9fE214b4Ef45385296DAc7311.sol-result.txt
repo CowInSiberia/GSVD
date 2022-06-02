@@ -1,0 +1,80 @@
+
+KryptonectPreSale2.buyToken() (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#155-197) ignores return value by token.transferFrom(owner,msg.sender,numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#179)
+KryptonectPreSale2.migrateTokens(address,uint256) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#285-289) ignores return value by IBEP20(_token).transfer(owner,_value) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#287)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in KryptonectPreSale2.buyToken() (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#155-197):
+	External calls:
+	- token.transferFrom(owner,msg.sender,numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#179)
+	State variables written after the call(s):
+	- amountRaised = amountRaised + (msg.value) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#181)
+	- userContribution[msg.sender] = userContribution[msg.sender] + (msg.value) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#185-189)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+KryptonectPreSale2.changeOwner(address) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#233-237) should emit an event for: 
+	- owner = _newOwner (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#235) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+KryptonectPreSale2.setPriceOfToken(uint256,uint256) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#215-227) should emit an event for: 
+	- tokenPerBnb = _price (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#223) 
+	- hardCap = _hardCap (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#225) 
+KryptonectPreSale2.setPreSaleLimits(uint256,uint256) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#249-261) should emit an event for: 
+	- minAmount = _minAmount (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#257) 
+	- maxAmount = _maxAmount (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#259) 
+KryptonectPreSale2.changePreSaleTime(uint256,uint256) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#265-271) should emit an event for: 
+	- startTime = _time (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#267) 
+	- endTime = _Time (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#269) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+KryptonectPreSale2.changeOwner(address)._newOwner (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#233) lacks a zero-check on :
+		- owner = _newOwner (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#235)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in KryptonectPreSale2.buyToken() (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#155-197):
+	External calls:
+	- token.transferFrom(owner,msg.sender,numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#179)
+	State variables written after the call(s):
+	- soldToken = soldToken + (numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#183)
+	- tokenBought[msg.sender] = tokenBought[msg.sender] + (numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#191)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in KryptonectPreSale2.buyToken() (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#155-197):
+	External calls:
+	- token.transferFrom(owner,msg.sender,numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#179)
+	Event emitted after the call(s):
+	- BuyToken(msg.sender,numberOfTokens) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+KryptonectPreSale2.buyToken() (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#155-197) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > startTime && block.timestamp < endTime,PRESALE: Phase 2 is over) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#157-163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.10 (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter KryptonectPreSale2.bnbToToken(uint256)._amount (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#203) is not in mixedCase
+Parameter KryptonectPreSale2.setPriceOfToken(uint256,uint256)._price (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#215) is not in mixedCase
+Parameter KryptonectPreSale2.setPriceOfToken(uint256,uint256)._hardCap (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#215) is not in mixedCase
+Parameter KryptonectPreSale2.changeOwner(address)._newOwner (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#233) is not in mixedCase
+Parameter KryptonectPreSale2.setPreSaleLimits(uint256,uint256)._minAmount (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#249) is not in mixedCase
+Parameter KryptonectPreSale2.setPreSaleLimits(uint256,uint256)._maxAmount (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#249) is not in mixedCase
+Parameter KryptonectPreSale2.changePreSaleTime(uint256,uint256)._time (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#265) is not in mixedCase
+Parameter KryptonectPreSale2.changePreSaleTime(uint256,uint256)._Time (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#265) is not in mixedCase
+Parameter KryptonectPreSale2.migrateFunds(uint256)._value (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#277) is not in mixedCase
+Parameter KryptonectPreSale2.migrateTokens(address,uint256)._token (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#285) is not in mixedCase
+Parameter KryptonectPreSale2.migrateTokens(address,uint256)._value (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#285) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+KryptonectPreSale2.constructor(address) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#123-141) uses literals with too many digits:
+	- tokenPerBnb = 162000000 * 1e9 (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#129)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+setToken(address) should be declared external:
+	- KryptonectPreSale2.setToken(address) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#241-245)
+changePreSaleTime(uint256,uint256) should be declared external:
+	- KryptonectPreSale2.changePreSaleTime(uint256,uint256) (0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol#265-271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x7ad1afba914f9a9fE214b4Ef45385296DAc7311.sol analyzed (2 contracts with 75 detectors), 27 result(s) found
+

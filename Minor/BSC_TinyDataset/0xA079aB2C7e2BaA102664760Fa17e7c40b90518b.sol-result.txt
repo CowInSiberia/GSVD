@@ -1,0 +1,33 @@
+
+MLCompound.Compound() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#189-199) ignores return value by ML.transfer(msg.sender,SwapForToken(msg.value,address(ML))) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#197)
+MLCompound.CompoundBM() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#203-215) ignores return value by BM.transfer(msg.sender,SwapForToken(msg.value,address(BM))) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#213)
+MLCompound.CompoundPartnerToken(address,address,bool) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#217-269) ignores return value by Token.transfer(msg.sender,Token.balanceOf(address(this)) - initialBalance) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#251)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+MLCompound.CompoundPartnerToken(address,address,bool) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#217-269) ignores return value by Router.swapExactETHForTokens{value: msg.value}(0,path,address(this),block.timestamp) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#241-249)
+MLCompound.SwapForToken(uint256,address) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#275-301) ignores return value by PCS.swapExactETHForTokens{value: BNBAmount}(0,path,address(this),block.timestamp) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#289-297)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.4 (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable Ownable._owner (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#17) is not in mixedCase
+Function IPCS.WETH() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#155) is not in mixedCase
+Function MLCompound.Compound() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#189-199) is not in mixedCase
+Function MLCompound.CompoundBM() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#203-215) is not in mixedCase
+Function MLCompound.CompoundPartnerToken(address,address,bool) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#217-269) is not in mixedCase
+Function MLCompound.SwapForToken(uint256,address) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#275-301) is not in mixedCase
+Parameter MLCompound.SwapForToken(uint256,address).BNBAmount (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#275) is not in mixedCase
+Function MLCompound.GetMaxCompound(address) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#303-309) is not in mixedCase
+Variable MLCompound.ML (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#185) is not in mixedCase
+Variable MLCompound.PCS (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#187) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#87-93)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol#105-113)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xA079aB2C7e2BaA102664760Fa17e7c40b90518b.sol analyzed (5 contracts with 75 detectors), 19 result(s) found
+

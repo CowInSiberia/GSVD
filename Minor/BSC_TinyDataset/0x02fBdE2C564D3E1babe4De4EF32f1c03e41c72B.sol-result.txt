@@ -1,0 +1,145 @@
+
+SaleMetaPad.getBusdOwner() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#150-153) ignores return value by busd.transfer(msg.sender,busd.balanceOf(address(this))) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#152)
+SaleMetaPad.getTokenOwner() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#155-158) ignores return value by token.transfer(msg.sender,token.balanceOf(address(this))) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#157)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140) performs a multiplication on the result of a division:
+	-require(bool,string)(getLeftToken() >= _minBUSD.div(_RATE).mul(_divider),Sale ended) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#128)
+SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140) performs a multiplication on the result of a division:
+	-tokens = _amount.div(_RATE).mul(_divider) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#132)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in SaleMetaPad.getToken() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#142-148):
+	External calls:
+	- require(bool)(token.transfer(msg.sender,balances[msg.sender])) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#146)
+	State variables written after the call(s):
+	- balances[msg.sender] = 0 (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#147)
+Reentrancy in SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140):
+	External calls:
+	- require(bool,string)(busd.transferFrom(msg.sender,address(this),_amount),Error transferFrom) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#136)
+	State variables written after the call(s):
+	- _totalSold = _totalSold.add(tokens) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#139)
+	- invested[msg.sender] = invested[msg.sender].add(_amount) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#138)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SaleMetaPad.setStartTime(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#220-223) should emit an event for: 
+	- _START_TIME = _x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#222) 
+SaleMetaPad.setSaleDays(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#225-228) should emit an event for: 
+	- _SALE_DAYS = _x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#227) 
+SaleMetaPad.setRate(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#230-233) should emit an event for: 
+	- _RATE = _x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#232) 
+SaleMetaPad.setDivider(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#235-238) should emit an event for: 
+	- _divider = _x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#237) 
+SaleMetaPad.setMinBusd(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#240-243) should emit an event for: 
+	- _minBUSD = _x.mul(10 ** 18) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#242) 
+SaleMetaPad.setMaxBusdUser(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#245-248) should emit an event for: 
+	- _maxBusdUser = _x.mul(10 ** 18) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#247) 
+SaleMetaPad.setForSale(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#250-253) should emit an event for: 
+	- _forSale = _x.mul(10 ** 18) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#252) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+SaleMetaPad.constructor(uint256,uint256,uint256,uint256,uint256,uint256,bool,address,uint256).owner (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#108) lacks a zero-check on :
+		- _OWNER = owner (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#117)
+SaleMetaPad.setOwner(address)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#260) lacks a zero-check on :
+		- _OWNER = _x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#262)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140):
+	External calls:
+	- require(bool,string)(busd.transferFrom(msg.sender,address(this),_amount),Error transferFrom) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#136)
+	State variables written after the call(s):
+	- balances[msg.sender] = balances[msg.sender].add(tokens) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#137)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp >= _START_TIME,Expect the start) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#125)
+	- require(bool,string)(block.timestamp <= _START_TIME.add(_SALE_DAYS),Sale ended) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#126)
+SaleMetaPad.getToken() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#142-148) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp >= _START_TIME.add(_SALE_DAYS) || getLeftToken() < _minBUSD.div(_RATE).mul(_divider) || _status == false,Expect the end of the sell) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140) compares to a boolean constant:
+	-require(bool,string)(_status == true,Sale ended) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#127)
+SaleMetaPad.getToken() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#142-148) compares to a boolean constant:
+	-require(bool,string)(block.timestamp >= _START_TIME.add(_SALE_DAYS) || getLeftToken() < _minBUSD.div(_RATE).mul(_divider) || _status == false,Expect the end of the sell) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version>=0.8.0<0.9.0 (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#3) is too complex
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter SaleMetaPad.invest(uint256)._amount (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124) is not in mixedCase
+Parameter SaleMetaPad.setStartTime(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#220) is not in mixedCase
+Parameter SaleMetaPad.setSaleDays(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#225) is not in mixedCase
+Parameter SaleMetaPad.setRate(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#230) is not in mixedCase
+Parameter SaleMetaPad.setDivider(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#235) is not in mixedCase
+Parameter SaleMetaPad.setMinBusd(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#240) is not in mixedCase
+Parameter SaleMetaPad.setMaxBusdUser(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#245) is not in mixedCase
+Parameter SaleMetaPad.setForSale(uint256)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#250) is not in mixedCase
+Parameter SaleMetaPad.setStatus(bool)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#255) is not in mixedCase
+Parameter SaleMetaPad.setOwner(address)._x (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#260) is not in mixedCase
+Variable SaleMetaPad._START_TIME (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#87) is not in mixedCase
+Variable SaleMetaPad._SALE_DAYS (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#88) is not in mixedCase
+Variable SaleMetaPad._RATE (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#89) is not in mixedCase
+Variable SaleMetaPad._OWNER (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#95) is not in mixedCase
+Constant SaleMetaPad.token (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#96) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant SaleMetaPad.busd (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#97) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+invest(uint256) should be declared external:
+	- SaleMetaPad.invest(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#124-140)
+getToken() should be declared external:
+	- SaleMetaPad.getToken() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#142-148)
+getBusdOwner() should be declared external:
+	- SaleMetaPad.getBusdOwner() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#150-153)
+getTokenOwner() should be declared external:
+	- SaleMetaPad.getTokenOwner() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#155-158)
+getUserTotalInvested(address) should be declared external:
+	- SaleMetaPad.getUserTotalInvested(address) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#160-162)
+getUserTokens(address) should be declared external:
+	- SaleMetaPad.getUserTokens(address) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#164-166)
+getContractBalanceBusd() should be declared external:
+	- SaleMetaPad.getContractBalanceBusd() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#172-174)
+getStartTime() should be declared external:
+	- SaleMetaPad.getStartTime() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#180-182)
+getSaleDays() should be declared external:
+	- SaleMetaPad.getSaleDays() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#184-186)
+getRate() should be declared external:
+	- SaleMetaPad.getRate() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#188-190)
+getDivider() should be declared external:
+	- SaleMetaPad.getDivider() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#192-194)
+getMinBusd() should be declared external:
+	- SaleMetaPad.getMinBusd() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#196-198)
+getMaxBusdUser() should be declared external:
+	- SaleMetaPad.getMaxBusdUser() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#200-202)
+getForSale() should be declared external:
+	- SaleMetaPad.getForSale() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#204-206)
+getStatus() should be declared external:
+	- SaleMetaPad.getStatus() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#208-210)
+getOwner() should be declared external:
+	- SaleMetaPad.getOwner() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#212-214)
+getTotalSold() should be declared external:
+	- SaleMetaPad.getTotalSold() (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#216-218)
+setStartTime(uint256) should be declared external:
+	- SaleMetaPad.setStartTime(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#220-223)
+setSaleDays(uint256) should be declared external:
+	- SaleMetaPad.setSaleDays(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#225-228)
+setRate(uint256) should be declared external:
+	- SaleMetaPad.setRate(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#230-233)
+setDivider(uint256) should be declared external:
+	- SaleMetaPad.setDivider(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#235-238)
+setMinBusd(uint256) should be declared external:
+	- SaleMetaPad.setMinBusd(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#240-243)
+setMaxBusdUser(uint256) should be declared external:
+	- SaleMetaPad.setMaxBusdUser(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#245-248)
+setForSale(uint256) should be declared external:
+	- SaleMetaPad.setForSale(uint256) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#250-253)
+setStatus(bool) should be declared external:
+	- SaleMetaPad.setStatus(bool) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#255-258)
+setOwner(address) should be declared external:
+	- SaleMetaPad.setOwner(address) (0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol#260-263)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x02fBdE2C564D3E1babe4De4EF32f1c03e41c72B.sol analyzed (3 contracts with 75 detectors), 64 result(s) found
+

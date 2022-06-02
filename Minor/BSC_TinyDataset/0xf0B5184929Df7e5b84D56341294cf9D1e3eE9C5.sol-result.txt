@@ -1,0 +1,134 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/8_UltimateResult/0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol
+
+
+
+WishItem.cancelList(uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#324-333) ignores return value by heroesToken.transfer(msg.sender,itemInfo[id].amount) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#328)
+WishItem.changeAmount(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#334-354) ignores return value by heroesToken.transfer(address(msg.sender),itemInfo[id].amount.sub(amount)) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#343)
+WishItem.matchTransaction(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#355-376) ignores return value by heroesToken.transfer(msg.sender,amountOfRecipient) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#366)
+WishItem.matchTransaction(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#355-376) ignores return value by heroesToken.transfer(revenueAddress,feeMarket) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#367)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in WishItem.changeAmount(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#334-354):
+	External calls:
+	- heroesToken.transfer(address(msg.sender),itemInfo[id].amount.sub(amount)) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#343)
+	- heroesToken.safeTransferFrom(msg.sender,address(this),amount.sub(itemInfo[id].amount)) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#346)
+	State variables written after the call(s):
+	- itemInfo[id].amount = amount (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#348)
+Reentrancy in WishItem.listItem(uint256,uint256,uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304-323):
+	External calls:
+	- heroesToken.safeTransferFrom(msg.sender,address(this),_amount) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#311)
+	State variables written after the call(s):
+	- idItem[id] = true (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#312)
+Reentrancy in WishItem.matchTransaction(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#355-376):
+	External calls:
+	- heroesNFT.safeTransferFrom(msg.sender,itemInfo[id].owner,tokenId) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#363)
+	- heroesToken.transfer(msg.sender,amountOfRecipient) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#366)
+	- heroesToken.transfer(revenueAddress,feeMarket) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#367)
+	State variables written after the call(s):
+	- itemInfo[id].status = 3 (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#368)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+WishItem.addMinAmount(uint256[],uint256[]) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#280-288) contains a tautology or contradiction:
+	- require(bool,string)(_amount[i - 1] >= 0 && _amountSpecial[i - 1] >= 0,amount > 0) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#284)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#tautology-or-contradiction
+
+Reentrancy in WishItem.cancelList(uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#324-333):
+	External calls:
+	- heroesToken.transfer(msg.sender,itemInfo[id].amount) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#328)
+	Event emitted after the call(s):
+	- Cancel(id,block.timestamp) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#329-332)
+Reentrancy in WishItem.changeAmount(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#334-354):
+	External calls:
+	- heroesToken.transfer(address(msg.sender),itemInfo[id].amount.sub(amount)) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#343)
+	- heroesToken.safeTransferFrom(msg.sender,address(this),amount.sub(itemInfo[id].amount)) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#346)
+	Event emitted after the call(s):
+	- ChangeAmount(id,amount,block.timestamp) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#349-353)
+Reentrancy in WishItem.listItem(uint256,uint256,uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304-323):
+	External calls:
+	- heroesToken.safeTransferFrom(msg.sender,address(this),_amount) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#311)
+	Event emitted after the call(s):
+	- ListItem(msg.sender,address(heroesNFT),address(heroesToken),id,_numberHero,_numberTier,_amount,block.timestamp) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#313-322)
+Reentrancy in WishItem.matchTransaction(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#355-376):
+	External calls:
+	- heroesNFT.safeTransferFrom(msg.sender,itemInfo[id].owner,tokenId) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#363)
+	- heroesToken.transfer(msg.sender,amountOfRecipient) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#366)
+	- heroesToken.transfer(revenueAddress,feeMarket) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#367)
+	Event emitted after the call(s):
+	- MatchTransaction(msg.sender,itemInfo[id].owner,tokenId,id,block.timestamp) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#369-375)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Address.isContract(address) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#91-95) uses assembly
+	- INLINE ASM (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#93)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+AccessControl._setRoleAdmin(bytes32,bytes32) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#182-185) is never used and should be removed
+Context._msgData() (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#124-127) is never used and should be removed
+Math.average(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#9-11) is never used and should be removed
+Math.max(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#3-5) is never used and should be removed
+Math.min(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#6-8) is never used and should be removed
+SafeBEP20.safeApprove(IBEP20,address,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#36-41) is never used and should be removed
+SafeBEP20.safeDecreaseAllowance(IBEP20,address,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#46-50) is never used and should be removed
+SafeBEP20.safeIncreaseAllowance(IBEP20,address,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#42-45) is never used and should be removed
+SafeBEP20.safeTransfer(IBEP20,address,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#30-32) is never used and should be removed
+SafeMath.add(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#61-65) is never used and should be removed
+SafeMath.mod(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#85-88) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#1) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in SafeBEP20.callOptionalReturn(IBEP20,bytes) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#51-58):
+	- (success,returndata) = address(token).call(data) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Parameter WishItem.addHeroTier(string[])._heroTier (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#258) is not in mixedCase
+Parameter WishItem.changeFee(uint256)._fee (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#265) is not in mixedCase
+Parameter WishItem.changeRevenueAddress(address)._receive (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#270) is not in mixedCase
+Parameter WishItem.addMaxTier(uint256)._maxTier (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#275) is not in mixedCase
+Parameter WishItem.addMinAmount(uint256[],uint256[])._amount (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#280) is not in mixedCase
+Parameter WishItem.addMinAmount(uint256[],uint256[])._amountSpecial (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#280) is not in mixedCase
+Parameter WishItem.addHero(uint256[],uint256[],uint256[])._raceNumber (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#295) is not in mixedCase
+Parameter WishItem.listItem(uint256,uint256,uint256,uint256)._numberHero (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304) is not in mixedCase
+Parameter WishItem.listItem(uint256,uint256,uint256,uint256)._numberTier (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304) is not in mixedCase
+Parameter WishItem.listItem(uint256,uint256,uint256,uint256)._amount (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304) is not in mixedCase
+Parameter WishItem.queryNumberTier(string)._tier (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#377) is not in mixedCase
+Variable WishItem.MaxTier (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#255) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Redundant expression "this (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#125)" inContext (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#122-128)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#redundant-statements
+
+grantRole(bytes32,address) should be declared external:
+	- AccessControl.grantRole(bytes32,address) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#168-171)
+revokeRole(bytes32,address) should be declared external:
+	- AccessControl.revokeRole(bytes32,address) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#172-175)
+renounceRole(bytes32,address) should be declared external:
+	- AccessControl.renounceRole(bytes32,address) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#176-180)
+addHeroTier(string[]) should be declared external:
+	- WishItem.addHeroTier(string[]) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#258-264)
+changeFee(uint256) should be declared external:
+	- WishItem.changeFee(uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#265-269)
+changeRevenueAddress(address) should be declared external:
+	- WishItem.changeRevenueAddress(address) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#270-274)
+addMaxTier(uint256) should be declared external:
+	- WishItem.addMaxTier(uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#275-279)
+addMinAmount(uint256[],uint256[]) should be declared external:
+	- WishItem.addMinAmount(uint256[],uint256[]) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#280-288)
+changeMinAmount(uint256,uint256,uint256) should be declared external:
+	- WishItem.changeMinAmount(uint256,uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#289-294)
+addHero(uint256[],uint256[],uint256[]) should be declared external:
+	- WishItem.addHero(uint256[],uint256[],uint256[]) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#295-302)
+listItem(uint256,uint256,uint256,uint256) should be declared external:
+	- WishItem.listItem(uint256,uint256,uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#304-323)
+cancelList(uint256) should be declared external:
+	- WishItem.cancelList(uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#324-333)
+changeAmount(uint256,uint256) should be declared external:
+	- WishItem.changeAmount(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#334-354)
+matchTransaction(uint256,uint256) should be declared external:
+	- WishItem.matchTransaction(uint256,uint256) (0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol#355-376)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xf0B5184929Df7e5b84D56341294cf9D1e3eE9C5.sol analyzed (13 contracts with 75 detectors), 54 result(s) found
+

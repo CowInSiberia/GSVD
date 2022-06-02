@@ -1,0 +1,70 @@
+
+StreamAirdrop.transferBNB(address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#63-73) sends eth to arbitrary user
+	Dangerous calls:
+	- receivers[i].transfer(amounts[i]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#67)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+ERC20 (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#31-47) has incorrect ERC20 function interface:ERC20.transfer(address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#39)
+ERC20 (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#31-47) has incorrect ERC20 function interface:ERC20.transferFrom(address,address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#43)
+ERC20 (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#31-47) has incorrect ERC20 function interface:ERC20.approve(address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#45)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+StreamAirdrop.transferBNB(address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#63-73) has external calls inside a loop: receivers[i].transfer(amounts[i]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#67)
+StreamAirdrop.airdropStream(address,address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#79-93) has external calls inside a loop: token.transferFrom(msg.sender,receivers[i],amounts[i]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#85)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Reentrancy in StreamAirdrop.airdropStream(address,address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#79-93):
+	External calls:
+	- token.transferFrom(msg.sender,receivers[i],amounts[i]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#85)
+	Event emitted after the call(s):
+	- transfer(msg.sender,receivers[i],amounts[i],tokenAddress) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#89)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+StreamAirdrop.getTotalSendingAmount(uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#97-105) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.4.23 (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#19) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable ERC20._totalSupply (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#33) is not in mixedCase
+Event StreamAirdroptransfer(address,address,uint256,address) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#59) is not in CapWords
+Parameter StreamAirdrop.getTotalSendingAmount(uint256[])._amounts (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#97) is not in mixedCase
+Parameter StreamAirdrop.removeTokensFromContract(address,address,uint256)._tokenAddr (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#111) is not in mixedCase
+Parameter StreamAirdrop.removeTokensFromContract(address,address,uint256)._to (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#111) is not in mixedCase
+Parameter StreamAirdrop.removeTokensFromContract(address,address,uint256)._amount (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#111) is not in mixedCase
+Variable StreamAirdrop.eth_address (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#55) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in StreamAirdrop.transferBNB(address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#63-73):
+	External calls:
+	- receivers[i].transfer(amounts[i]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#67)
+	Event emitted after the call(s):
+	- transfer(msg.sender,receivers[i],amounts[i],eth_address) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#69)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+ERC20._totalSupply (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#33) should be constant
+StreamAirdrop.eth_address (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#55) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#35)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#37)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#39)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#41)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#43)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#45)
+transferBNB(address[],uint256[]) should be declared external:
+	- StreamAirdrop.transferBNB(address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#63-73)
+airdropStream(address,address[],uint256[]) should be declared external:
+	- StreamAirdrop.airdropStream(address,address[],uint256[]) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#79-93)
+removeTokensFromContract(address,address,uint256) should be declared external:
+	- StreamAirdrop.removeTokensFromContract(address,address,uint256) (0x75ebb4eeee146aaa07af3c519f29571686b6277.sol#111-115)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x75ebb4eeee146aaa07af3c519f29571686b6277.sol analyzed (2 contracts with 75 detectors), 29 result(s) found
+

@@ -1,0 +1,48 @@
+
+xBMBuy.receive() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#137-169) sends eth to arbitrary user
+	Dangerous calls:
+	- (sent) = owner.call{value: address(this).balance}() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+xBMBuy.receive() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#137-169) ignores return value by xBM.transfer(msg.sender,Amount) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#141)
+xBMBuy.WithdrawToken(address) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#171-177) ignores return value by IBEP20(token).transfer(msg.sender,IBEP20(token).balanceOf(address(this))) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#175)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+xBMBuy.CalculateRate(uint256) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#121-135) performs a multiplication on the result of a division:
+	-Input * BMBalance / BNB * 24 / 10 (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+xBMBuy.constructor() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#101-107) ignores return value by xBM.approve(address(router),type()(uint256).max) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#105)
+xBMBuy.receive() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#137-169) ignores return value by router.addLiquidityETH{value: msg.value}(address(xBM),xBM.balanceOf(address(this)),0,0,address(xBM),block.timestamp) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#143-157)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+xBMBuy.receive().sent (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#163) is written in both
+	(sent) = owner.call{value: address(this).balance}() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#163)
+	sent = true (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#165)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#write-after-write
+
+Pragma version^0.8.4 (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in xBMBuy.receive() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#137-169):
+	- (sent) = owner.call{value: address(this).balance}() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Function IDexRouter.WETH() (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#89) is not in mixedCase
+Contract xBMBuy (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#97-180) is not in CapWords
+Function xBMBuy.CalculateRate(uint256) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#121-135) is not in mixedCase
+Parameter xBMBuy.CalculateRate(uint256).Input (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#121) is not in mixedCase
+Function xBMBuy.WithdrawToken(address) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#171-177) is not in mixedCase
+Variable xBMBuy.BM (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#111) is not in mixedCase
+Variable xBMBuy.BMLP (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#115) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+xBMBuy.BMLP (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#115) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+WithdrawToken(address) should be declared external:
+	- xBMBuy.WithdrawToken(address) (0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol#171-177)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xf705a71D4c821144dAA66e6c7fc15e82f7f68CF.sol analyzed (3 contracts with 75 detectors), 19 result(s) found
+

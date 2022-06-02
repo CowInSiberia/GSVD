@@ -1,0 +1,87 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/8_UltimateResult/0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol
+
+
+
+SmurfPayV1.pay(string,address,address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#109-127) ignores return value by _token.transferFrom(msg.sender,address(this),amount) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#117)
+SmurfPayV1.withdraw(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#153-181) ignores return value by _token.transfer(msg.sender,amount) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#177)
+SmurfPayV1.withdraw(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#153-181) ignores return value by _token.transfer(_feeReceiver,fee) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#179)
+SmurfPayV1.withdrawToken(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#197-203) ignores return value by _token.transfer(msg.sender,amount) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#201)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SmurfPayV1.withdraw(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#153-181) performs a multiplication on the result of a division:
+	-fee = amount / _withdrawFeeDivider * _withdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#159)
+SmurfPayV1.withdraw(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#153-181) performs a multiplication on the result of a division:
+	-fee = amount / _withdrawFeeDivider * _discountWithdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in SmurfPayV1.pay(string,address,address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#109-127):
+	External calls:
+	- _token.transferFrom(msg.sender,address(this),amount) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#117)
+	State variables written after the call(s):
+	- payments[receiver][token][id] = amount (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#119)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SmurfPayV1.transferOwnership(address) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#207-211) should emit an event for: 
+	- _owner = newOwner (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#209) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+SmurfPayV1.setConfigs(uint256,uint256,address,address,uint256,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#91-105) should emit an event for: 
+	- _withdrawFeeDivider = withdrawFeeDivider (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#93) 
+	- _withdrawFee = withdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#95) 
+	- _minHoldForDiscount = minHoldForDiscount (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#101) 
+	- _discountWithdrawFee = discountWithdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#103) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+SmurfPayV1.setConfigs(uint256,uint256,address,address,uint256,uint256).feeReceiver (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#91) lacks a zero-check on :
+		- _feeReceiver = feeReceiver (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#97)
+SmurfPayV1.setConfigs(uint256,uint256,address,address,uint256,uint256).baseToken (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#91) lacks a zero-check on :
+		- _baseToken = baseToken (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#99)
+SmurfPayV1.transferOwnership(address).newOwner (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#207) lacks a zero-check on :
+		- _owner = newOwner (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in SmurfPayV1.pay(string,address,address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#109-127):
+	External calls:
+	- _token.transferFrom(msg.sender,address(this),amount) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#117)
+	State variables written after the call(s):
+	- balances[receiver][token] += amount (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#125)
+	- payers[receiver][token][id] = msg.sender (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#121)
+	- timestamps[receiver][token][id] = block.timestamp (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#123)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Pragma version^0.8.7 (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable SmurfPayV1._owner (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#27) is not in mixedCase
+Variable SmurfPayV1._feeReceiver (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#29) is not in mixedCase
+Variable SmurfPayV1._withdrawFeeDivider (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#31) is not in mixedCase
+Variable SmurfPayV1._withdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#33) is not in mixedCase
+Variable SmurfPayV1._baseToken (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#35) is not in mixedCase
+Variable SmurfPayV1._minHoldForDiscount (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#37) is not in mixedCase
+Variable SmurfPayV1._discountWithdrawFee (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#39) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SmurfPayV1.withdraw(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#153-181) uses literals with too many digits:
+	- _baseToken != 0x0000000000000000000000000000000000000000 && _minHoldForDiscount > 0 (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#161)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+setConfigs(uint256,uint256,address,address,uint256,uint256) should be declared external:
+	- SmurfPayV1.setConfigs(uint256,uint256,address,address,uint256,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#91-105)
+pay(string,address,address,uint256) should be declared external:
+	- SmurfPayV1.pay(string,address,address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#109-127)
+payment(string,address,address) should be declared external:
+	- SmurfPayV1.payment(string,address,address) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#131-141)
+balanceOf(address,address) should be declared external:
+	- SmurfPayV1.balanceOf(address,address) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#145-149)
+withdrawETH(uint256) should be declared external:
+	- SmurfPayV1.withdrawETH(uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#185-193)
+withdrawToken(address,uint256) should be declared external:
+	- SmurfPayV1.withdrawToken(address,uint256) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#197-203)
+transferOwnership(address) should be declared external:
+	- SmurfPayV1.transferOwnership(address) (0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol#207-211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xA3B1C9a74D46e44F9E31258069A1FADa048F6b7.sol analyzed (2 contracts with 75 detectors), 30 result(s) found
+

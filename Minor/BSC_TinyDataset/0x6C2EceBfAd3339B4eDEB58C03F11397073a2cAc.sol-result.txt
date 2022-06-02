@@ -1,0 +1,244 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:35:5: Warning: Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+    function CoinFlip() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:35:5: Warning: Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+    function CoinFlip() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:54:9: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+				if (this.balance < (msg.value * ((100 + payPercentage) / 100))) {
+
+				    ^----------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:56:26: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+					msg.sender.transfer(this.balance);
+
+					                    ^----------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:57:6: Warning: Invoking events without "emit" prefix is deprecated.
+					Status('Congratulations, you win! Sorry, we didn\'t have enought money, we will deposit everything we have!', msg.sender, msg.value, true);
+
+					^----------------------------------------------------------------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:64:14: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+						prize: this.balance,
+
+						       ^----------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:71:6: Warning: Invoking events without "emit" prefix is deprecated.
+					Status('You win! Play again for double or nothing!', msg.sender, _prize, true);
+
+					^----------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:86:5: Warning: Invoking events without "emit" prefix is deprecated.
+				Status('Sorry, you lost your shit! Please try again!', msg.sender, msg.value, false);
+
+				^----------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:113:13: Warning: Invoking events without "emit" prefix is deprecated.
+            Status('Pee!', msg.sender, msg.value, true);
+
+            ^-----------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:119:13: Warning: Invoking events without "emit" prefix is deprecated.
+            Status('Poo!', msg.sender, amount, true);
+
+            ^--------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:134:74: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+        Status('Contract was killed, We will be back soon!', msg.sender, this.balance, true);
+
+                                                                         ^----------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:134:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Status('Contract was killed, We will be back soon!', msg.sender, this.balance, true);
+
+        ^----------------------------------------------------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:54:9: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+				if (this.balance < (msg.value * ((100 + payPercentage) / 100))) {
+
+				    ^----------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:56:26: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+					msg.sender.transfer(this.balance);
+
+					                    ^----------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:57:6: Warning: Invoking events without "emit" prefix is deprecated.
+					Status('Congratulations, you win! Sorry, we didn\'t have enought money, we will deposit everything we have!', msg.sender, msg.value, true);
+
+					^----------------------------------------------------------------------------------------------------------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:64:14: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+						prize: this.balance,
+
+						       ^----------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:71:6: Warning: Invoking events without "emit" prefix is deprecated.
+					Status('You win! Play again for double or nothing!', msg.sender, _prize, true);
+
+					^----------------------------------------------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:86:5: Warning: Invoking events without "emit" prefix is deprecated.
+				Status('Sorry, you lost your shit! Please try again!', msg.sender, msg.value, false);
+
+				^----------------------------------------------------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:113:13: Warning: Invoking events without "emit" prefix is deprecated.
+            Status('Pee!', msg.sender, msg.value, true);
+
+            ^-----------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:119:13: Warning: Invoking events without "emit" prefix is deprecated.
+            Status('Poo!', msg.sender, amount, true);
+
+            ^--------------------------------------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:134:74: Warning: Using contract member "balance" inherited from the address type is deprecated. Convert the contract to "address" type to access the member, for example use "address(contract).balance" instead.
+        Status('Contract was killed, We will be back soon!', msg.sender, this.balance, true);
+
+                                                                         ^----------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:134:9: Warning: Invoking events without "emit" prefix is deprecated.
+        Status('Contract was killed, We will be back soon!', msg.sender, this.balance, true);
+
+        ^----------------------------------------------------------------------------------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:35:5: Warning: No visibility specified. Defaulting to "public". 
+    function CoinFlip() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:47:5: Warning: No visibility specified. Defaulting to "public". 
+    function Play() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:111:2: Warning: No visibility specified. Defaulting to "public". 
+	function depositFunds(uint amount) onlyOwner payable {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:117:2: Warning: No visibility specified. Defaulting to "public". 
+	function withdrawFunds(uint amount) onlyOwner {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:123:2: Warning: No visibility specified. Defaulting to "public". 
+	function setMaxAmountToBet(uint amount) onlyOwner returns (uint) {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:128:2: Warning: No visibility specified. Defaulting to "public". 
+	function getMaxAmountToBet(uint amount) constant returns (uint) {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:128:29: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+	function getMaxAmountToBet(uint amount) constant returns (uint) {
+
+	                           ^---------^
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:133:5: Warning: No visibility specified. Defaulting to "public". 
+    function Kill() onlyOwner {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:35:5: Warning: No visibility specified. Defaulting to "public". 
+    function CoinFlip() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:47:5: Warning: No visibility specified. Defaulting to "public". 
+    function Play() payable {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:111:2: Warning: No visibility specified. Defaulting to "public". 
+	function depositFunds(uint amount) onlyOwner payable {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:117:2: Warning: No visibility specified. Defaulting to "public". 
+	function withdrawFunds(uint amount) onlyOwner {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:123:2: Warning: No visibility specified. Defaulting to "public". 
+	function setMaxAmountToBet(uint amount) onlyOwner returns (uint) {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:128:2: Warning: No visibility specified. Defaulting to "public". 
+	function getMaxAmountToBet(uint amount) constant returns (uint) {
+
+ ^ (Relevant source part starts here and spans across multiple lines).
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:128:29: Warning: Unused function parameter. Remove or comment out the variable name to silence this warning.
+	function getMaxAmountToBet(uint amount) constant returns (uint) {
+
+	                           ^---------^
+0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol:133:5: Warning: No visibility specified. Defaulting to "public". 
+    function Kill() onlyOwner {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+
+CoinFlip (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#17-274) contract sets array length with a user-controlled value:
+	- lastPlayedGames.push(newGame) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#191)
+CoinFlip (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#17-274) contract sets array length with a user-controlled value:
+	- lastPlayedGames.push(newGame) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#133)
+CoinFlip (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#17-274) contract sets array length with a user-controlled value:
+	- lastPlayedGames.push(newGame) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#array-length-assignment
+
+CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199) uses a weak PRNG: "(block.timestamp % 2) == 0 (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#103)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199) performs a multiplication on the result of a division:
+	-this.balance < (msg.value * ((100 + payPercentage) / 100)) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#107)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199) uses a dangerous strict equality:
+	- (block.timestamp % 2) == 0 (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#103)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+CoinFlip.setMaxAmountToBet(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#245-251) should emit an event for: 
+	- MaxAmountToBet = amount (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#247) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199) uses timestamp for comparisons
+	Dangerous comparisons:
+	- (block.timestamp % 2) == 0 (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#103)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.10 (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#13) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Function CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199) is not in mixedCase
+Function CoinFlip.Kill() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#265-271) is not in mixedCase
+Variable CoinFlip.MaxAmountToBet (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#25) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199):
+	External calls:
+	- msg.sender.transfer(this.balance) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#111)
+	State variables written after the call(s):
+	- lastPlayedGames.push(newGame) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#133)
+	- newGame = Game(msg.sender,block.number,block.timestamp,msg.value,this.balance,true) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#117-131)
+	Event emitted after the call(s):
+	- Status(Congratulations, you win! Sorry, we didn't have enought money, we will deposit everything we have!,msg.sender,msg.value,true) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#113)
+Reentrancy in CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199):
+	External calls:
+	- msg.sender.transfer(_prize) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#143)
+	State variables written after the call(s):
+	- lastPlayedGames.push(newGame) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#163)
+	- newGame = Game(msg.sender,block.number,block.timestamp,msg.value,_prize,true) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#147-161)
+Reentrancy in CoinFlip.depositFunds(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#221-229):
+	External calls:
+	- owner.send(amount) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#223)
+	Event emitted after the call(s):
+	- Status(Pee!,msg.sender,msg.value,true) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#225)
+Reentrancy in CoinFlip.withdrawFunds(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#233-241):
+	External calls:
+	- owner.send(amount) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#235)
+	Event emitted after the call(s):
+	- Status(Poo!,msg.sender,amount,true) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#237)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+CoinFlip.slitherConstructorVariables() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#17-274) uses literals with too many digits:
+	- MaxAmountToBet = 50000000000000000 (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#25)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+CoinFlip.payPercentage (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#21) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+Play() should be declared external:
+	- CoinFlip.Play() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#93-199)
+getGameCount() should be declared external:
+	- CoinFlip.getGameCount() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#203-207)
+getGameEntry(uint256) should be declared external:
+	- CoinFlip.getGameEntry(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#211-215)
+depositFunds(uint256) should be declared external:
+	- CoinFlip.depositFunds(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#221-229)
+withdrawFunds(uint256) should be declared external:
+	- CoinFlip.withdrawFunds(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#233-241)
+setMaxAmountToBet(uint256) should be declared external:
+	- CoinFlip.setMaxAmountToBet(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#245-251)
+getMaxAmountToBet(uint256) should be declared external:
+	- CoinFlip.getMaxAmountToBet(uint256) (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#255-259)
+Kill() should be declared external:
+	- CoinFlip.Kill() (0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol#265-271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6C2EceBfAd3339B4eDEB58C03F11397073a2cAc.sol analyzed (1 contracts with 75 detectors), 27 result(s) found
+

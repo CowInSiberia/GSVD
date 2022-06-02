@@ -1,0 +1,91 @@
+
+SparkStaking.stake(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87-117) ignores return value by stakingToken.transferFrom(msg.sender,address(this),_amount * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#93)
+SparkStaking.claimReward() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#171-191) ignores return value by rewardsToken.transfer(msg.sender,reward * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#181)
+SparkStaking.claimReward() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#171-191) ignores return value by stakingToken.transfer(msg.sender,stakingBalance[msg.sender] * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#183)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SparkStaking.calculateUserRewards(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#121-143) performs a multiplication on the result of a division:
+	-numberOfMonthsStaked = numberOfDaysStaked / 30 (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#131)
+	-userReward = numberOfMonthsStaked * rewardRate * stakingBalance[userAddress] / 100 (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Contract locking ether found:
+	Contract SparkStaking (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#21-241) has payable functions:
+	 - SparkStaking.changeAdminAddress(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#195-201)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Reentrancy in SparkStaking.claimReward() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#171-191):
+	External calls:
+	- rewardsToken.transfer(msg.sender,reward * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#181)
+	- stakingToken.transfer(msg.sender,stakingBalance[msg.sender] * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#183)
+	State variables written after the call(s):
+	- isStakingAtm[msg.sender] = false (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#189)
+	- stakingBalance[msg.sender] = 0 (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#187)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SparkStaking.ChangeRewards(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#205-213) should emit an event for: 
+	- rewardRate = newRewardRate (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#209) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+SparkStaking.constructor(address,address,address).administratorAddress (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#73) lacks a zero-check on :
+		- ownersAddress = address(administratorAddress) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#79)
+SparkStaking.changeAdminAddress(address).newAdminAddress (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#195) lacks a zero-check on :
+		- ownersAddress = newAdminAddress (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#199)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in SparkStaking.claimReward() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#171-191):
+	External calls:
+	- rewardsToken.transfer(msg.sender,reward * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#181)
+	- stakingToken.transfer(msg.sender,stakingBalance[msg.sender] * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#183)
+	State variables written after the call(s):
+	- totalStaked = totalStaked - stakingBalance[msg.sender] (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#185)
+Reentrancy in SparkStaking.stake(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87-117):
+	External calls:
+	- stakingToken.transferFrom(msg.sender,address(this),_amount * (10 ** 18)) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#93)
+	State variables written after the call(s):
+	- hasStaked[msg.sender] = true (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#101)
+	- isStakingAtm[msg.sender] = true (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#115)
+	- lastTimeUserStaked[msg.sender] = block.timestamp (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#109)
+	- stakers.push(msg.sender) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#99)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+SparkStaking.claimReward() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#171-191) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(numberOfMonthsStaked > 0,You Can't Claim Rewards In Less than a Month) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#177)
+	- require(bool,string)(reward > 0,Rewards is too small to be claimed) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#179)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+SparkStaking.stake(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87-117) compares to a boolean constant:
+	-isStakingAtm[msg.sender] == false (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#107)
+SparkStaking.stake(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87-117) compares to a boolean constant:
+	-hasStaked[msg.sender] == false (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#97)
+SparkStaking.calculateUserRewards(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#121-143) compares to a boolean constant:
+	-isStakingAtm[userAddress] == true (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#123)
+SparkStaking.calculateNumberOfMonthsStaked(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#147-167) compares to a boolean constant:
+	-isStakingAtm[userAddress] == true (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#149)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.4 (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter SparkStaking.stake(uint256)._amount (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87) is not in mixedCase
+Function SparkStaking.ChangeRewards(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#205-213) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+stake(uint256) should be declared external:
+	- SparkStaking.stake(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#87-117)
+changeAdminAddress(address) should be declared external:
+	- SparkStaking.changeAdminAddress(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#195-201)
+ChangeRewards(uint256) should be declared external:
+	- SparkStaking.ChangeRewards(uint256) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#205-213)
+getTotalStaked() should be declared external:
+	- SparkStaking.getTotalStaked() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#217-221)
+getUserStakingBalance(address) should be declared external:
+	- SparkStaking.getUserStakingBalance(address) (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#225-229)
+getRewardRate() should be declared external:
+	- SparkStaking.getRewardRate() (0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol#233-237)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x137d6932d926eEc591400D3B38AE2C58aEF4ba2.sol analyzed (2 contracts with 75 detectors), 26 result(s) found
+

@@ -1,0 +1,28 @@
+
+UniswapExample._convertEthToDai(uint256) (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#123-151) sends eth to arbitrary user
+	Dangerous calls:
+	- (success) = msg.sender.call{value: address(this).balance}() (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+UniswapExample._convertEthToDai(uint256) (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#123-151) ignores return value by uniRouter.swapETHForExactTokens{value: msg.value}(daiAmount,_getPathForETHtoDAI(),address(this),deadline) (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#131-141)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.1 (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#3) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in UniswapExample._convertEthToDai(uint256) (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#123-151):
+	- (success) = msg.sender.call{value: address(this).balance}() (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Constant UniswapExample.chi (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#61) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant UniswapExample.uniRouter (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#63) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant UniswapExample.multiDaiKovan (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#65) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant UniswapExample.wbnb (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#67) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+UniswapExample.slitherConstructorConstantVariables() (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#59-160) uses literals with too many digits:
+	- chi = ChiToken(0x0000000000004946c0e9F43F4Dee607b0eF1fA1c) (0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol#61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x4e7975b2652290120C1206fDEFd55dfF3Ed5527.sol analyzed (5 contracts with 75 detectors), 10 result(s) found
+

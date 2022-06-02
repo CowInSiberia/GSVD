@@ -1,0 +1,89 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/8_UltimateResult/0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol
+
+
+
+MyTestPayable.withdraw() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#141-157) sends eth to arbitrary user
+	Dangerous calls:
+	- (success) = owner.call{value: amount}() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#153)
+MyTestPayable.transfer(address,uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163-171) sends eth to arbitrary user
+	Dangerous calls:
+	- (success) = _to.call{value: _amount}() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+MyTestPayable (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#91-356) has incorrect ERC20 function interface:MyTestPayable.transfer(address,uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163-171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+MyTestPayable.withDrawWbnb(uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#183-197) ignores return value by token.approve(address(pancakeRouter),token.balanceOf(address(this))) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#191)
+MyTestPayable.buyToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#201-253) ignores return value by pancakeRouter.swapExactETHForTokens{value: amountBNB}(0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#235-245)
+MyTestPayable.sellToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#257-305) ignores return value by token.approve(address(pancakeRouter),amountToken) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#281)
+MyTestPayable.sellToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#257-305) ignores return value by pancakeRouter.swapExactTokensForETH(amountToken,0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#285-297)
+MyTestPayable.swapTokensfromBNB(uint256,address,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#309-351) ignores return value by pancakeRouter.swapExactETHForTokens{value: amountBNB}(0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#333-343)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+MyTestPayable.transfer(address,uint256)._to (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163) lacks a zero-check on :
+		- (success) = _to.call{value: _amount}() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in MyTestPayable.buyToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#201-253):
+	External calls:
+	- pancakeRouter.swapExactETHForTokens{value: amountBNB}(0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#235-245)
+	Event emitted after the call(s):
+	- Log(msg.sender,You have just bought a token ) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#249)
+Reentrancy in MyTestPayable.sellToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#257-305):
+	External calls:
+	- token.approve(address(pancakeRouter),amountToken) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#281)
+	- pancakeRouter.swapExactTokensForETH(amountToken,0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#285-297)
+	Event emitted after the call(s):
+	- Log(msg.sender,You have just sell a token to receive WBNB) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#301)
+Reentrancy in MyTestPayable.swapTokensfromBNB(uint256,address,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#309-351):
+	External calls:
+	- pancakeRouter.swapExactETHForTokens{value: amountBNB}(0,path,address(this),block.timestamp) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#333-343)
+	Event emitted after the call(s):
+	- Log(msg.sender,You have just swap wbnb-tokens-wbnb ) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#347)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.8.10 (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in MyTestPayable.withdraw() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#141-157):
+	- (success) = owner.call{value: amount}() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#153)
+Low level call in MyTestPayable.transfer(address,uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163-171):
+	- (success) = _to.call{value: _amount}() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Parameter MyTestPayable.transfer(address,uint256)._to (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163) is not in mixedCase
+Parameter MyTestPayable.transfer(address,uint256)._amount (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163) is not in mixedCase
+Parameter MyTestPayable.withDrawWbnb(uint256)._wad (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#183) is not in mixedCase
+Parameter MyTestPayable.buyToken(uint256,address)._token1 (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#201) is not in mixedCase
+Parameter MyTestPayable.sellToken(uint256,address)._token1 (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#257) is not in mixedCase
+Parameter MyTestPayable.swapTokensfromBNB(uint256,address,address)._token1 (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#309) is not in mixedCase
+Parameter MyTestPayable.swapTokensfromBNB(uint256,address,address)._token2 (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#309) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+MyTestPayable.tokenWbnb (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#107) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+deposit() should be declared external:
+	- MyTestPayable.deposit() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#127)
+notPayable() should be declared external:
+	- MyTestPayable.notPayable() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#135)
+withdraw() should be declared external:
+	- MyTestPayable.withdraw() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#141-157)
+transfer(address,uint256) should be declared external:
+	- MyTestPayable.transfer(address,uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#163-171)
+depositWbnb() should be declared external:
+	- MyTestPayable.depositWbnb() (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#175-179)
+withDrawWbnb(uint256) should be declared external:
+	- MyTestPayable.withDrawWbnb(uint256) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#183-197)
+buyToken(uint256,address) should be declared external:
+	- MyTestPayable.buyToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#201-253)
+sellToken(uint256,address) should be declared external:
+	- MyTestPayable.sellToken(uint256,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#257-305)
+swapTokensfromBNB(uint256,address,address) should be declared external:
+	- MyTestPayable.swapTokensfromBNB(uint256,address,address) (0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol#309-351)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x1F7aDB0768235E46D0096d27e9F52F963411e85.sol analyzed (5 contracts with 75 detectors), 33 result(s) found
+

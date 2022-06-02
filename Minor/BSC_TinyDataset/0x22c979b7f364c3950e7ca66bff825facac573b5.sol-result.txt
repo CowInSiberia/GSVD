@@ -1,0 +1,45 @@
+
+SmartMonkeyPresale.getUnsoldTokens() (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#353-361) ignores return value by IToken(tokenAddress).transfer(owner,IToken(tokenAddress).balanceOf(address(this))) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#359)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SafeMath.ceil(uint256,uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#85-89) performs a multiplication on the result of a division:
+	-(a + m - 1) / m * m (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#87)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in SmartMonkeyPresale.receive() (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#291-325):
+	External calls:
+	- require(bool,string)(IToken(tokenAddress).transfer(msg.sender,tokenAmount),Insufficient balance of presale contract!) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#313)
+	State variables written after the call(s):
+	- usersInvestments[msg.sender] = usersInvestments[msg.sender].add(msg.value) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#317)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SmartMonkeyPresale.setTokenDecimals(uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#251-255) should emit an event for: 
+	- tokenDecimals = decimals (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#253) 
+SmartMonkeyPresale.setMinEthLimit(uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#259-263) should emit an event for: 
+	- minEthLimit = amount (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#261) 
+SmartMonkeyPresale.setMaxEthLimit(uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#267-271) should emit an event for: 
+	- maxEthLimit = amount (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#269) 
+SmartMonkeyPresale.setTokenRatePerEth(uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#275-279) should emit an event for: 
+	- tokenRatePerEth = rate (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#277) 
+SmartMonkeyPresale.setRateDecimals(uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#283-287) should emit an event for: 
+	- rateDecimals = decimals (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#285) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Owned.transferOwnership(address)._newOwner (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#129) lacks a zero-check on :
+		- owner = _newOwner (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+SafeMath.ceil(uint256,uint256) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#85-89) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.6.0 (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#9) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Owned.transferOwnership(address)._newOwner (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#129) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x22c979b7f364c3950e7ca66bff825facac573b5.sol#129-135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x22c979b7f364c3950e7ca66bff825facac573b5.sol analyzed (4 contracts with 75 detectors), 13 result(s) found
+

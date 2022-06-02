@@ -1,0 +1,43 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/4_UltimateResult/0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol:
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol:18:5: Warning: Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+    function Ownable() public {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol:18:5: Warning: Defining constructors as functions with the same name as the contract is deprecated. Use "constructor(...) { ... }" instead.
+    function Ownable() public {
+
+    ^ (Relevant source part starts here and spans across multiple lines).
+
+
+SwapContract.swapUsdToToken(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#81-91) ignores return value by usdt.transferFrom(msg.sender,address(this),amount) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#83)
+SwapContract.swapUsdToToken(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#81-91) ignores return value by token.transfer(msg.sender,amount) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#89)
+SwapContract.swapTokenToUsd(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#95-105) ignores return value by token.transferFrom(msg.sender,address(this),amount) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#97)
+SwapContract.swapTokenToUsd(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#95-105) ignores return value by usdt.transfer(msg.sender,amount) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#103)
+SwapContract.withdrawToken(address,uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#123-129) ignores return value by tokenContract.transfer(msg.sender,_amount) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#127)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SwapContract.swapUsdToToken(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#81-91) performs a multiplication on the result of a division:
+	-amount = amount / rate (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#85)
+	-amount = amount * 100 (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#87)
+SwapContract.swapTokenToUsd(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#95-105) performs a multiplication on the result of a division:
+	-amount = amount / 100 (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#99)
+	-amount = amount * rate (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#101)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+SwapContract.setRate(uint256) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#109-117) should emit an event for: 
+	- rate = newRate (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#115) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Pragma version^0.4.26 (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter SwapContract.withdrawToken(address,uint256)._tokenContract (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#123) is not in mixedCase
+Parameter SwapContract.withdrawToken(address,uint256)._amount (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#123) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol#53-61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0xff1e0824a73e299982f06098A54fF0f7D1ad26F.sol analyzed (3 contracts with 75 detectors), 13 result(s) found
+

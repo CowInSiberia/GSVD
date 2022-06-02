@@ -1,0 +1,74 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/6_UltimateResult/0x662b17a40345d4E715102ef9CFf370854EF8821.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> /home/cowie/VersionClassification_BSC/6_UltimateResult/0x662b17a40345d4E715102ef9CFf370854EF8821.sol
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0x662b17a40345d4E715102ef9CFf370854EF8821.sol
+
+
+
+PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243) ignores return value by c_usdt.transferFrom(msg.sender,upline,refReward) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#221)
+PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243) ignores return value by c_usdt.transferFrom(msg.sender,projectAddress,projectAmount) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+IERC721 (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#25-37) has incorrect ERC20 function interface:IERC721.transferFrom(address,address,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#29)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+Reentrancy in PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243):
+	External calls:
+	- c_usdt.transferFrom(msg.sender,upline,refReward) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#221)
+	State variables written after the call(s):
+	- users[upline].reward += refReward (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#223)
+	- users[upline].records.push(Record(msg.sender,uint128(refReward),uint128(block.timestamp))) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#227)
+Reentrancy in PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243):
+	External calls:
+	- c_usdt.transferFrom(msg.sender,upline,refReward) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#221)
+	- c_usdt.transferFrom(msg.sender,projectAddress,projectAmount) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#231)
+	- c_nft.mint(msg.sender,nextid,nftNumber) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#233)
+	State variables written after the call(s):
+	- starInfos[starLevel].nextId += nftNumber (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#237)
+	- users[msg.sender].amount += projectAmount + refReward (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#239)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Ownable.transferOwnership(address) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#75-79) should emit an event for: 
+	- owner = newOwner (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#77) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+Ownable.transferOwnership(address).newOwner (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#75) lacks a zero-check on :
+		- owner = newOwner (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#77)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243):
+	External calls:
+	- c_usdt.transferFrom(msg.sender,upline,refReward) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#221)
+	- c_usdt.transferFrom(msg.sender,projectAddress,projectAmount) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#231)
+	- c_nft.mint(msg.sender,nextid,nftNumber) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#233)
+	Event emitted after the call(s):
+	- PrivatePlacement(msg.sender,starLevel,nextid,nftNumber,projectAmount + refReward) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#241)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Parameter PrivatePlacementContract.isUserExists(address)._addr (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#247) is not in mixedCase
+Variable PrivatePlacementContract.c_usdt (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#87) is not in mixedCase
+Variable PrivatePlacementContract.c_nft (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#89) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+PrivatePlacementContract.projectAddress (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#141) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#75-79)
+register(address) should be declared external:
+	- PrivatePlacementContract.register(address) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#173-181)
+privatePlacement(address,uint256,uint256) should be declared external:
+	- PrivatePlacementContract.privatePlacement(address,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#185-243)
+setEnabled(bool) should be declared external:
+	- PrivatePlacementContract.setEnabled(bool) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#275-279)
+setStarInfos(uint256,uint256,uint256,uint256) should be declared external:
+	- PrivatePlacementContract.setStarInfos(uint256,uint256,uint256,uint256) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#283-291)
+userInfo(address) should be declared external:
+	- PrivatePlacementContract.userInfo(address) (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#295-299)
+contractInfo() should be declared external:
+	- PrivatePlacementContract.contractInfo() (0x662b17a40345d4E715102ef9CFf370854EF8821.sol#303-307)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x662b17a40345d4E715102ef9CFf370854EF8821.sol analyzed (5 contracts with 75 detectors), 19 result(s) found
+

@@ -1,0 +1,48 @@
+
+BuySell.buyThenSell(uint256,address,address[],address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259-273) ignores return value by IERC20(_tokenIn).transferFrom(address(msg.sender),address(this),msg.value) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#261)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_lptoken).transferFrom(address(msg.sender),address(this),_amount) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#281)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_token).transfer(address(msg.sender),IERC20(_token).balanceOf(address(this))) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#315)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_busd).transfer(address(msg.sender),IERC20(_busd).balanceOf(address(this))) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#319)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract BuySell (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#241-328) has payable functions:
+	 - BuySell.buyThenSell(uint256,address,address[],address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259-273)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+BuySell.buyThenSell(uint256,address,address[],address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259-273) ignores return value by IERC20(_tokenIn).approve(UNISWAP_V2_ROUTER,msg.value) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#263)
+BuySell.buyThenSell(uint256,address,address[],address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259-273) ignores return value by PancakeRouter(UNISWAP_V2_ROUTER).swapExactETHForTokens(_amountOutMin,_path,_to,_deadline) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#267-269)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_lptoken).approve(address(0x10ED43C718714eb63d5aA57B78B54704E256024E),10 ** 50) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#293)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_token).approve(address(0x10ED43C718714eb63d5aA57B78B54704E256024E),10 ** 50) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#295)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by IERC20(_busd).approve(address(0x10ED43C718714eb63d5aA57B78B54704E256024E),10 ** 50) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#297)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by PancakeRouter(0x10ED43C718714eb63d5aA57B78B54704E256024E).removeLiquidity(_token,_busd,IERC20(_lptoken).balanceOf(address(this)),1,1,address(this),block.timestamp + 100) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#301)
+BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) ignores return value by PancakeRouter(0x10ED43C718714eb63d5aA57B78B54704E256024E).swapExactTokensForTokens(IERC20(_busd).balanceOf(address(this)),0,to,address(msg.sender),block.timestamp + 100) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#305)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Function PancakeRouter.WETH() (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#49) is not in mixedCase
+Parameter BuySell.buyThenSell(uint256,address,address[],address,uint256)._amountOutMin (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259) is not in mixedCase
+Parameter BuySell.buyThenSell(uint256,address,address[],address,uint256)._tokenIn (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259) is not in mixedCase
+Parameter BuySell.buyThenSell(uint256,address,address[],address,uint256)._path (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259) is not in mixedCase
+Parameter BuySell.buyThenSell(uint256,address,address[],address,uint256)._to (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259) is not in mixedCase
+Parameter BuySell.buyThenSell(uint256,address,address[],address,uint256)._deadline (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259) is not in mixedCase
+Function BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321) is not in mixedCase
+Parameter BuySell.remove_and_buy(address,address,address,uint256)._lptoken (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279) is not in mixedCase
+Parameter BuySell.remove_and_buy(address,address,address,uint256)._token (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279) is not in mixedCase
+Parameter BuySell.remove_and_buy(address,address,address,uint256)._busd (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279) is not in mixedCase
+Parameter BuySell.remove_and_buy(address,address,address,uint256)._amount (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable PancakeRouter.addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256).amountADesired (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#59) is too similar to PancakeRouter.addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256).amountBDesired (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#61)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+BuySell.WETH (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#247) is never used in BuySell (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#241-328)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+buyThenSell(uint256,address,address[],address,uint256) should be declared external:
+	- BuySell.buyThenSell(uint256,address,address[],address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#259-273)
+remove_and_buy(address,address,address,uint256) should be declared external:
+	- BuySell.remove_and_buy(address,address,address,uint256) (0x6C96576E5e968209F3cD70955ab73DDF0936511.sol#279-321)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x6C96576E5e968209F3cD70955ab73DDF0936511.sol analyzed (3 contracts with 75 detectors), 27 result(s) found
+

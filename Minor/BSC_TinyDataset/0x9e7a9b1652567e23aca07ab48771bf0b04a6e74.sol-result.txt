@@ -1,0 +1,55 @@
+
+PitbullSwapPresale.getUnsoldTokens() (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#365-371) ignores return value by IToken(tokenAddress).transfer(owner,IToken(tokenAddress).balanceOf(address(this))) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#369)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SafeMath.ceil(uint256,uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#83-87) performs a multiplication on the result of a division:
+	-(a + m - 1) / m * m (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#85)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in PitbullSwapPresale.buyToken() (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#305-339):
+	External calls:
+	- require(bool,string)(IToken(tokenAddress).transfer(msg.sender,tokenAmount),Insufficient balance of presale contract!) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#327)
+	State variables written after the call(s):
+	- usersInvestments[msg.sender] = usersInvestments[msg.sender].add(msg.value) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#331)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+PitbullSwapPresale.setTokenDecimals(uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#255-259) should emit an event for: 
+	- tokenDecimals = decimals (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#257) 
+PitbullSwapPresale.setMinEthLimit(uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#263-267) should emit an event for: 
+	- minEthLimit = amount (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#265) 
+PitbullSwapPresale.setMaxEthLimit(uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#271-275) should emit an event for: 
+	- maxEthLimit = amount (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#273) 
+PitbullSwapPresale.setTokenRatePerEth(uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#279-283) should emit an event for: 
+	- tokenRatePerEth = rate (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#281) 
+PitbullSwapPresale.setRateDecimals(uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#287-291) should emit an event for: 
+	- rateDecimals = decimals (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#289) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Owned.transferOwnership(address)._newOwner (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#127) lacks a zero-check on :
+		- owner = _newOwner (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#129)
+PitbullSwapPresale.constructor(address,address)._token (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#207) lacks a zero-check on :
+		- tokenAddress = _token (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#209)
+PitbullSwapPresale.constructor(address,address)._recipient (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#207) lacks a zero-check on :
+		- recipient = _recipient (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+SafeMath.ceil(uint256,uint256) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#83-87) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.6.0 (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#11) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Owned.transferOwnership(address)._newOwner (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#127) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+PitbullSwapPresale.slitherConstructorVariables() (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#161-374) uses literals with too many digits:
+	- minEthLimit = 100000000000000000 (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#193)
+PitbullSwapPresale.slitherConstructorVariables() (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#161-374) uses literals with too many digits:
+	- maxEthLimit = 3000000000000000000 (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol#127-133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x9e7a9b1652567e23aca07ab48771bf0b04a6e74.sol analyzed (4 contracts with 75 detectors), 17 result(s) found
+

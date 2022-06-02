@@ -1,0 +1,31 @@
+
+MiniSwap.trade(address[],uint8,uint256) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#117-137) ignores return value by IERC20(path[0]).transferFrom(msg.sender,CA,amountIn - currentTokenBalance) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#123)
+MiniSwap.withdrawToken(address) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#157-161) ignores return value by IERC20(token).transfer(owner,IERC20(token).balanceOf(CA)) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#159)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+MiniSwap.buy(address[],uint8) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#83-97) ignores return value by IERC20(path[0]).approve(ROUTER,msg.value) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#91)
+MiniSwap.sell(address[],uint8,uint16) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#101-113) ignores return value by IERC20(path[0]).approve(ROUTER,amountIn) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#109)
+MiniSwap.trade(address[],uint8,uint256) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#117-137) ignores return value by IERC20(path[0]).approve(ROUTER,amountIn) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+MiniSwap.transferOwnership(address) (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#141-145) should emit an event for: 
+	- owner = new_owner (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#143) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+MiniSwap.constructor(address).router (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#71) lacks a zero-check on :
+		- ROUTER = router (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#73)
+MiniSwap.transferOwnership(address).new_owner (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#141) lacks a zero-check on :
+		- owner = new_owner (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Pragma version^0.8.10 (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter MiniSwap.transferOwnership(address).new_owner (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#141) is not in mixedCase
+Variable MiniSwap.CA (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#49) is not in mixedCase
+Variable MiniSwap.ROUTER (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#51) is not in mixedCase
+Variable MiniSwap.IROUTER (0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol#53) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x2e7e9971d12DFf15ED0dC40a012a685EE5efefd.sol analyzed (3 contracts with 75 detectors), 14 result(s) found
+

@@ -1,0 +1,93 @@
+
+SPE_IDO.claimIDO() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#183-207) ignores return value by Token.transfer(msg.sender,temp) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#201)
+SPE_IDO.claimLeftToken(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#210-213) ignores return value by Token.transfer(addr_,temp) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#212)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SPE_IDO.countingClaim(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#139-164) performs a multiplication on the result of a division:
+	-rates = (AA - claim) / 31104000 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#154)
+	-out = (checkTime + 31104000 - time) * rates (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#157)
+SPE_IDO.countingClaim(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#139-164) performs a multiplication on the result of a division:
+	-rates = (AA - claim) / 31104000 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#154)
+	-out = (block.timestamp - time) * rates (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#159)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in SPE_IDO.claimIDO() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#183-207):
+	External calls:
+	- Token.transfer(msg.sender,temp) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#201)
+	State variables written after the call(s):
+	- userInfo[msg.sender].claimed += temp (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#202)
+	- userInfo[msg.sender].lastCheckTime = block.timestamp (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SPE_IDO.setStart(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#130-133) should emit an event for: 
+	- claimTime = start_ (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#132) 
+SPE_IDO.setCheck(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#135-137) should emit an event for: 
+	- checkTime = check_ (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#136) 
+SPE_IDO.changeRound(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#215-217) should emit an event for: 
+	- round = com_ (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#216) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Reentrancy in SPE_IDO.claimIDO() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#183-207):
+	External calls:
+	- Token.transfer(msg.sender,temp) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#201)
+	Event emitted after the call(s):
+	- ClaimIDO(msg.sender,temp) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#204)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SPE_IDO.countingClaim(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#139-164) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < checkTime (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#149)
+	- block.timestamp >= checkTime + 31104000 && time < checkTime + 31104000 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#156)
+SPE_IDO.check() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#167-174) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= claimTime + lef && round < 9 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#169)
+	- _round > 9 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#171)
+SPE_IDO.upRound() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#176-181) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= claimTime + lef (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#177)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Context._msgData() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#35-37) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#2) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract SPE_IDO (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#80-252) is not in CapWords
+Variable SPE_IDO.Token (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#81) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SPE_IDO.lef (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#89) should be constant
+SPE_IDO.sss (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#90) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#58-60)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#63-66)
+setToken(address,address) should be declared external:
+	- SPE_IDO.setToken(address,address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#120-123)
+setAmount(address,uint256) should be declared external:
+	- SPE_IDO.setAmount(address,uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#125-127)
+setStart(uint256) should be declared external:
+	- SPE_IDO.setStart(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#130-133)
+setCheck(uint256) should be declared external:
+	- SPE_IDO.setCheck(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#135-137)
+upRound() should be declared external:
+	- SPE_IDO.upRound() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#176-181)
+claimIDO() should be declared external:
+	- SPE_IDO.claimIDO() (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#183-207)
+claimLeftToken(address) should be declared external:
+	- SPE_IDO.claimLeftToken(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#210-213)
+changeRound(uint256) should be declared external:
+	- SPE_IDO.changeRound(uint256) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#215-217)
+replaceInfo(address,address) should be declared external:
+	- SPE_IDO.replaceInfo(address,address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#219-232)
+setStatus(bool) should be declared external:
+	- SPE_IDO.setStatus(bool) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#234-236)
+checkUserInfo(address) should be declared external:
+	- SPE_IDO.checkUserInfo(address) (0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol#238-248)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xF7254E615e98c119017fc550CC9dA1A8966Db17.sol analyzed (5 contracts with 75 detectors), 32 result(s) found
+
