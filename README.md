@@ -3,7 +3,13 @@ Generalized Smart Contract Vulnerability Dataset
 
 广义智能合约漏洞数据集
 
+<br>
 
+To Download：
+
+GSVD<sup>Minor</sup>: Already uploaded to the *Mino*r file in this repo, please check it out.
+
+GSVD<sup>Major</sup>: Uploading to cloud, please wait for a little more time.
 
 <br>
 
