@@ -1,0 +1,140 @@
+
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) ignores return value by IERC20(mainCurrencyAddress).transferFrom(msg.sender,address(this),_paidAmount) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#251)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) ignores return value by IERC20(presaleTokenAddress).transfer(msg.sender,claimAmount[msg.sender]) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#281)
+Presale.getUnsoldTokens(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#355-365) ignores return value by IERC20(presaleTokenAddress).transfer(to,balance) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#363)
+Presale.withdraw(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#369-379) ignores return value by IERC20(mainCurrencyAddress).transfer(to,balance) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#377)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) uses a dangerous strict equality:
+	- require(bool,string)(saleStarted() == true,Sale is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#243)
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) uses a dangerous strict equality:
+	- require(bool,string)(saleEnded() == false,Sale over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#247)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) uses a dangerous strict equality:
+	- require(bool,string)(claimStarted() == true,Claim is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#273)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) uses a dangerous strict equality:
+	- require(bool,string)(claimEnded() == false,Claim over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#277)
+Presale.getUnsoldTokens(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#355-365) uses a dangerous strict equality:
+	- require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#357)
+Presale.withdraw(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#369-379) uses a dangerous strict equality:
+	- require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#371)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Presale.setTokenPrice(uint256,uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#183-189) should emit an event for: 
+	- tokenPrice = _tokenPrice (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#185) 
+	- tokenPriceDecimal = _tokenPriceDecimal (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#187) 
+Presale.setSaleTimestamp(uint256,uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#209-215) should emit an event for: 
+	- saleStartTimestamp = _saleStartTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#211) 
+	- saleEndTimestamp = _saleEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#213) 
+Presale.setClaimTimestamp(uint256,uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#219-225) should emit an event for: 
+	- claimStartTimestamp = _claimStartTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#221) 
+	- claimEndTimestamp = _claimEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#223) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Presale.constructor(address,address)._mainCurrencyAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#173) lacks a zero-check on :
+		- mainCurrencyAddress = _mainCurrencyAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#175)
+Presale.constructor(address,address)._presaleTokenAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#173) lacks a zero-check on :
+		- presaleTokenAddress = _presaleTokenAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#177)
+Presale.setMainCurrencyAddress(address)._mainCurrencyAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#193) lacks a zero-check on :
+		- mainCurrencyAddress = _mainCurrencyAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#195)
+Presale.setPresaleTokenAddress(address)._presaleTokenAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#201) lacks a zero-check on :
+		- presaleTokenAddress = _presaleTokenAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267):
+	External calls:
+	- IERC20(mainCurrencyAddress).transferFrom(msg.sender,address(this),_paidAmount) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#251)
+	State variables written after the call(s):
+	- claimAmount[msg.sender] += tokenAmount (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#257)
+	- paidAmount[msg.sender] += _paidAmount (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#253)
+	- tokenSold += tokenAmount (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#259)
+	- totalDeposited += _paidAmount (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#261)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267):
+	External calls:
+	- IERC20(mainCurrencyAddress).transferFrom(msg.sender,address(this),_paidAmount) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#251)
+	Event emitted after the call(s):
+	- Purchase(_paidAmount) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#265)
+Reentrancy in Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287):
+	External calls:
+	- IERC20(presaleTokenAddress).transfer(msg.sender,claimAmount[msg.sender]) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#281)
+	Event emitted after the call(s):
+	- Claimed(msg.sender,claimAmount[msg.sender]) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#285)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(saleStarted() == true,Sale is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#243)
+	- require(bool,string)(saleEnded() == false,Sale over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#247)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(claimStarted() == true,Claim is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#273)
+	- require(bool,string)(claimEnded() == false,Claim over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#277)
+Presale.saleStarted() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#291-303) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > saleStartTimestamp && block.timestamp < saleEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#295)
+Presale.saleEnded() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#307-319) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > saleEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#311)
+Presale.claimStarted() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#323-335) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > claimStartTimestamp && block.timestamp < saleEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#327)
+Presale.claimEnded() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#339-351) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > claimEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#343)
+Presale.getUnsoldTokens(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#355-365) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#357)
+Presale.withdraw(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#369-379) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#371)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) compares to a boolean constant:
+	-require(bool,string)(saleEnded() == false,Sale over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#247)
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) compares to a boolean constant:
+	-require(bool,string)(whiteListed[msg.sender] == true,Not whitelisted) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#245)
+Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267) compares to a boolean constant:
+	-require(bool,string)(saleStarted() == true,Sale is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#243)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) compares to a boolean constant:
+	-require(bool,string)(claimStarted() == true,Claim is not started) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#273)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) compares to a boolean constant:
+	-require(bool,string)(claimEnded() == false,Claim over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#277)
+Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287) compares to a boolean constant:
+	-require(bool,string)(whiteListed[msg.sender] == true,Not whitelisted) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#275)
+Presale.getUnsoldTokens(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#355-365) compares to a boolean constant:
+	-require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#357)
+Presale.withdraw(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#369-379) compares to a boolean constant:
+	-require(bool,string)(saleEnded() == true,Sale is not over) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#371)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.0 (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Presale.setTokenPrice(uint256,uint256)._tokenPrice (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#183) is not in mixedCase
+Parameter Presale.setTokenPrice(uint256,uint256)._tokenPriceDecimal (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#183) is not in mixedCase
+Parameter Presale.setMainCurrencyAddress(address)._mainCurrencyAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#193) is not in mixedCase
+Parameter Presale.setPresaleTokenAddress(address)._presaleTokenAddress (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#201) is not in mixedCase
+Parameter Presale.setSaleTimestamp(uint256,uint256)._saleStartTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#209) is not in mixedCase
+Parameter Presale.setSaleTimestamp(uint256,uint256)._saleEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#209) is not in mixedCase
+Parameter Presale.setClaimTimestamp(uint256,uint256)._claimStartTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#219) is not in mixedCase
+Parameter Presale.setClaimTimestamp(uint256,uint256)._claimEndTimestamp (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#219) is not in mixedCase
+Parameter Presale.buy(uint256)._paidAmount (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Presale.slitherConstructorVariables() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#123-384) uses literals with too many digits:
+	- tokenPrice = 3000000000000000000 (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#107-115)
+setWhitelist(address[],bool) should be declared external:
+	- Presale.setWhitelist(address[],bool) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#229-237)
+buy(uint256) should be declared external:
+	- Presale.buy(uint256) (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#241-267)
+claim() should be declared external:
+	- Presale.claim() (0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol#271-287)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x8e9941078cf1d01c72223a0ffe8c59cc782190a.sol analyzed (4 contracts with 75 detectors), 52 result(s) found
+

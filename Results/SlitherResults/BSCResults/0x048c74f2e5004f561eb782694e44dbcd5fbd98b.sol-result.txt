@@ -1,0 +1,49 @@
+
+GEMPresale.getUnsoldTokens() (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#331-339) ignores return value by IToken(tokenAddress).transfer(owner,IToken(tokenAddress).balanceOf(address(this))) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#337)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+SafeMath.ceil(uint256,uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#87-91) performs a multiplication on the result of a division:
+	-(a + m - 1) / m * m (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#89)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in GEMPresale.receive() (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#273-303):
+	External calls:
+	- require(bool,string)(IToken(tokenAddress).transfer(msg.sender,tokenAmount),Insufficient balance of presale contract!) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#293)
+	State variables written after the call(s):
+	- usersInvestments[msg.sender] = usersInvestments[msg.sender].add(msg.value) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#297)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+GEMPresale.setTokenDecimals(uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#233-237) should emit an event for: 
+	- tokenDecimals = decimals (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#235) 
+GEMPresale.setMinEthLimit(uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#241-245) should emit an event for: 
+	- minEthLimit = amount (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#243) 
+GEMPresale.setMaxEthLimit(uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#249-253) should emit an event for: 
+	- maxEthLimit = amount (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#251) 
+GEMPresale.setTokenRatePerEth(uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#257-261) should emit an event for: 
+	- tokenRatePerEth = rate (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#259) 
+GEMPresale.setRateDecimals(uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#265-269) should emit an event for: 
+	- rateDecimals = decimals (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#267) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Owned.transferOwnership(address)._newOwner (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#125) lacks a zero-check on :
+		- owner = _newOwner (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#127)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+SafeMath.ceil(uint256,uint256) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#87-91) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.6.0 (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#25) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Owned.transferOwnership(address)._newOwner (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#125) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+GEMPresale.slitherConstructorVariables() (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#153-342) uses literals with too many digits:
+	- tokenRatePerEth = 1000000_00 (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol#125-131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x048c74f2e5004f561eb782694e44dbcd5fbd98b.sol analyzed (4 contracts with 75 detectors), 14 result(s) found
+

@@ -1,0 +1,69 @@
+
+Liquidity.withdrawToken(address,uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#165-169) ignores return value by IERC20(_tokenContract).transfer(msg.sender,_amount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract Liquidity (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#47-172) has payable functions:
+	 - Liquidity.receive() (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#113)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Reentrancy in Liquidity.swapAndLiquify(uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#115-139):
+	External calls:
+	- swapTokensForTokens(half) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#127)
+		- IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#149)
+		- quickSwapRouter.swapExactTokensForTokens(tokenAmount,0,path,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#151)
+	- addLiquidity(otherHalf,tokenToAdd) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#131)
+		- IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#157)
+		- IERC20(getToken1()).approve(address(quickSwapRouter),otherTokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#159)
+		- quickSwapRouter.addLiquidity(getToken0(),getToken1(),tokenAmount,otherTokenAmount,0,0,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#161)
+	State variables written after the call(s):
+	- inSwapAndLiquify = false (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Liquidity.swapTokensForTokens(uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#141-153) ignores return value by IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#149)
+Liquidity.swapTokensForTokens(uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#141-153) ignores return value by quickSwapRouter.swapExactTokensForTokens(tokenAmount,0,path,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#151)
+Liquidity.addLiquidity(uint256,uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#155-163) ignores return value by IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#157)
+Liquidity.addLiquidity(uint256,uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#155-163) ignores return value by IERC20(getToken1()).approve(address(quickSwapRouter),otherTokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#159)
+Liquidity.addLiquidity(uint256,uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#155-163) ignores return value by quickSwapRouter.addLiquidity(getToken0(),getToken1(),tokenAmount,otherTokenAmount,0,0,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#161)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Reentrancy in Liquidity.swapAndLiquify(uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#115-139):
+	External calls:
+	- swapTokensForTokens(half) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#127)
+		- IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#149)
+		- quickSwapRouter.swapExactTokensForTokens(tokenAmount,0,path,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#151)
+	- addLiquidity(otherHalf,tokenToAdd) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#131)
+		- IERC20(getToken0()).approve(address(quickSwapRouter),tokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#157)
+		- IERC20(getToken1()).approve(address(quickSwapRouter),otherTokenAmount) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#159)
+		- quickSwapRouter.addLiquidity(getToken0(),getToken1(),tokenAmount,otherTokenAmount,0,0,address(this),block.timestamp) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#161)
+	Event emitted after the call(s):
+	- SwapAndLiquify(half,tokenToAdd,otherHalf) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.8.2 (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Liquidity.withdrawToken(address,uint256)._tokenContract (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#165) is not in mixedCase
+Parameter Liquidity.withdrawToken(address,uint256)._amount (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#165) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable IQuickSwapRouter.addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256).amountADesired (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#27) is too similar to IQuickSwapRouter.addLiquidity(address,address,uint256,uint256,uint256,uint256,address,uint256).amountBDesired (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#27)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+setRouterAddress(address) should be declared external:
+	- Liquidity.setRouterAddress(address) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#73-77)
+setPairAddress(address) should be declared external:
+	- Liquidity.setPairAddress(address) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#79-83)
+setPermitedAddress(address,bool) should be declared external:
+	- Liquidity.setPermitedAddress(address,bool) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#85-89)
+getTokenPrice() should be declared external:
+	- Liquidity.getTokenPrice() (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#103-111)
+swapAndLiquify(uint256) should be declared external:
+	- Liquidity.swapAndLiquify(uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#115-139)
+withdrawToken(address,uint256) should be declared external:
+	- Liquidity.withdrawToken(address,uint256) (0xa967d9e99b94704369e099cab4c2235cd417e6b.sol#165-169)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xa967d9e99b94704369e099cab4c2235cd417e6b.sol analyzed (4 contracts with 75 detectors), 20 result(s) found
+

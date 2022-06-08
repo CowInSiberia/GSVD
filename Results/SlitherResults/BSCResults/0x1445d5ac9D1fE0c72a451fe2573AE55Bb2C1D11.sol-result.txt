@@ -1,0 +1,123 @@
+
+Reentrancy in preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221):
+	External calls:
+	- token.transferFrom(owner,address(this),numberOfTokens) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#207)
+	External calls sending eth:
+	- marketWallet.transfer(msg.value) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#205)
+	State variables written after the call(s):
+	- amountRaised += msg.value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#215)
+	- coinBalance[msg.sender] += msg.value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities
+
+IBEP20 (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#15-79) has incorrect ERC20 function interface:IBEP20.approve(address,uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#47)
+IBEP20 (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#15-79) has incorrect ERC20 function interface:IBEP20.transfer(address,uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#51)
+IBEP20 (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#15-79) has incorrect ERC20 function interface:IBEP20.transferFrom(address,address,uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#55-63)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+Reentrancy in preSaleSowl.claim() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#227-255):
+	External calls:
+	- token.transfer(msg.sender,userBalance) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#245)
+	State variables written after the call(s):
+	- claimed[msg.sender] = true (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#249)
+	- tokenBalance[msg.sender] = 0 (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#247)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+preSaleSowl.changeOwner(address) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#337-341) should emit an event for: 
+	- owner = _newOwner (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#339) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+preSaleSowl.changePrice(uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#279-283) should emit an event for: 
+	- tokenPerBnb = _amount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#281) 
+preSaleSowl.setPreSaletLimits(uint256,uint256,uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#289-303) should emit an event for: 
+	- minAmount = _minAmount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#297) 
+	- maxAmount = _maxAmount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#299) 
+	- hardCap = _hardCap (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#301) 
+preSaleSowl.setPreSaleTime(uint256,uint256) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#309-321) should emit an event for: 
+	- preSaleStartTime = _startTime (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#317) 
+	- preSaleEndTime = _endTime (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#319) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+preSaleSowl.constructor(uint256,address,IBEP20)._marketWallet (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#141) lacks a zero-check on :
+		- marketWallet = _marketWallet (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#149)
+preSaleSowl.changeOwner(address)._newOwner (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#337) lacks a zero-check on :
+		- owner = _newOwner (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#339)
+preSaleSowl.changeMarketWallet(address)._marketWallet (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#347) lacks a zero-check on :
+		- marketWallet = _marketWallet (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#349)
+preSaleSowl.transferFunds(address,uint256)._user (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#367) lacks a zero-check on :
+		- _user.transfer(_value) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#369)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221):
+	External calls:
+	- token.transferFrom(owner,address(this),numberOfTokens) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#207)
+	External calls sending eth:
+	- marketWallet.transfer(msg.value) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#205)
+	State variables written after the call(s):
+	- soldToken += numberOfTokens (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#213)
+	- tokenBalance[msg.sender] += numberOfTokens (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221):
+	External calls:
+	- token.transferFrom(owner,address(this),numberOfTokens) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#207)
+	External calls sending eth:
+	- marketWallet.transfer(msg.value) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#205)
+	Event emitted after the call(s):
+	- BuyToken(msg.sender,numberOfTokens) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#219)
+Reentrancy in preSaleSowl.claim() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#227-255):
+	External calls:
+	- token.transfer(msg.sender,userBalance) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#245)
+	Event emitted after the call(s):
+	- ClaimToken(msg.sender,userBalance) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#253)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp >= preSaleStartTime,PRESALE: PreSale not started yet) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#173-179)
+	- require(bool,string)(block.timestamp < preSaleEndTime,PRESALE: PreSale over) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#181)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+preSaleSowl.claim() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#227-255) compares to a boolean constant:
+	-require(bool,string)(claimed[msg.sender] == false,PRESALE: Already claimed) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.9 (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract preSaleSowl (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#83-394) is not in CapWords
+Parameter preSaleSowl.bnbToToken(uint256)._amount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#261) is not in mixedCase
+Parameter preSaleSowl.changePrice(uint256)._amount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#279) is not in mixedCase
+Parameter preSaleSowl.setPreSaletLimits(uint256,uint256,uint256)._minAmount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#289) is not in mixedCase
+Parameter preSaleSowl.setPreSaletLimits(uint256,uint256,uint256)._maxAmount (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#289) is not in mixedCase
+Parameter preSaleSowl.setPreSaletLimits(uint256,uint256,uint256)._hardCap (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#289) is not in mixedCase
+Parameter preSaleSowl.setPreSaleTime(uint256,uint256)._startTime (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#309) is not in mixedCase
+Parameter preSaleSowl.setPreSaleTime(uint256,uint256)._endTime (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#309) is not in mixedCase
+Parameter preSaleSowl.enableClaim(bool)._status (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#327) is not in mixedCase
+Parameter preSaleSowl.changeOwner(address)._newOwner (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#337) is not in mixedCase
+Parameter preSaleSowl.changeMarketWallet(address)._marketWallet (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#347) is not in mixedCase
+Parameter preSaleSowl.changeToken(address)._token (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#357) is not in mixedCase
+Parameter preSaleSowl.transferFunds(address,uint256)._user (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#367) is not in mixedCase
+Parameter preSaleSowl.transferFunds(address,uint256)._value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#367) is not in mixedCase
+Parameter preSaleSowl.transferTokens(uint256)._value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#377) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221):
+	External calls:
+	- marketWallet.transfer(msg.value) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#205)
+	State variables written after the call(s):
+	- amountRaised += msg.value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#215)
+	- coinBalance[msg.sender] += msg.value (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#209)
+	- soldToken += numberOfTokens (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#213)
+	- tokenBalance[msg.sender] += numberOfTokens (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#211)
+	Event emitted after the call(s):
+	- BuyToken(msg.sender,numberOfTokens) (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#219)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+buyToken() should be declared external:
+	- preSaleSowl.buyToken() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#171-221)
+claim() should be declared external:
+	- preSaleSowl.claim() (0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol#227-255)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x1445d5ac9D1fE0c72a451fe2573AE55Bb2C1D11.sol analyzed (2 contracts with 75 detectors), 38 result(s) found
+

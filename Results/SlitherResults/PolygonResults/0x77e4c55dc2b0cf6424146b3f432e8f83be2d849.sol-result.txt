@@ -1,0 +1,40 @@
+
+BridgeBase.withdraw(bytes32,uint256,BridgeBase.Sign) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#263-279) ignores return value by token.transfer(msg.sender,amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in BridgeBase.withdraw(bytes32,uint256,BridgeBase.Sign) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#263-279):
+	External calls:
+	- token.transfer(msg.sender,amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#271)
+	State variables written after the call(s):
+	- txList[txID] = true (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#273)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+CELADONBRIDGE.constructor(address).token (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#295) shadows:
+	- BridgeBase.token (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#203) (state variable)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#local-variable-shadowing
+
+Reentrancy in BridgeBase.deposit(uint256) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#247-259):
+	External calls:
+	- transferred = token.transferFrom(msg.sender,address(this),amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#251)
+	Event emitted after the call(s):
+	- Deposit(msg.sender,address(this),amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#255)
+Reentrancy in BridgeBase.withdraw(bytes32,uint256,BridgeBase.Sign) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#263-279):
+	External calls:
+	- token.transfer(msg.sender,amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#271)
+	Event emitted after the call(s):
+	- Withdraw(address(this),msg.sender,amount) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#275)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.8.4 (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+deposit(uint256) should be declared external:
+	- BridgeBase.deposit(uint256) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#247-259)
+withdraw(bytes32,uint256,BridgeBase.Sign) should be declared external:
+	- BridgeBase.withdraw(bytes32,uint256,BridgeBase.Sign) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#263-279)
+getTxdetails(bytes32) should be declared external:
+	- BridgeBase.getTxdetails(bytes32) (0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol#283-287)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x77e4c55dc2b0cf6424146b3f432e8f83be2d849.sol analyzed (3 contracts with 75 detectors), 10 result(s) found
+

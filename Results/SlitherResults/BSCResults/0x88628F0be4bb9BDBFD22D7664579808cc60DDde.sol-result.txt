@@ -1,0 +1,40 @@
+
+KryptoNectAirdrop.tokenTransfer(address,uint256) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#119-125) ignores return value by token.transferFrom(msg.sender,receiver,amount * 10 ** token.decimals()) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#121)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+KryptoNectAirdrop.multipletransfer(address[],uint256[]).i (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#139) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+KryptoNectAirdrop.changeOwner(address) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#149-153) should emit an event for: 
+	- owner = newOwner (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#151) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+KryptoNectAirdrop.constructor(address,address)._owner (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#109) lacks a zero-check on :
+		- owner = _owner (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#111)
+KryptoNectAirdrop.changeOwner(address).newOwner (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#149) lacks a zero-check on :
+		- owner = newOwner (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#151)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in KryptoNectAirdrop.tokenTransfer(address,uint256) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#119-125):
+	External calls:
+	- token.transferFrom(msg.sender,receiver,amount * 10 ** token.decimals()) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#121)
+	State variables written after the call(s):
+	- FundTransferred[receiver] = true (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#123)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Pragma version^0.8.9 (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable KryptoNectAirdrop.FundTransferred (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#95) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+multipletransfer(address[],uint256[]) should be declared external:
+	- KryptoNectAirdrop.multipletransfer(address[],uint256[]) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#129-145)
+changeOwner(address) should be declared external:
+	- KryptoNectAirdrop.changeOwner(address) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#149-153)
+changeToken(address) should be declared external:
+	- KryptoNectAirdrop.changeToken(address) (0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol#157-161)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x88628F0be4bb9BDBFD22D7664579808cc60DDde.sol analyzed (2 contracts with 75 detectors), 12 result(s) found
+

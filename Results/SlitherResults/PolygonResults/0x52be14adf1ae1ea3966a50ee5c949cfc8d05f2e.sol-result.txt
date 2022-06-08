@@ -1,0 +1,62 @@
+
+LiquidityLock.withdraw(uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281-303) ignores return value by IERC20(currentLock.token).transfer(msg.sender,currentLock.amount) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#293)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in LiquidityLock.withdraw(uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281-303):
+	External calls:
+	- IERC20(currentLock.token).transfer(msg.sender,currentLock.amount) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#293)
+	State variables written after the call(s):
+	- delete locks[_lockID] (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#301)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in LiquidityLock.deposit(address,uint256,uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#235-277):
+	External calls:
+	- require(bool)(IERC20(_token).transferFrom(msg.sender,address(this),_amount)) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#245-249)
+	State variables written after the call(s):
+	- lockCount += 1 (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#253)
+	- locks[lockCount] = Lock(msg.sender,_token,_amount,_deadline) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#261-271)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in LiquidityLock.deposit(address,uint256,uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#235-277):
+	External calls:
+	- require(bool)(IERC20(_token).transferFrom(msg.sender,address(this),_amount)) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#245-249)
+	Event emitted after the call(s):
+	- Deposit(msg.sender,_token,_amount,_deadline) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#275)
+Reentrancy in LiquidityLock.withdraw(uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281-303):
+	External calls:
+	- IERC20(currentLock.token).transfer(msg.sender,currentLock.amount) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#293)
+	Event emitted after the call(s):
+	- Withdraw(currentLock.owner,currentLock.token,currentLock.amount) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#297)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+LiquidityLock.withdraw(uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281-303) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(currentLock.deadline <= block.timestamp,Not reached deadline) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#289)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Different versions of Solidity is used:
+	- Version used: ['>=0.8.4', '^0.8.0']
+	- ^0.8.0 (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#19)
+	- >=0.8.4 (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#187)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#different-pragma-directives-are-used
+
+Pragma version^0.8.0 (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#19) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+Pragma version>=0.8.4 (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#187) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter LiquidityLock.deposit(address,uint256,uint256)._token (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#237) is not in mixedCase
+Parameter LiquidityLock.deposit(address,uint256,uint256)._amount (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#239) is not in mixedCase
+Parameter LiquidityLock.deposit(address,uint256,uint256)._length (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#241) is not in mixedCase
+Parameter LiquidityLock.withdraw(uint256)._lockID (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+deposit(address,uint256,uint256) should be declared external:
+	- LiquidityLock.deposit(address,uint256,uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#235-277)
+withdraw(uint256) should be declared external:
+	- LiquidityLock.withdraw(uint256) (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#281-303)
+currentTimestamp() should be declared external:
+	- LiquidityLock.currentTimestamp() (0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol#307-311)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x52be14adf1ae1ea3966a50ee5c949cfc8d05f2e.sol analyzed (2 contracts with 75 detectors), 17 result(s) found
+

@@ -1,0 +1,45 @@
+
+IDO.receive() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#191-229) ignores return value by RewardCoin.transfer(msg.sender,amount) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#201)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in IDO.burnAll() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#143-155):
+	External calls:
+	- RewardCoin.burn((RewardCoin.balanceOf(address(this)) - TotalIDOAmount)) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#149)
+	State variables written after the call(s):
+	- burned = true (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#151)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+IDO.burnAll() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#143-155) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(block.timestamp > EndTime) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#147)
+IDO.inIDO() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#159-187) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > StartTime && block.timestamp < (StartTime + 14400) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#163)
+	- block.timestamp > StartTime2 && block.timestamp < (StartTime2 + 14400) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#169)
+	- block.timestamp > StartTime3 && block.timestamp < (StartTime3 + 14400) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#175)
+IDO.receive() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#191-229) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(block.timestamp > EndTime) (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Context._msgData() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#69-73) is never used and should be removed
+Context._msgSender() (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#61-65) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter IDO.init(address)._sgem (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#131) is not in mixedCase
+Variable IDO.StartTime (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#83) is not in mixedCase
+Variable IDO.StartTime2 (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#85) is not in mixedCase
+Variable IDO.StartTime3 (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#87) is not in mixedCase
+Variable IDO.EndTime (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#89) is not in mixedCase
+Variable IDO.TotalIDOAmount (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#91) is not in mixedCase
+Variable IDO.RewardCoin (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#99) is not in mixedCase
+Variable IDO.TEAM (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#101) is not in mixedCase
+Variable IDO.IDOTimes (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#105) is not in mixedCase
+Variable IDO.IDOAmount (0xaD225b65631e18f84D76F60d7203d46685975f9.sol#107) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xaD225b65631e18f84D76F60d7203d46685975f9.sol analyzed (4 contracts with 75 detectors), 19 result(s) found
+

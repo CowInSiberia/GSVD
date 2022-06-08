@@ -1,0 +1,50 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/6_UltimateResult/0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> /home/cowie/VersionClassification_Polygon/6_UltimateResult/0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol
+
+Warning: Unused local variable.
+   --> /home/cowie/VersionClassification_Polygon/6_UltimateResult/0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol:104:8:
+    |
+104 |       (uint256 startBlock, uint256 endBlock, uint256 amount, uint256 alreadyClaimed) = target.pending(_user, i);
+    |        ^^^^^^^^^^^^^^^^^^
+
+Warning: Unused local variable.
+   --> 0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol:104:8:
+    |
+104 |       (uint256 startBlock, uint256 endBlock, uint256 amount, uint256 alreadyClaimed) = target.pending(_user, i);
+    |        ^^^^^^^^^^^^^^^^^^
+
+
+
+MasterChef.pending (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#143) is never initialized. It is used in:
+	- MasterChef.pendingLength(address) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#157-161)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state-variables
+
+Read.lockedTokens(address) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#237-279) performs a multiplication on the result of a division:
+	-amountPerBlock = amount.div(duration) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#261)
+	-unlockedAmount = unlockedBlocks.mul(amountPerBlock) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#267)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Read.unlockedTokens(address).sumUnlocked (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#201) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+Read.unlockedTokens(address) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#195-225) has external calls inside a loop: (startBlock,endBlock,amount,alreadyClaimed) = target.pending(_user,i) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#207)
+Read.lockedTokens(address) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#237-279) has external calls inside a loop: (startBlock,endBlock,amount,alreadyClaimed) = target.pending(_user,i) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#249)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+SafeMath.mod(uint256,uint256) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#105-109) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#113-119) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Struct MasterChef.pendingRewards (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#129-139) is not in CapWords
+Parameter Read.unlockedTokens(address)._user (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#195) is not in mixedCase
+Parameter Read.lockedTokens(address)._user (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#237) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Read.lockupPeriodBlocks (0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol#175) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+/home/cowie/VersionClassification_Polygon/6_UltimateResult/0xc4f09114322a6045fa30c896b7f8fc4c702eb63.sol analyzed (3 contracts with 75 detectors), 11 result(s) found
+

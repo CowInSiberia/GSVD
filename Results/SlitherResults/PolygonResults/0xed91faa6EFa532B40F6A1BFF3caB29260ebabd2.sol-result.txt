@@ -1,0 +1,49 @@
+
+singletonDepositAddress.functionCallWithValue(address,bytes,uint256,string) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#239-261) sends eth to arbitrary user
+	Dangerous calls:
+	- (success,returndata) = target.call{value: value}(data) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+IERC20 (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#15-21) has incorrect ERC20 function interface:IERC20.transfer(address,uint256) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#17)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+singletonDepositAddress.sweep(address,address,uint256).to (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#297) lacks a zero-check on :
+		- (result) = to.call{value: limit}() (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#305)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+singletonDepositManager.deploy(uint256,bytes32,bytes) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#45-71) uses assembly
+	- INLINE ASM (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#61-65)
+singletonDepositAddress.verifyCallResult(bool,bytes,string) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#203-237) uses assembly
+	- INLINE ASM (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#221-227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+singletonDepositAddress.functionCall(address,bytes) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#157-161) is never used and should be removed
+singletonDepositAddress.functionCallWithValue(address,bytes,uint256) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#187-199) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in singletonDepositAddress.functionCallWithValue(address,bytes,uint256,string) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#239-261):
+	- (success,returndata) = target.call{value: value}(data) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#257)
+Low level call in singletonDepositAddress.sweep(address,address,uint256) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#297-317):
+	- (result) = to.call{value: limit}() (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#305)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Contract sweeper (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#23-27) is not in CapWords
+Contract singletonDepositManager (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#29-145) is not in CapWords
+Contract singletonDepositAddress (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#147-326) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+singletonDepositManager.constructor() (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#33-37) uses literals with too many digits:
+	- codehash = keccak256(bytes)(type()(singletonDepositAddress).creationCode) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#35)
+singletonDepositManager.sweep(address,bytes32,uint256) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#101-117) uses literals with too many digits:
+	- deploy(0,realsalt,type()(singletonDepositAddress).creationCode) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#111)
+singletonDepositManager.pendingDeposit(address,address,bytes32) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#129-143) uses literals with too many digits:
+	- token == 0x0000000000000000000000000000000000000000 (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#133)
+singletonDepositAddress.sweep(address,address,uint256) (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#297-317) uses literals with too many digits:
+	- token == 0x0000000000000000000000000000000000000000 (0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol#301)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xed91faa6EFa532B40F6A1BFF3caB29260ebabd2.sol analyzed (4 contracts with 75 detectors), 18 result(s) found
+

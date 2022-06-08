@@ -1,0 +1,53 @@
+
+NafstarsPresale.mint() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#97-113) ignores return value by WETH.transferFrom(msg.sender,_wallet,250000000000000000) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#105)
+NafstarsPresale.batchMint(uint256) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#117-143) ignores return value by WETH.transferFrom(msg.sender,_wallet,total * 250000000000000000) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in NafstarsPresale.batchMint(uint256) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#117-143):
+	External calls:
+	- WETH.transferFrom(msg.sender,_wallet,total * 250000000000000000) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#131)
+	State variables written after the call(s):
+	- salesCounter = salesCounter + total (0x14748f5cda40dd3efd84acde894ee2875511760.sol#133)
+Reentrancy in NafstarsPresale.mint() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#97-113):
+	External calls:
+	- WETH.transferFrom(msg.sender,_wallet,250000000000000000) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#105)
+	State variables written after the call(s):
+	- salesCounter = salesCounter + 1 (0x14748f5cda40dd3efd84acde894ee2875511760.sol#107)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+NafstarsPresale.constructor(address,address,address).wallet (0x14748f5cda40dd3efd84acde894ee2875511760.sol#57) lacks a zero-check on :
+		- _wallet = wallet (0x14748f5cda40dd3efd84acde894ee2875511760.sol#63)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+NafstarsPresale.batchMint(uint256) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#117-143) has external calls inside a loop: NFTContract.mint(msg.sender) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#139)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+NafstarsPresale.mint() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#97-113) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > 1639587600,Presale not started) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#99)
+NafstarsPresale.batchMint(uint256) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#117-143) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > 1639587600,Presale not started) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#119)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.0 (0x14748f5cda40dd3efd84acde894ee2875511760.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable NafstarsPresale.NFTContract (0x14748f5cda40dd3efd84acde894ee2875511760.sol#43) is not in mixedCase
+Variable NafstarsPresale.WETH (0x14748f5cda40dd3efd84acde894ee2875511760.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+sold() should be declared external:
+	- NafstarsPresale.sold() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#73-77)
+limit() should be declared external:
+	- NafstarsPresale.limit() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#81-85)
+remaining() should be declared external:
+	- NafstarsPresale.remaining() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#89-93)
+mint() should be declared external:
+	- NafstarsPresale.mint() (0x14748f5cda40dd3efd84acde894ee2875511760.sol#97-113)
+batchMint(uint256) should be declared external:
+	- NafstarsPresale.batchMint(uint256) (0x14748f5cda40dd3efd84acde894ee2875511760.sol#117-143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x14748f5cda40dd3efd84acde894ee2875511760.sol analyzed (3 contracts with 75 detectors), 17 result(s) found
+

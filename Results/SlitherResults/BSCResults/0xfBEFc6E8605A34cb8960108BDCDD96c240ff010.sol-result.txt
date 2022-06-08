@@ -1,0 +1,47 @@
+
+Lock.receive() (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#187-193) ignores return value by DepositCoin.transfer(TEAM,DepositCoin.balanceOf(address(this))) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#191)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract Lock (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#153-198) has payable functions:
+	 - Lock.receive() (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#187-193)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Lock.receive() (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#187-193) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > UnlockTime - 10,Withdraw: time is not up) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#189)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Address.isContract(address) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#19-29) uses assembly
+	- INLINE ASM (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#25)
+Address._functionCallWithValue(address,bytes,uint256,string) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#83-119) uses assembly
+	- INLINE ASM (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#103-109)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#assembly-usage
+
+Address._functionCallWithValue(address,bytes,uint256,string) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#83-119) is never used and should be removed
+Address.functionCall(address,bytes) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#49-53) is never used and should be removed
+Address.functionCall(address,bytes,string) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#57-61) is never used and should be removed
+Address.functionCallWithValue(address,bytes,uint256) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#65-69) is never used and should be removed
+Address.functionCallWithValue(address,bytes,uint256,string) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#73-79) is never used and should be removed
+Address.isContract(address) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#19-29) is never used and should be removed
+Address.sendValue(address,uint256) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#33-45) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in Address.sendValue(address,uint256) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#33-45):
+	- (success) = recipient.call{value: amount}() (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#41)
+Low level call in Address._functionCallWithValue(address,bytes,uint256,string) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#83-119):
+	- (success,returndata) = target.call{value: weiValue}(data) (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#91)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Parameter Lock.init(address)._sgem (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#175) is not in mixedCase
+Variable Lock.DepositCoin (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#155) is not in mixedCase
+Variable Lock.TEAM (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#157) is not in mixedCase
+Variable Lock.UnlockTime (0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol#159) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xfBEFc6E8605A34cb8960108BDCDD96c240ff010.sol analyzed (3 contracts with 75 detectors), 20 result(s) found
+

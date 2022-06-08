@@ -1,0 +1,91 @@
+
+DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371) ignores return value by token.transferFrom(msg.sender,recipient,paidAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#345)
+DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371) ignores return value by IERC20(presaleTokenAddress).transfer(msg.sender,tokenAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#355)
+DogePresale.getUnsoldTokens(address) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#375-383) ignores return value by IERC20(presaleTokenAddress).transfer(to,IERC20(presaleTokenAddress).balanceOf(address(this))) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#381)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#345)
+	- IERC20(presaleTokenAddress).transfer(msg.sender,tokenAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#355)
+	State variables written after the call(s):
+	- _paidTotal[msg.sender] += paidAmount (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#359)
+	- totalBUSDAmount += paidAmount (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#365)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+DogePresale.setMinBUSDLimit(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#227-231) should emit an event for: 
+	- minBUSDLimit = _minBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#229) 
+DogePresale.setMaxBUSDLimit(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#235-239) should emit an event for: 
+	- maxBUSDLimit = _maxBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#237) 
+DogePresale.setTotalBUSDLimit(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#243-247) should emit an event for: 
+	- totalBUSDLimit = _totalBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#245) 
+DogePresale.setPresaleStartTime(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#279-283) should emit an event for: 
+	- presaleStartTime = _presaleStartTime (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#281) 
+DogePresale.setDelayTime(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#287-291) should emit an event for: 
+	- delayTime = _delayTime (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#289) 
+DogePresale.setTokenPriceInBUSD(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#295-299) should emit an event for: 
+	- tokenPrice = _presaleTokenPrice (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#297) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+DogePresale.setTokenAddress(address).addr (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#213) lacks a zero-check on :
+		- presaleTokenAddress = addr (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#215)
+DogePresale.setMainCurrencyAddress(address)._mainCurrencyAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#219) lacks a zero-check on :
+		- mainCurrencyAddress = _mainCurrencyAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#221)
+DogePresale.setPresaleTokenAddress(address)._presaleTokenAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#251) lacks a zero-check on :
+		- presaleTokenAddress = _presaleTokenAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#253)
+DogePresale.setRecipient(address)._recipient (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#259) lacks a zero-check on :
+		- recipient = _recipient (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#261)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#345)
+	- IERC20(presaleTokenAddress).transfer(msg.sender,tokenAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#355)
+	State variables written after the call(s):
+	- participater[msg.sender] = true (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#361)
+	- tokenSold += tokenAmount (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#363)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371):
+	External calls:
+	- token.transferFrom(msg.sender,recipient,paidAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#345)
+	- IERC20(presaleTokenAddress).transfer(msg.sender,tokenAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#355)
+	Event emitted after the call(s):
+	- Presale(paidAmount) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#369)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > presaleStartTime,Presale is not open yet) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#317)
+	- block.timestamp - presaleStartTime <= delayTime (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#323)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.0 (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#35) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Event DogePresaleclaimed(address,uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#203) is not in CapWords
+Parameter DogePresale.setMainCurrencyAddress(address)._mainCurrencyAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#219) is not in mixedCase
+Parameter DogePresale.setMinBUSDLimit(uint256)._minBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#227) is not in mixedCase
+Parameter DogePresale.setMaxBUSDLimit(uint256)._maxBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#235) is not in mixedCase
+Parameter DogePresale.setTotalBUSDLimit(uint256)._totalBUSDLimit (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#243) is not in mixedCase
+Parameter DogePresale.setPresaleTokenAddress(address)._presaleTokenAddress (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#251) is not in mixedCase
+Parameter DogePresale.setRecipient(address)._recipient (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#259) is not in mixedCase
+Parameter DogePresale.setPresaleStartTime(uint256)._presaleStartTime (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#279) is not in mixedCase
+Parameter DogePresale.setDelayTime(uint256)._delayTime (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#287) is not in mixedCase
+Parameter DogePresale.setTokenPriceInBUSD(uint256)._presaleTokenPrice (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#295) is not in mixedCase
+Variable DogePresale._paidTotal (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#197) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+DogePresale.tokenPriceDecimal (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#185) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#131-139)
+setWhitelist(address[],bool) should be declared external:
+	- DogePresale.setWhitelist(address[],bool) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#303-311)
+buy(uint256) should be declared external:
+	- DogePresale.buy(uint256) (0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol#315-371)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x9A4B4B5246A18b798FfDeABf0a079B21a85315C.sol analyzed (4 contracts with 75 detectors), 34 result(s) found
+

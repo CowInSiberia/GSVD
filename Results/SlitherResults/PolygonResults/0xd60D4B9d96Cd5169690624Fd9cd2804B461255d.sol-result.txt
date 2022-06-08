@@ -1,0 +1,124 @@
+
+Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129) ignores return value by token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#93)
+Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129) ignores return value by token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#95)
+Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129) ignores return value by token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#113)
+Banka.makeNewBet(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131-149) ignores return value by token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#137)
+Banka.withdraw() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#161-175) ignores return value by token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#169)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Banka.makeNewBet(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131-149):
+	External calls:
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#137)
+	State variables written after the call(s):
+	- highestBid = Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#139)
+	- time = block.timestamp + 99 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#141)
+Reentrancy in Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129):
+	External calls:
+	- token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#93)
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#95)
+	State variables written after the call(s):
+	- sum = Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#101)
+	- time = block.timestamp + 99 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#97)
+	- winner = msg.sender (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#103)
+Reentrancy in Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129):
+	External calls:
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#113)
+	State variables written after the call(s):
+	- sum = Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#119)
+	- time = block.timestamp + 99 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#115)
+Reentrancy in Banka.withdraw() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#161-175):
+	External calls:
+	- token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#169)
+	State variables written after the call(s):
+	- sum = 0 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in Banka.makeNewBet(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131-149):
+	External calls:
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#137)
+	State variables written after the call(s):
+	- players.push(Player(msg.sender,Sum,block.timestamp)) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#147)
+	- sum = sum + Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#143)
+	- winner = msg.sender (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#145)
+Reentrancy in Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129):
+	External calls:
+	- token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#93)
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#95)
+	State variables written after the call(s):
+	- highestBid = Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#99)
+	- delete players (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#105)
+	- players.push(Player(msg.sender,Sum,block.timestamp)) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#107)
+Reentrancy in Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129):
+	External calls:
+	- token.transferFrom(msg.sender,address(this),Sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#113)
+	State variables written after the call(s):
+	- highestBid = Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#117)
+	- delete players (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#123)
+	- players.push(Player(msg.sender,Sum,block.timestamp)) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#125)
+	- winner = msg.sender (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#121)
+Reentrancy in Banka.withdraw() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#161-175):
+	External calls:
+	- token.transfer(winner,sum) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#169)
+	State variables written after the call(s):
+	- delete players (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#173)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(time < block.timestamp,Game already started) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#85)
+Banka.makeNewBet(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131-149) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(time > block.timestamp,Game already ended, start new please) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#133)
+Banka.timeLeft() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#151-159) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(time > block.timestamp,Game already ended) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#153)
+Banka.withdraw() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#161-175) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(time < block.timestamp,Game still going) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#163)
+Banka.lastWiner() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#177-183) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(time < block.timestamp,Game still going) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#179)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Banka.token (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#79) is set pre-construction with a non-constant function or state variable:
+	- IERC20(AUSD)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#function-initializing-state
+
+Pragma version^0.8.0 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Banka.start(uint256).Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83) is not in mixedCase
+Parameter Banka.makeNewBet(uint256).Sum (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131) is not in mixedCase
+Function Banka.HighestBid() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#185-189) is not in mixedCase
+Function Banka.SumOf() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#191-195) is not in mixedCase
+Variable Banka.AUSD (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#45) is not in mixedCase
+Variable Banka.Winners (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#65) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Banka.HighestBid() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#185-189) uses literals with too many digits:
+	- highestBid / 1000000000000000000 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#187)
+Banka.SumOf() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#191-195) uses literals with too many digits:
+	- sum / 1000000000000000000 (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#193)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+Banka.AUSD (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#45) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+start(uint256) should be declared external:
+	- Banka.start(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#83-129)
+makeNewBet(uint256) should be declared external:
+	- Banka.makeNewBet(uint256) (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#131-149)
+timeLeft() should be declared external:
+	- Banka.timeLeft() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#151-159)
+withdraw() should be declared external:
+	- Banka.withdraw() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#161-175)
+lastWiner() should be declared external:
+	- Banka.lastWiner() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#177-183)
+HighestBid() should be declared external:
+	- Banka.HighestBid() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#185-189)
+SumOf() should be declared external:
+	- Banka.SumOf() (0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol#191-195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xd60D4B9d96Cd5169690624Fd9cd2804B461255d.sol analyzed (2 contracts with 75 detectors), 37 result(s) found
+

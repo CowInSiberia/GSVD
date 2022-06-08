@@ -1,0 +1,33 @@
+
+Release.draw() (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#115-191) ignores return value by token.transfer(msg.sender,award) (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#185)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Release.constructor(address[],address,uint256,uint256,uint256) (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#83-109) performs a multiplication on the result of a division:
+	-lastDrawTime = block.timestamp / 86400 * 86400 (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#101)
+Release.draw() (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#115-191) performs a multiplication on the result of a division:
+	-num = (time - lastDrawTime) / periodRelease (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#127)
+	-v = num * perMonthRelease (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#135)
+Release.draw() (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#115-191) performs a multiplication on the result of a division:
+	-num = (time - lastDrawTime) / periodRelease (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#127)
+	-lastDrawTime += num * periodRelease (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in Release.draw() (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#115-191):
+	External calls:
+	- token.transfer(msg.sender,award) (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#185)
+	Event emitted after the call(s):
+	- Award(msg.sender,time,award) (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#187)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Release.draw() (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#115-191) uses timestamp for comparisons
+	Dangerous comparisons:
+	- time > lastDrawTime (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#123)
+	- num > 0 && total > 0 (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#131)
+	- v > total (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#139)
+	- v > 0 (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version>=0.5.0 (0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol#9) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+/home/cowie/VersionClassification_BSC/5_UltimateResult/0x443b72e8B5515c5597C90BA13e2306d74A2784E.sol analyzed (2 contracts with 75 detectors), 7 result(s) found
+

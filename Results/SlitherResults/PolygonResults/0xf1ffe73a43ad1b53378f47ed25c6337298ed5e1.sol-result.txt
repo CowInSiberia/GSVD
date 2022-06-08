@@ -1,0 +1,89 @@
+
+helloworld.withdrawERC20(address) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#341-351) ignores return value by myContract.transfer(owner,balances_) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#349)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract quickSwapContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#101-127) has payable functions:
+	 - quickSwapContract.swapExactETHForTokens(uint256,address[],address,uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#125)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+helloworld.SwapEthToUsdcByQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#187-199) ignores return value by quickSwapContract_.swapExactETHForTokens.value(msg.value)(amountOutMin,path,address(this),3279146672) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#197)
+helloworld.SwapUsdcToEthBySushi(uint256,uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#201-213) ignores return value by sushiSwapContract_.swapExactTokensForETH(amountIn,amountOutMin,path,msg.sender,3279146672) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#211)
+helloworld.approveUsdcForSushi() (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#319-325) ignores return value by usdcContract_.approve(sushiRouter,10000000000) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#323)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+helloworld.wethcontract_ (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#169) is set pre-construction with a non-constant function or state variable:
+	- wethContract(weth)
+helloworld.usdcContract_ (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#171) is set pre-construction with a non-constant function or state variable:
+	- usdcContract(usdc)
+helloworld.quickSwapContract_ (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#173) is set pre-construction with a non-constant function or state variable:
+	- quickSwapContract(quickSwap)
+helloworld.sushiSwapContract_ (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#175) is set pre-construction with a non-constant function or state variable:
+	- sushiSwapContract(sushiRouter)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#function-initializing-state
+
+Pragma version>=0.5.0 (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#9) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+erc20Contract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#55-83) should inherit from wethContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#87-91)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-inheritance
+
+Contract erc20Contract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#55-83) is not in CapWords
+Contract wethContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#87-91) is not in CapWords
+Contract usdcContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#93-99) is not in CapWords
+Contract quickSwapContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#101-127) is not in CapWords
+Contract sushiSwapContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#133-137) is not in CapWords
+Contract helloworld (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#147-358) is not in CapWords
+Function helloworld.SwapEthToUsdcByQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#187-199) is not in mixedCase
+Function helloworld.SwapUsdcToEthBySushi(uint256,uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#201-213) is not in mixedCase
+Function helloworld.EthQuickToSushi() (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#217-229) is not in mixedCase
+Function helloworld.EthToQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#271-277) is not in mixedCase
+Parameter helloworld.EthToQuick(uint256).EthAmount (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#271) is not in mixedCase
+Function helloworld.EthToUsdcByQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#279-283) is not in mixedCase
+Function helloworld.UsdcToEthBySushi(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#285-289) is not in mixedCase
+Parameter helloworld.UsdcToEthBySushi(uint256).UsdcIn (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#285) is not in mixedCase
+Function helloworld.EthToSushi(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#297-303) is not in mixedCase
+Parameter helloworld.EthToSushi(uint256).EthAmount (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#297) is not in mixedCase
+Function helloworld.EthToUsdcBySushi(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#305-309) is not in mixedCase
+Function helloworld.UsdcToEthByQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#311-315) is not in mixedCase
+Parameter helloworld.UsdcToEthByQuick(uint256).UsdcIn (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#311) is not in mixedCase
+Variable helloworld.weth_usdc_quickSwap (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#159) is not in mixedCase
+Variable helloworld.weth_usdc_sushi (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#165) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+helloworld.approveUsdcForSushi() (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#319-325) uses literals with too many digits:
+	- usdcContract_.approve(sushiRouter,10000000000) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#323)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+quickSwapContract (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#101-127) does not implement functions:
+	- quickSwapContract.swapExactETHForTokens(uint256,address[],address,uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#125)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unimplemented-functions
+
+helloworld.quickSwap (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#161) should be constant
+helloworld.sushiRouter (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#167) should be constant
+helloworld.usdc (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#155) should be constant
+helloworld.weth (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#153) should be constant
+helloworld.weth_usdc_quickSwap (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#159) should be constant
+helloworld.weth_usdc_sushi (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#165) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+transfer(address,uint256) should be declared external:
+	- erc20Contract.transfer(address,uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#65-75)
+balanceOf(address) should be declared external:
+	- erc20Contract.balanceOf(address) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#77-81)
+EthQuickToSushi() should be declared external:
+	- helloworld.EthQuickToSushi() (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#217-229)
+EthToQuick(uint256) should be declared external:
+	- helloworld.EthToQuick(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#271-277)
+EthToSushi(uint256) should be declared external:
+	- helloworld.EthToSushi(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#297-303)
+approveUsdcForSushi() should be declared external:
+	- helloworld.approveUsdcForSushi() (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#319-325)
+withdrawETH(uint256) should be declared external:
+	- helloworld.withdrawETH(uint256) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#331-337)
+withdrawERC20(address) should be declared external:
+	- helloworld.withdrawERC20(address) (0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol#341-351)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/5_UltimateResult/0xf1ffe73a43ad1b53378f47ed25c6337298ed5e1.sol analyzed (7 contracts with 75 detectors), 48 result(s) found
+

@@ -1,0 +1,115 @@
+
+USDC_MINTER.sellEggs() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#119-143) ignores return value by ERC20(usdc).transfer(ceoAddress2,fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#137)
+USDC_MINTER.sellEggs() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#119-143) ignores return value by ERC20(usdc).transfer(ceoAddress,fee - fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#139)
+USDC_MINTER.sellEggs() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#119-143) ignores return value by ERC20(usdc).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#141)
+USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173) ignores return value by ERC20(usdc).transferFrom(address(msg.sender),address(this),amount) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#151)
+USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173) ignores return value by ERC20(usdc).transfer(ceoAddress2,fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#165)
+USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173) ignores return value by ERC20(usdc).transfer(ceoAddress,fee - fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#167)
+USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219) ignores return value by ERC20(usdc).transferFrom(address(msg.sender),address(this),amount) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#213)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173):
+	External calls:
+	- ERC20(usdc).transferFrom(address(msg.sender),address(this),amount) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#151)
+	- balance = ERC20(usdc).balanceOf(address(this)) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#155)
+	- ERC20(usdc).transfer(ceoAddress2,fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#165)
+	- ERC20(usdc).transfer(ceoAddress,fee - fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#167)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#171)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#107)
+Reentrancy in USDC_MINTER.sellEggs() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#119-143):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#125)
+		- calculateTrade(eggs,marketEggs,ERC20(usdc).balanceOf(address(this))) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#187)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#131)
+	- lastHatch[msg.sender] = now (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#133)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173):
+	External calls:
+	- ERC20(usdc).transferFrom(address(msg.sender),address(this),amount) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#151)
+	- balance = ERC20(usdc).balanceOf(address(this)) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#155)
+	- ERC20(usdc).transfer(ceoAddress2,fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#165)
+	- ERC20(usdc).transfer(ceoAddress,fee - fee2) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#167)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#169)
+	- hatchEggs(ref) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#171)
+		- claimedEggs[msg.sender] = 0 (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#93)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,7)) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#101)
+	- hatchEggs(ref) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#171)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#91)
+	- hatchEggs(ref) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#171)
+		- lastHatch[msg.sender] = now (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#95)
+	- hatchEggs(ref) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#171)
+		- referrals[msg.sender] = ref (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#83)
+Reentrancy in USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219):
+	External calls:
+	- ERC20(usdc).transferFrom(address(msg.sender),address(this),amount) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#211)
+	State variables written after the call(s):
+	- initialized = true (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#215)
+	- marketEggs = 259200000000 (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#213)
+USDC_MINTER.min(uint256,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#247-251) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#249)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract USDC_MINTER (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#35-253) is not in CapWords
+Variable USDC_MINTER.EGGS_TO_HATCH_1MINERS (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#41) is not in mixedCase
+Variable USDC_MINTER.PSN (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#43) is not in mixedCase
+Variable USDC_MINTER.PSNH (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219) uses literals with too many digits:
+	- marketEggs = 259200000000 (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+USDC_MINTER.EGGS_TO_HATCH_1MINERS (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#41) should be constant
+USDC_MINTER.PSN (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#43) should be constant
+USDC_MINTER.PSNH (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#45) should be constant
+USDC_MINTER.usdc (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#39) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#15)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#17)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#21)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#25)
+withdraw(uint256) should be declared external:
+	- USDC_MINTER.withdraw(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#111-117)
+sellEggs() should be declared external:
+	- USDC_MINTER.sellEggs() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#119-143)
+buyEggs(address,uint256) should be declared external:
+	- USDC_MINTER.buyEggs(address,uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#145-173)
+calculateEggBuySimple(uint256) should be declared external:
+	- USDC_MINTER.calculateEggBuySimple(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#197-201)
+seedMarket(uint256) should be declared external:
+	- USDC_MINTER.seedMarket(uint256) (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#209-219)
+getBalance() should be declared external:
+	- USDC_MINTER.getBalance() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#221-225)
+getMyMiners() should be declared external:
+	- USDC_MINTER.getMyMiners() (0x2f2b736c46347c7499bda6cc38514375682f1fc.sol#227-231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/4_UltimateResult/0x2f2b736c46347c7499bda6cc38514375682f1fc.sol analyzed (3 contracts with 75 detectors), 38 result(s) found
+

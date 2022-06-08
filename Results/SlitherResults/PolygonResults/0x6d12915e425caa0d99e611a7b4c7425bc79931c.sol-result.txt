@@ -1,0 +1,38 @@
+
+Faucet.requestTokens() (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#77-85) ignores return value by tokenInstance.transfer(msg.sender,tokenAmount) (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#81)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Faucet.allowedToWithdraw(address) (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#89-103) uses a dangerous strict equality:
+	- lastAccessTime[_address] == 0 (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#91)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in Faucet.requestTokens() (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#77-85):
+	External calls:
+	- tokenInstance.transfer(msg.sender,tokenAmount) (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#81)
+	State variables written after the call(s):
+	- lastAccessTime[msg.sender] = block.timestamp + waitTime (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#83)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Faucet.allowedToWithdraw(address) (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#89-103) uses timestamp for comparisons
+	Dangerous comparisons:
+	- lastAccessTime[_address] == 0 (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#91)
+	- block.timestamp >= lastAccessTime[_address] (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#95)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.5.1 (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#37) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Faucet.allowedToWithdraw(address)._address (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#89) is not in mixedCase
+Constant Faucet.tokenAmount (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#53) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant Faucet.waitTime (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#55) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Faucet.slitherConstructorConstantVariables() (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#51-106) uses literals with too many digits:
+	- tokenAmount = 100000000000000000000000 (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+requestTokens() should be declared external:
+	- Faucet.requestTokens() (0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol#77-85)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/5_UltimateResult/0x6d12915e425caa0d99e611a7b4c7425bc79931c.sol analyzed (2 contracts with 75 detectors), 10 result(s) found
+

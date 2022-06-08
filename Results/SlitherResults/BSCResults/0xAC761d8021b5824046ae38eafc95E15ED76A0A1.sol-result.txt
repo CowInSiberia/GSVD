@@ -1,0 +1,34 @@
+
+Vesting.initialize() (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#261-271) ignores return value by token.transferFrom(msg.sender,address(this),totalToRedeem) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#267)
+Vesting.redeem() (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#351-373) ignores return value by token.transfer(msg.sender,canRedeemAmount) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#369)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Vesting.initialize() (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#261-271):
+	External calls:
+	- token.transferFrom(msg.sender,address(this),totalToRedeem) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#267)
+	State variables written after the call(s):
+	- initialized = true (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#269)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Vesting._timestampToPercentage(uint256) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#275-307) uses timestamp for comparisons
+	Dangerous comparisons:
+	- timestamp < deployTimestamp (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#277)
+	- tickCompoundedDurationInSec[0] > diff (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#285)
+	- diff >= tickCompoundedDurationInSec[uint256(i)] (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#293)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Vesting.initialize() (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#261-271) compares to a boolean constant:
+	-require(bool,string)(initialized == false,already initialized) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#263)
+Vesting.redeem() (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#351-373) compares to a boolean constant:
+	-require(bool,string)(initialized == true,contract needs to be initialized before redeeming can start) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#353)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Vesting.constructor(address,address[],uint256[],uint64[],uint64[]) (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#205-257) has costly operations inside a loop:
+	- totalToRedeem += amounts[i_scope_0] (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#253)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#costly-operations-inside-a-loop
+
+Pragma version^0.8.0 (0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol#15) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xAC761d8021b5824046ae38eafc95E15ED76A0A1.sol analyzed (2 contracts with 75 detectors), 9 result(s) found
+

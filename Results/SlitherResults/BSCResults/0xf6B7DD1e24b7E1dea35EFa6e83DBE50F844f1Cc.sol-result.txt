@@ -1,0 +1,89 @@
+
+StakeContract.deposit(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#223-241) ignores return value by token.transferFrom(msg.sender,address(this),_amount) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#239)
+StakeContract.withdraw() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#245-261) ignores return value by token.transfer(msg.sender,amount) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#257)
+StakeContract.queryAll() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#323-333) ignores return value by token.transfer(msg.sender,balance) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#331)
+StakeContract.query(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#337-351) ignores return value by token.transfer(msg.sender,_amount) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#349)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in StakeContract.withdraw() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#245-261):
+	External calls:
+	- token.transfer(msg.sender,amount) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#257)
+	State variables written after the call(s):
+	- user.amount = 0 (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#259)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+StakeContract.queryAll() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#323-333) ignores return value by token.approve(address(this),balance) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#329)
+StakeContract.query(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#337-351) ignores return value by token.approve(address(this),_amount) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#347)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+StakeContract.transferOwnership(address) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#313-319) should emit an event for: 
+	- owner = _owner (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#317) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+StakeContract.setPoolOpenTime(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#205-209) should emit an event for: 
+	- startPool = _startBlock (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#207) 
+StakeContract.setPoolCloseTime(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#215-219) should emit an event for: 
+	- endPool = _endBlock (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#217) 
+StakeContract.setLockPeriod(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#295-299) should emit an event for: 
+	- lockTokenPeriod = _lockPeriod (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#297) 
+StakeContract.setAPY(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#305-309) should emit an event for: 
+	- APY = _APY (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#307) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+StakeContract.transferOwnership(address)._owner (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#313) lacks a zero-check on :
+		- owner = _owner (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#317)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+StakeContract.deposit(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#223-241) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(curBlock < endPool,can not stake any more after jan 26 23:00 utc timezone) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#233)
+	- require(bool,string)(curBlock > startPool,can not stake before pool open time) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#235)
+StakeContract.withdraw() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#245-261) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(curBlock >= (endPool + lockTokenPeriod),Can not withdraw token in lock token time) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#253)
+StakeContract.calcCurrentReward(address) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#265-289) uses timestamp for comparisons
+	Dangerous comparisons:
+	- curBlock > (endPool + lockTokenPeriod) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#273)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+SafeMath.add(uint256,uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#43-53) is never used and should be removed
+SafeMath.mod(uint256,uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#131-135) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#139-145) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#57-61) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#65-75) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.5 (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter StakeContract.setPoolOpenTime(uint256)._startBlock (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#205) is not in mixedCase
+Parameter StakeContract.setPoolCloseTime(uint256)._endBlock (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#215) is not in mixedCase
+Parameter StakeContract.deposit(uint256)._amount (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#223) is not in mixedCase
+Parameter StakeContract.calcCurrentReward(address)._addr (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#265) is not in mixedCase
+Parameter StakeContract.setLockPeriod(uint256)._lockPeriod (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#295) is not in mixedCase
+Parameter StakeContract.setAPY(uint256)._APY (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#305) is not in mixedCase
+Parameter StakeContract.transferOwnership(address)._owner (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#313) is not in mixedCase
+Parameter StakeContract.query(uint256)._amount (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#337) is not in mixedCase
+Variable StakeContract.APY (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#175) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+setPoolOpenTime(uint256) should be declared external:
+	- StakeContract.setPoolOpenTime(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#205-209)
+setPoolCloseTime(uint256) should be declared external:
+	- StakeContract.setPoolCloseTime(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#215-219)
+withdraw() should be declared external:
+	- StakeContract.withdraw() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#245-261)
+calcCurrentReward(address) should be declared external:
+	- StakeContract.calcCurrentReward(address) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#265-289)
+setLockPeriod(uint256) should be declared external:
+	- StakeContract.setLockPeriod(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#295-299)
+setAPY(uint256) should be declared external:
+	- StakeContract.setAPY(uint256) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#305-309)
+transferOwnership(address) should be declared external:
+	- StakeContract.transferOwnership(address) (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#313-319)
+queryAll() should be declared external:
+	- StakeContract.queryAll() (0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol#323-333)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xf6B7DD1e24b7E1dea35EFa6e83DBE50F844f1Cc.sol analyzed (3 contracts with 75 detectors), 40 result(s) found
+

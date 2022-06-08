@@ -1,0 +1,46 @@
+
+Croc_Presale_Contract._deliverTokens(address,uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#217-221) ignores return value by token.transfer(_beneficiary,_tokenAmount) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#219)
+Croc_Presale_Contract.withdrawTokens(address,uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#263-269) ignores return value by IST20(tokenAddress).transfer(admin,tokens) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#267)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Croc_Presale_Contract.buyTokens(address) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#169-195):
+	External calls:
+	- _processPurchase(_beneficiary,tokens) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#181)
+		- token.transfer(_beneficiary,_tokenAmount) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#219)
+	State variables written after the call(s):
+	- _updatePurchasingState(_beneficiary,weiAmount) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#185)
+		- purchasedBnb[_beneficiary] = _weiAmount.add(purchasedBnb[_beneficiary]) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#231)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Croc_Presale_Contract.setPresaleRate(uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#241-247) should emit an event for: 
+	- rate = _rate (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#245) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Reentrancy in Croc_Presale_Contract.buyTokens(address) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#169-195):
+	External calls:
+	- _processPurchase(_beneficiary,tokens) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#181)
+		- token.transfer(_beneficiary,_tokenAmount) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#219)
+	Event emitted after the call(s):
+	- TokenPurchase(msg.sender,_beneficiary,weiAmount,tokens) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#183)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SafeMath.mod(uint256,uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#101-105) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#107-113) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Contract Croc_Presale_Contract (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#119-272) is not in CapWords
+Parameter Croc_Presale_Contract.buyTokens(address)._beneficiary (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#169) is not in mixedCase
+Function Croc_Presale_Contract._preValidatePurchase(address,uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#197-215) is not in mixedCase
+Parameter Croc_Presale_Contract._preValidatePurchase(address,uint256)._beneficiary (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#197) is not in mixedCase
+Parameter Croc_Presale_Contract._preValidatePurchase(address,uint256)._weiAmount (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#197) is not in mixedCase
+Function Croc_Presale_Contract._getTokenAmount(uint256) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#235-239) is not in mixedCase
+Parameter Croc_Presale_Contract._getTokenAmount(uint256)._weiAmount (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#235) is not in mixedCase
+Parameter Croc_Presale_Contract.setPresaleRate(uint256)._rate (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#241) is not in mixedCase
+Parameter Croc_Presale_Contract.maxBnb(address)._beneficiary (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#249) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+buyTokens(address) should be declared external:
+	- Croc_Presale_Contract.buyTokens(address) (0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol#169-195)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0xfd9ab0334c8b28acac42891e6c661557ef6964f.sol analyzed (3 contracts with 75 detectors), 17 result(s) found
+

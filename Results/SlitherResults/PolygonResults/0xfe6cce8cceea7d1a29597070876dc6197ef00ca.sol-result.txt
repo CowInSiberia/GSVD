@@ -1,0 +1,22 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_Polygon/8_UltimateResult/0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol
+
+
+
+airdrop.claim() (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#189-205) ignores return value by token.transfer(msg.sender,amt) (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#203)
+airdrop.withdraw() (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#207-219) ignores return value by token.transfer(msg.sender,amt) (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+airdrop.claim() (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#189-205) ignores return value by token.approve(tokenadr,amt) (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#201)
+airdrop.withdraw() (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#207-219) ignores return value by token.approve(tokenadr,amt) (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#215)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.7 (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract airdrop (0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol#161-222) is not in CapWords
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xfe6cce8cceea7d1a29597070876dc6197ef00ca.sol analyzed (2 contracts with 75 detectors), 7 result(s) found
+

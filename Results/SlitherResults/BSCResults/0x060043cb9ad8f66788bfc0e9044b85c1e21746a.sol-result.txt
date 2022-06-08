@@ -1,0 +1,120 @@
+
+KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress,fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#135)
+KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress2,fee - fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#137)
+KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress3,mfee) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#139)
+KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143) ignores return value by ERC20(KRAJCAR).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#141)
+KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177) ignores return value by ERC20(KRAJCAR).transferFrom(address(msg.sender),address(this),amount) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#151)
+KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress,fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#167)
+KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress2,fee - fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#169)
+KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177) ignores return value by ERC20(KRAJCAR).transfer(ceoAddress3,mfee) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#171)
+KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229) ignores return value by ERC20(KRAJCAR).transferFrom(address(msg.sender),address(this),amount) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#221)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#223)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177):
+	External calls:
+	- ERC20(KRAJCAR).transferFrom(address(msg.sender),address(this),amount) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#151)
+	- balance = ERC20(KRAJCAR).balanceOf(address(this)) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#155)
+	- ERC20(KRAJCAR).transfer(ceoAddress,fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#167)
+	- ERC20(KRAJCAR).transfer(ceoAddress2,fee - fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#169)
+	- ERC20(KRAJCAR).transfer(ceoAddress3,mfee) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#171)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#175)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#111)
+Reentrancy in KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#121)
+		- calculateTrade(eggs,marketEggs,ERC20(KRAJCAR).balanceOf(address(this))) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#191)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#129)
+	- lastHatch[msg.sender] = now (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#131)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177):
+	External calls:
+	- ERC20(KRAJCAR).transferFrom(address(msg.sender),address(this),amount) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#151)
+	- balance = ERC20(KRAJCAR).balanceOf(address(this)) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#155)
+	- ERC20(KRAJCAR).transfer(ceoAddress,fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#167)
+	- ERC20(KRAJCAR).transfer(ceoAddress2,fee - fee2) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#169)
+	- ERC20(KRAJCAR).transfer(ceoAddress3,mfee) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#171)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#173)
+	- hatchEggs(ref) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#175)
+		- claimedEggs[msg.sender] = 0 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#97)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,7)) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#105)
+	- hatchEggs(ref) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#175)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#95)
+	- hatchEggs(ref) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#175)
+		- lastHatch[msg.sender] = now (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#99)
+	- hatchEggs(ref) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#175)
+		- referrals[msg.sender] = ref (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#87)
+Reentrancy in KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229):
+	External calls:
+	- ERC20(KRAJCAR).transferFrom(address(msg.sender),address(this),amount) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#221)
+	State variables written after the call(s):
+	- initialized = true (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#225)
+	- marketEggs = 86400000000 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#223)
+KRAJCARFARM.min(uint256,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#257-261) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#259)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable KRAJCARFARM.KRAJCAR (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#39) is not in mixedCase
+Variable KRAJCARFARM.EGGS_TO_HATCH_1MINERS (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#41) is not in mixedCase
+Variable KRAJCARFARM.PSN (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#43) is not in mixedCase
+Variable KRAJCARFARM.PSNH (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#45) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable KRAJCARFARM.ceoAddress2 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#51) is too similar to KRAJCARFARM.ceoAddress3 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#53)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229) uses literals with too many digits:
+	- marketEggs = 86400000000 (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+KRAJCARFARM.EGGS_TO_HATCH_1MINERS (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#41) should be constant
+KRAJCARFARM.KRAJCAR (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#39) should be constant
+KRAJCARFARM.PSN (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#43) should be constant
+KRAJCARFARM.PSNH (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#45) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#15)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#17)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#21)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#25)
+sellEggs() should be declared external:
+	- KRAJCARFARM.sellEggs() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#115-143)
+buyEggs(address,uint256) should be declared external:
+	- KRAJCARFARM.buyEggs(address,uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#145-177)
+calculateEggBuySimple(uint256) should be declared external:
+	- KRAJCARFARM.calculateEggBuySimple(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#201-205)
+seedMarket(uint256) should be declared external:
+	- KRAJCARFARM.seedMarket(uint256) (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#219-229)
+getBalance() should be declared external:
+	- KRAJCARFARM.getBalance() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#231-235)
+getMyMiners() should be declared external:
+	- KRAJCARFARM.getMyMiners() (0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol#237-241)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x060043cb9ad8f66788bfc0e9044b85c1e21746a.sol analyzed (3 contracts with 75 detectors), 40 result(s) found
+

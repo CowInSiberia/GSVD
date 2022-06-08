@@ -1,0 +1,48 @@
+
+Controller.randomNFT() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#67-84) uses a weak PRNG: "uint256(((uint256(keccak256(bytes)(abi.encodePacked(block.timestamp,block.difficulty,block.number,nonce))) % NFT(NFTADDRESS).totalSupply()))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#69-83)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+Controller.burn(uint256) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#105-117) ignores return value by ERC20(BUSD).transfer(ow,NFTCOST) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#114)
+Controller.mint() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#119-133) ignores return value by ERC20(BUSD).transferFrom(msg.sender,address(this),NFTCOST) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#126)
+Controller.run() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#135-149) ignores return value by ERC20(BUSD).transfer(winner,winAmount) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Controller.init() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#101-103) ignores return value by ERC20(BUSD).approve(vBUSD,MAX_INT) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#102)
+Controller.burn(uint256) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#105-117) ignores return value by vERC20(vBUSD).redeem(vERC20(vBUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#112)
+Controller.burn(uint256) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#105-117) ignores return value by vERC20(vBUSD).mint(ERC20(BUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#116)
+Controller.mint() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#119-133) ignores return value by vERC20(vBUSD).mint(ERC20(BUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#128)
+Controller.mint() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#119-133) ignores return value by NFT(NFTADDRESS).mint(msg.sender) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#130)
+Controller.run() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#135-149) ignores return value by vERC20(vBUSD).redeem(vERC20(vBUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#141)
+Controller.run() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#135-149) ignores return value by vERC20(vBUSD).mint(ERC20(BUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#145)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Reentrancy in Controller.mint() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#119-133):
+	External calls:
+	- ERC20(BUSD).transferFrom(msg.sender,address(this),NFTCOST) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#126)
+	- vERC20(vBUSD).mint(ERC20(BUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#128)
+	- NFT(NFTADDRESS).mint(msg.sender) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#130)
+	Event emitted after the call(s):
+	- Mint(msg.sender) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#132)
+Reentrancy in Controller.run() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#135-149):
+	External calls:
+	- vERC20(vBUSD).redeem(vERC20(vBUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#141)
+	- ERC20(BUSD).transfer(winner,winAmount) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#143)
+	- vERC20(vBUSD).mint(ERC20(BUSD).balanceOf(address(this))) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#145)
+	Event emitted after the call(s):
+	- Winner(msg.sender,winAmount) (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#147)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.8.0 (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#3) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract vERC20 (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#23-35) is not in CapWords
+Parameter Controller.burn(uint256)._tokenId (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#105) is not in mixedCase
+Constant Controller.vBUSD (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#60) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Controller.slitherConstructorConstantVariables() (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#53-151) uses literals with too many digits:
+	- NFTCOST = 100000000000000000000 (0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol#56)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x08D68eDf05e4c325Cc6c0F11d4c092C6F13835e.sol analyzed (4 contracts with 75 detectors), 19 result(s) found
+

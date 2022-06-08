@@ -1,0 +1,41 @@
+
+SendInviteGiveaway.random(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#139-143) uses a weak PRNG: "uint8(uint256(keccak256(bytes)(abi.encodePacked(block.timestamp,block.difficulty))) % _len) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#141)" 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#weak-PRNG
+
+SendInviteGiveaway.sendRandomGiveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#107-117) ignores return value by usdcToken.transferFrom(msg.sender,inviteGiveawayAddr[winnerTokenId],_amount) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#115)
+SendInviteGiveaway.sendTop10Giveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#121-135) ignores return value by usdcToken.transferFrom(msg.sender,top10GiveawayAddr[i],_amount) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract SendInviteGiveaway (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#47-146) has payable functions:
+	 - SendInviteGiveaway.sendRandomGiveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#107-117)
+	 - SendInviteGiveaway.sendTop10Giveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#121-135)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+SendInviteGiveaway.sendTop10Giveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#121-135) has external calls inside a loop: usdcToken.transferFrom(msg.sender,top10GiveawayAddr[i],_amount) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Pragma version^0.8.11 (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#19) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract ERC20_Token (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#23-43) is not in CapWords
+Parameter SendInviteGiveaway.sendRandomGiveaway(uint256)._amount (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#107) is not in mixedCase
+Parameter SendInviteGiveaway.sendTop10Giveaway(uint256)._amount (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#121) is not in mixedCase
+Parameter SendInviteGiveaway.random(uint256)._len (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#139) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+addGiveawayAddress(address,uint256) should be declared external:
+	- SendInviteGiveaway.addGiveawayAddress(address,uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#73-83)
+addTop10Address(address) should be declared external:
+	- SendInviteGiveaway.addTop10Address(address) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#87-93)
+removeTop10Address(uint256) should be declared external:
+	- SendInviteGiveaway.removeTop10Address(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#97-103)
+sendRandomGiveaway(uint256) should be declared external:
+	- SendInviteGiveaway.sendRandomGiveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#107-117)
+sendTop10Giveaway(uint256) should be declared external:
+	- SendInviteGiveaway.sendTop10Giveaway(uint256) (0x163195987d08818da8fdf2245c956f1cedc8b09.sol#121-135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x163195987d08818da8fdf2245c956f1cedc8b09.sol analyzed (2 contracts with 75 detectors), 16 result(s) found
+

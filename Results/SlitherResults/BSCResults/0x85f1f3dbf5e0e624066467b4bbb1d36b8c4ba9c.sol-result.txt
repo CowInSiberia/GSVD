@@ -1,0 +1,71 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/6_UltimateResult/0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> /home/cowie/VersionClassification_BSC/6_UltimateResult/0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol
+
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol
+
+
+
+IGO.subscribe(uint256,uint256,address) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119-155) ignores return value by Token(USDTToken).transferFrom(msg.sender,address(this),(_qua * periodMap[_period].price) / 10 ** 6) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#153)
+IGO.withdrawToken(address,address,uint256) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159-165) ignores return value by Token(_token).transfer(_add,_amount) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#161)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+IGO.subscribe(uint256,uint256,address) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119-155) performs a multiplication on the result of a division:
+	-_qua = freed_num * 100 / 104 (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#141)
+	-Token(USDTToken).transferFrom(msg.sender,address(this),(_qua * periodMap[_period].price) / 10 ** 6) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+IGO.changeOwner(address) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#83-89) should emit an event for: 
+	- owner = _add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#87) 
+IGO.changeAdministrator(address) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#93-99) should emit an event for: 
+	- administrator = _add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#97) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+Reentrancy in IGO.withdrawToken(address,address,uint256) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159-165):
+	External calls:
+	- Token(_token).transfer(_add,_amount) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#161)
+	Event emitted after the call(s):
+	- Withdraw(_token,msg.sender,_amount,_add) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#163)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+IGO.subscribe(uint256,uint256,address) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119-155) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(periodMap[_period].startTime < block.timestamp && block.timestamp < periodMap[_period].endTime,Period range wrong) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#129)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version>=0.6.0<0.8.0 (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#9) is too complex
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter IGO.changeOwner(address)._add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#83) is not in mixedCase
+Parameter IGO.changeAdministrator(address)._add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#93) is not in mixedCase
+Parameter IGO.setPeriod(uint256,IGO.Period)._id (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#103) is not in mixedCase
+Parameter IGO.setPeriod(uint256,IGO.Period)._period (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#103) is not in mixedCase
+Parameter IGO.subscribe(uint256,uint256,address)._qua (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119) is not in mixedCase
+Parameter IGO.subscribe(uint256,uint256,address)._period (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119) is not in mixedCase
+Parameter IGO.subscribe(uint256,uint256,address)._inviter (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#119) is not in mixedCase
+Parameter IGO.withdrawToken(address,address,uint256)._token (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159) is not in mixedCase
+Parameter IGO.withdrawToken(address,address,uint256)._add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159) is not in mixedCase
+Parameter IGO.withdrawToken(address,address,uint256)._amount (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159) is not in mixedCase
+Parameter IGO.withdraw(address,uint256)._add (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#169) is not in mixedCase
+Parameter IGO.withdraw(address,uint256)._amount (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#169) is not in mixedCase
+Variable IGO.USDTToken (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#53) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in IGO.withdraw(address,uint256) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#169-175):
+	External calls:
+	- require(bool)(_add.send(_amount)) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#171)
+	Event emitted after the call(s):
+	- Withdraw(owner,msg.sender,_amount,_add) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#173)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+IGO.USDTToken (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#53) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+withdrawToken(address,address,uint256) should be declared external:
+	- IGO.withdrawToken(address,address,uint256) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#159-165)
+withdraw(address,uint256) should be declared external:
+	- IGO.withdraw(address,uint256) (0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol#169-175)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x85f1f3dbf5e0e624066467b4bbb1d36b8c4ba9c.sol analyzed (2 contracts with 75 detectors), 25 result(s) found
+

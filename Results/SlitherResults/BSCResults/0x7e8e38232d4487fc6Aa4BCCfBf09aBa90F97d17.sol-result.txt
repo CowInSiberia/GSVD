@@ -1,0 +1,33 @@
+
+Claim.claim() (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#223-245) ignores return value by IERC20(Token).transfer(msg.sender,amount) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#239)
+Claim.withdrawToken(address) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#259-265) ignores return value by IERC20(token).transfer(msg.sender,balance) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#263)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Claim.claim() (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#223-245):
+	External calls:
+	- IERC20(Token).transfer(msg.sender,amount) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#239)
+	State variables written after the call(s):
+	- canClaimed[msg.sender] = 0 (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#241)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Claim.setToken(address).addr (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#187) lacks a zero-check on :
+		- Token = addr (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#189)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Pragma version^0.6.2 (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#11) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable Claim.Token (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#175) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#81-89)
+claim() should be declared external:
+	- Claim.claim() (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#223-245)
+withdraw() should be declared external:
+	- Claim.withdraw() (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#249-255)
+withdrawToken(address) should be declared external:
+	- Claim.withdrawToken(address) (0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol#259-265)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x7e8e38232d4487fc6Aa4BCCfBf09aBa90F97d17.sol analyzed (3 contracts with 75 detectors), 10 result(s) found
+

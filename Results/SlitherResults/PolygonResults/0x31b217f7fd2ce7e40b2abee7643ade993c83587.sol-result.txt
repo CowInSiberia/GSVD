@@ -1,0 +1,94 @@
+
+AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159) ignores return value by token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#153)
+AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203) ignores return value by token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#187)
+AvxMarketingClaim.withdrawToken(address,address,uint256) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#303-319) ignores return value by token_.transfer(to,amount) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#315)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203):
+	External calls:
+	- token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#187)
+	State variables written after the call(s):
+	- claim[addr].withdrawn[i_scope_0] = true (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#193)
+Reentrancy in AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159):
+	External calls:
+	- token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#153)
+	State variables written after the call(s):
+	- claim[addr].withdrawn[index] = true (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#155)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+AvxMarketingClaim.userDetailsAll(address).nextWithdrawnFound (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#253) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+AvxMarketingClaim.updateClaimAddress(address).addr (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#115) lacks a zero-check on :
+		- claimAddress = addr (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#125)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203):
+	External calls:
+	- token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#187)
+	Event emitted after the call(s):
+	- Claimed(addr,amt,block.timestamp) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#201)
+Reentrancy in AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159):
+	External calls:
+	- token.transfer(addr,amt) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#153)
+	Event emitted after the call(s):
+	- Claimed(addr,amt,block.timestamp) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#157)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > timeLimit,Time not reached) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#147)
+AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > claim[addr].times[i] && claim[addr].withdrawn[i] == false (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#175)
+	- block.timestamp > claim[addr].times[i_scope_0] (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#191)
+AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp > claim[addr].times[i] && claim[addr].withdrawn[i] == false (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#267)
+AvxMarketingClaim.withdrawToken(address,address,uint256) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#303-319) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp > time,Time limit Found) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#309)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159) compares to a boolean constant:
+	-require(bool,string)(claim[addr].withdrawn[index] == false,Not bought or already claimed) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#151)
+AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203) compares to a boolean constant:
+	-block.timestamp > claim[addr].times[i] && claim[addr].withdrawn[i] == false (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#175)
+AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283) compares to a boolean constant:
+	-block.timestamp > claim[addr].times[i] && claim[addr].withdrawn[i] == false (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#267)
+AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283) compares to a boolean constant:
+	-claim[addr].withdrawn[i] == false (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#259)
+AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283) compares to a boolean constant:
+	-(nextWithdrawnFound == false) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#261)
+AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283) compares to a boolean constant:
+	-claim[addr].withdrawn[i] == true (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#273)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8.4 (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+AvxMarketingClaim.claimTokenAddress (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#49) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+updateClaimAddress(address) should be declared external:
+	- AvxMarketingClaim.updateClaimAddress(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#115-127)
+claimFunction(uint256,address) should be declared external:
+	- AvxMarketingClaim.claimFunction(uint256,address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#139-159)
+claimAll() should be declared external:
+	- AvxMarketingClaim.claimAll() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#165-203)
+userDetails(address) should be declared external:
+	- AvxMarketingClaim.userDetails(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#209-231)
+userDetailsAll(address) should be declared external:
+	- AvxMarketingClaim.userDetailsAll(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#241-283)
+getOwner() should be declared external:
+	- AvxMarketingClaim.getOwner() (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#289-293)
+withdrawToken(address,address,uint256) should be declared external:
+	- AvxMarketingClaim.withdrawToken(address,address,uint256) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#303-319)
+withdrawBNB(address,uint256) should be declared external:
+	- AvxMarketingClaim.withdrawBNB(address,uint256) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#325-335)
+ownershipTransfer(address) should be declared external:
+	- AvxMarketingClaim.ownershipTransfer(address) (0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol#341-349)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x31b217f7fd2ce7e40b2abee7643ade993c83587.sol analyzed (2 contracts with 75 detectors), 31 result(s) found
+

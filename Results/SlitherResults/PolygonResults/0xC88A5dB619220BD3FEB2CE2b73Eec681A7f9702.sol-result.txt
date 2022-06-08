@@ -1,0 +1,104 @@
+
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transferFrom(msg.sender,address(this),_price) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#185)
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transferFrom(msg.sender,address(this),_potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#191)
+War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207) ignores return value by token.transferFrom(msg.sender,lastBuyers[_index],_price - _potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#193)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	State variables written after the call(s):
+	- delete lastBuyers (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#167)
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	- token.transferFrom(msg.sender,address(this),_price) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#185)
+	- token.transferFrom(msg.sender,address(this),_potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#191)
+	- token.transferFrom(msg.sender,lastBuyers[_index],_price - _potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#193)
+	State variables written after the call(s):
+	- buys[_index] ++ (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#203)
+	- lastBuyers[_index] = msg.sender (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#201)
+	- lastSlot = _index (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#199)
+	- roundEnd = block.timestamp + slotTime(_index) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#197)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+War.setOwner(address) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#109-113) should emit an event for: 
+	- owner = _owner (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#111) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+War.setOwner(address)._owner (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#109) lacks a zero-check on :
+		- owner = _owner (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#111)
+War.setBurnAddress(address)._burnAddress (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#117) lacks a zero-check on :
+		- burnAddress = _burnAddress (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#119)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	State variables written after the call(s):
+	- delete buys (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#169)
+	- totalRounds ++ (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	Event emitted after the call(s):
+	- PotWon(totalRounds,lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#151)
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	Event emitted after the call(s):
+	- PotWon(totalRounds,lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#161)
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	Event emitted after the call(s):
+	- RoundStarted(totalRounds) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#173)
+Reentrancy in War.buySlot(uint256,uint256) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133-207):
+	External calls:
+	- token.transfer(lastBuyers[lastSlot],_balance) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#149)
+	- token.transfer(burnAddress,_burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#157)
+	- token.transfer(lastBuyers[lastSlot],_balance - _burnFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#159)
+	- token.transferFrom(msg.sender,address(this),_price) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#185)
+	- token.transferFrom(msg.sender,address(this),_potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#191)
+	- token.transferFrom(msg.sender,lastBuyers[_index],_price - _potFee) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#193)
+	Event emitted after the call(s):
+	- SlotPurchased(_index,msg.sender,_price) (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+War.currentStatus() (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#221-225) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < roundEnd (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#223)
+	- block.timestamp < roundEnd + ROUND_GAP (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#223)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.10 (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter War.setOwner(address)._owner (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#109) is not in mixedCase
+Parameter War.setBurnAddress(address)._burnAddress (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#117) is not in mixedCase
+Parameter War.setWhitelisted(address,bool)._address (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#125) is not in mixedCase
+Parameter War.setWhitelisted(address,bool)._isWhitelisted (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#125) is not in mixedCase
+Parameter War.buySlot(uint256,uint256)._index (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133) is not in mixedCase
+Parameter War.buySlot(uint256,uint256)._maxBuys (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#133) is not in mixedCase
+Parameter War.currentSlotPrice(uint256)._index (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#229) is not in mixedCase
+Parameter War.slotTime(uint256)._index (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#241) is not in mixedCase
+Parameter War.allInfoFor(address)._user (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#249) is not in mixedCase
+Modifier War._onlyOwner() (0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol#85-91) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xC88A5dB619220BD3FEB2CE2b73Eec681A7f9702.sol analyzed (2 contracts with 75 detectors), 29 result(s) found
+

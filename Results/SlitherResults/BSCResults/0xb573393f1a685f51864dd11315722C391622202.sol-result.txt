@@ -1,0 +1,87 @@
+
+BabyMindSwap.buy(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#151-167) ignores return value by IBEP20(tokenA).transferFrom(msg.sender,tokenAReceiver,tokenAAmountToSend * (10 ** tokenADecimals)) (0xb573393f1a685f51864dd11315722C391622202.sol#163)
+BabyMindSwap.buy(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#151-167) ignores return value by IBEP20(tokenB).transfer(msg.sender,(tokenAAmountToSend * (priceTokenAtoB / 100)) * (10 ** tokenBDecimals)) (0xb573393f1a685f51864dd11315722C391622202.sol#165)
+BabyMindSwap.endSale(address) (0xb573393f1a685f51864dd11315722C391622202.sol#267-283) ignores return value by IBEP20(tokenA).transfer(_receiver,tokenABalance) (0xb573393f1a685f51864dd11315722C391622202.sol#271)
+BabyMindSwap.endSale(address) (0xb573393f1a685f51864dd11315722C391622202.sol#267-283) ignores return value by IBEP20(tokenB).transfer(_receiver,tokenBBalance) (0xb573393f1a685f51864dd11315722C391622202.sol#275)
+BabyMindSwap.recoverTokens(address,uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#287-301) ignores return value by token.transfer(msg.sender,amountToRecover) (0xb573393f1a685f51864dd11315722C391622202.sol#299)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BabyMindSwap.getTokenAtoB(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#107-115) performs a multiplication on the result of a division:
+	-tokensB = _amount * (priceTokenAtoB / 100) (0xb573393f1a685f51864dd11315722C391622202.sol#109)
+BabyMindSwap.buy(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#151-167) performs a multiplication on the result of a division:
+	-require(bool,string)((tokenAAmountToSend * (priceTokenAtoB / 100)) * (10 ** tokenBDecimals) <= IBEP20(tokenB).balanceOf(address(this)),Not Enough Token B in contract to buy) (0xb573393f1a685f51864dd11315722C391622202.sol#159)
+BabyMindSwap.buy(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#151-167) performs a multiplication on the result of a division:
+	-IBEP20(tokenB).transfer(msg.sender,(tokenAAmountToSend * (priceTokenAtoB / 100)) * (10 ** tokenBDecimals)) (0xb573393f1a685f51864dd11315722C391622202.sol#165)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+BabyMindSwap.setOwner(address) (0xb573393f1a685f51864dd11315722C391622202.sol#177-181) should emit an event for: 
+	- owner = _owner (0xb573393f1a685f51864dd11315722C391622202.sol#179) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+BabyMindSwap.setTokenADecimals(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#217-221) should emit an event for: 
+	- tokenADecimals = _decimals (0xb573393f1a685f51864dd11315722C391622202.sol#219) 
+BabyMindSwap.setTokenBDecimals(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#225-229) should emit an event for: 
+	- tokenBDecimals = _decimals (0xb573393f1a685f51864dd11315722C391622202.sol#227) 
+BabyMindSwap.setTokenBBuyPrice(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#233-237) should emit an event for: 
+	- priceTokenAtoB = _tokenAAmount (0xb573393f1a685f51864dd11315722C391622202.sol#235) 
+BabyMindSwap.setTokenAMinAmount(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#241-245) should emit an event for: 
+	- minTokenASendAmount = _mintokenB (0xb573393f1a685f51864dd11315722C391622202.sol#243) 
+BabyMindSwap.setTokenAMaxAmount(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#249-253) should emit an event for: 
+	- maxTokenASendAmount = _maxtokenB (0xb573393f1a685f51864dd11315722C391622202.sol#251) 
+BabyMindSwap.setStartTime(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#257-263) should emit an event for: 
+	- startTime = _time (0xb573393f1a685f51864dd11315722C391622202.sol#261) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+BabyMindSwap.setOwner(address)._owner (0xb573393f1a685f51864dd11315722C391622202.sol#177) lacks a zero-check on :
+		- owner = _owner (0xb573393f1a685f51864dd11315722C391622202.sol#179)
+BabyMindSwap.setTokenA(address)._tokenA (0xb573393f1a685f51864dd11315722C391622202.sol#193) lacks a zero-check on :
+		- tokenA = _tokenA (0xb573393f1a685f51864dd11315722C391622202.sol#195)
+BabyMindSwap.setTokenB(address)._tokenB (0xb573393f1a685f51864dd11315722C391622202.sol#201) lacks a zero-check on :
+		- tokenB = _tokenB (0xb573393f1a685f51864dd11315722C391622202.sol#203)
+BabyMindSwap.setTokenAReceiver(address)._receiver (0xb573393f1a685f51864dd11315722C391622202.sol#209) lacks a zero-check on :
+		- tokenAReceiver = _receiver (0xb573393f1a685f51864dd11315722C391622202.sol#211)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in BabyMindSwap.endSale(address) (0xb573393f1a685f51864dd11315722C391622202.sol#267-283):
+	External calls:
+	- IBEP20(tokenA).transfer(_receiver,tokenABalance) (0xb573393f1a685f51864dd11315722C391622202.sol#271)
+	- IBEP20(tokenB).transfer(_receiver,tokenBBalance) (0xb573393f1a685f51864dd11315722C391622202.sol#275)
+	State variables written after the call(s):
+	- ended = true (0xb573393f1a685f51864dd11315722C391622202.sol#279)
+	- paused = true (0xb573393f1a685f51864dd11315722C391622202.sol#281)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+BabyMindSwap.setStartTime(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#257-263) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(_time > block.timestamp,Start time must be greater than current time) (0xb573393f1a685f51864dd11315722C391622202.sol#259)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.5 (0xb573393f1a685f51864dd11315722C391622202.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter BabyMindSwap.getTokenAtoB(uint256)._amount (0xb573393f1a685f51864dd11315722C391622202.sol#107) is not in mixedCase
+Parameter BabyMindSwap.setOwner(address)._owner (0xb573393f1a685f51864dd11315722C391622202.sol#177) is not in mixedCase
+Parameter BabyMindSwap.setTokenA(address)._tokenA (0xb573393f1a685f51864dd11315722C391622202.sol#193) is not in mixedCase
+Parameter BabyMindSwap.setTokenB(address)._tokenB (0xb573393f1a685f51864dd11315722C391622202.sol#201) is not in mixedCase
+Parameter BabyMindSwap.setTokenAReceiver(address)._receiver (0xb573393f1a685f51864dd11315722C391622202.sol#209) is not in mixedCase
+Parameter BabyMindSwap.setTokenADecimals(uint256)._decimals (0xb573393f1a685f51864dd11315722C391622202.sol#217) is not in mixedCase
+Parameter BabyMindSwap.setTokenBDecimals(uint256)._decimals (0xb573393f1a685f51864dd11315722C391622202.sol#225) is not in mixedCase
+Parameter BabyMindSwap.setTokenBBuyPrice(uint256)._tokenAAmount (0xb573393f1a685f51864dd11315722C391622202.sol#233) is not in mixedCase
+Parameter BabyMindSwap.setTokenAMinAmount(uint256)._mintokenB (0xb573393f1a685f51864dd11315722C391622202.sol#241) is not in mixedCase
+Parameter BabyMindSwap.setTokenAMaxAmount(uint256)._maxtokenB (0xb573393f1a685f51864dd11315722C391622202.sol#249) is not in mixedCase
+Parameter BabyMindSwap.setStartTime(uint256)._time (0xb573393f1a685f51864dd11315722C391622202.sol#257) is not in mixedCase
+Parameter BabyMindSwap.endSale(address)._receiver (0xb573393f1a685f51864dd11315722C391622202.sol#267) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable BabyMindSwap.endSale(address).tokenABalance (0xb573393f1a685f51864dd11315722C391622202.sol#269) is too similar to BabyMindSwap.endSale(address).tokenBBalance (0xb573393f1a685f51864dd11315722C391622202.sol#273)
+Variable BabyMindSwap.tokenADecimals (0xb573393f1a685f51864dd11315722C391622202.sol#55) is too similar to BabyMindSwap.tokenBDecimals (0xb573393f1a685f51864dd11315722C391622202.sol#57)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+getTokenAtoB(uint256) should be declared external:
+	- BabyMindSwap.getTokenAtoB(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#107-115)
+buy(uint256) should be declared external:
+	- BabyMindSwap.buy(uint256) (0xb573393f1a685f51864dd11315722C391622202.sol#151-167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xb573393f1a685f51864dd11315722C391622202.sol analyzed (2 contracts with 75 detectors), 39 result(s) found
+

@@ -1,0 +1,123 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/8_UltimateResult/0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol:
+Warning: Function state mutability can be restricted to view
+   --> 0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol:144:5:
+    |
+144 |     function balanceOf(address owner) public returns(uint) {
+    |     ^ (Relevant source part starts here and spans across multiple lines).
+
+
+
+SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191) ignores return value by SpooderToken(contractSPOOD).transferFrom(msg.sender,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#143)
+SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227) ignores return value by SpooderToken(contractSPOOD).transferFrom(webWallet,msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#211)
+SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283) ignores return value by SpooderToken(contractSPOOD).transferFrom(taxWallet,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#253)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227):
+	External calls:
+	- SpooderToken(contractSPOOD).transferFrom(webWallet,msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#211)
+	State variables written after the call(s):
+	- balances[webWallet] += value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#215)
+	- balances[msg.sender] -= value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227):
+	External calls:
+	- SpooderToken(contractSPOOD).transferFrom(webWallet,msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#211)
+	State variables written after the call(s):
+	- totalWebbed -= value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#221)
+Reentrancy in SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191):
+	External calls:
+	- require(bool,string)(SpooderToken(contractSPOOD).balanceOf(msg.sender) >= value,Insuficient Balance) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#127)
+	- SpooderToken(contractSPOOD).transferFrom(msg.sender,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#143)
+	State variables written after the call(s):
+	- balances[msg.sender] += value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#147)
+	- balances[webWallet] -= value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#149)
+	- totalWebbed += value (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#153)
+	- user = usersWebbed[i] (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#167)
+	- usersWebbed.push(msg.sender) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#161)
+	- usersWebbed.push(msg.sender) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#183)
+Reentrancy in SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283):
+	External calls:
+	- SpooderToken(contractSPOOD).transferFrom(taxWallet,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#253)
+	State variables written after the call(s):
+	- balances[user] += userReward (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#269)
+	- balances[webWallet] -= userReward (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#271)
+	- totalWebbed += userReward (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#275)
+	- user = usersWebbed[i] (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#263)
+	- userReward = uint256(value * balanceOf(user) / totalWebbed) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#265)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227):
+	External calls:
+	- SpooderToken(contractSPOOD).transferFrom(webWallet,msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#211)
+	Event emitted after the call(s):
+	- UnWeb(msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#223)
+Reentrancy in SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191):
+	External calls:
+	- require(bool,string)(SpooderToken(contractSPOOD).balanceOf(msg.sender) >= value,Insuficient Balance) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#127)
+	- SpooderToken(contractSPOOD).transferFrom(msg.sender,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#143)
+	Event emitted after the call(s):
+	- Web(msg.sender,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#187)
+Reentrancy in SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283):
+	External calls:
+	- SpooderToken(contractSPOOD).transferFrom(taxWallet,webWallet,value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#253)
+	Event emitted after the call(s):
+	- UpdateRewards(value) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#279)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191) compares to a boolean constant:
+	-webCheck == false (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#179)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191) has costly operations inside a loop:
+	- user = usersWebbed[i] (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#167)
+SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283) has costly operations inside a loop:
+	- user = usersWebbed[i] (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#263)
+SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283) has costly operations inside a loop:
+	- userReward = uint256(value * balanceOf(user) / totalWebbed) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#265)
+SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283) has costly operations inside a loop:
+	- totalWebbed += userReward (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#275)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#costly-operations-inside-a-loop
+
+Pragma version^0.8.2 (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Function SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191) is not in mixedCase
+Function SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SpooderWeb.constructor() (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#109-117) uses literals with too many digits:
+	- balances[webWallet] = 100000000 * 10 ** 18 (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#113)
+SpooderWeb.slitherConstructorVariables() (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#53-370) uses literals with too many digits:
+	- totalSupply = 100000000 * 10 ** 18 (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#61)
+SpooderWeb.slitherConstructorVariables() (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#53-370) uses literals with too many digits:
+	- minWebSPOOD = 100000 * (10 ** 18) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#93)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+SpooderWeb.contractSPOOD (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#81) should be constant
+SpooderWeb.decimals (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#67) should be constant
+SpooderWeb.name (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#63) should be constant
+SpooderWeb.symbol (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#65) should be constant
+SpooderWeb.taxWallet (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#73) should be constant
+SpooderWeb.totalSupply (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#61) should be constant
+SpooderWeb.webWallet (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#77) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+WebSPOOD(uint256) should be declared external:
+	- SpooderWeb.WebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#123-191)
+UnWebSPOOD(uint256) should be declared external:
+	- SpooderWeb.UnWebSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#195-227)
+updateRewards(uint256) should be declared external:
+	- SpooderWeb.updateRewards(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#237-283)
+transfer(address,uint256) should be declared external:
+	- SpooderWeb.transfer(address,uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#295-315)
+transferFrom(address,address,uint256) should be declared external:
+	- SpooderWeb.transferFrom(address,address,uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#319-341)
+approve(address,uint256) should be declared external:
+	- SpooderWeb.approve(address,uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#345-353)
+setMinSPOOD(uint256) should be declared external:
+	- SpooderWeb.setMinSPOOD(uint256) (0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol#357-365)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xC1Fe23a65d13b7c3925b74da7B753c3C0d2c7E5.sol analyzed (2 contracts with 75 detectors), 36 result(s) found
+

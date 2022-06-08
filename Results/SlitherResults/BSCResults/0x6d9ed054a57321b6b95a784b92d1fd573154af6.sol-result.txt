@@ -1,0 +1,113 @@
+
+BUSD_MINER.sellEggs() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#115-139) ignores return value by ERC20(busd).transfer(ceoAddress,fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#133)
+BUSD_MINER.sellEggs() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#115-139) ignores return value by ERC20(busd).transfer(ceoAddress2,fee - fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#135)
+BUSD_MINER.sellEggs() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#115-139) ignores return value by ERC20(busd).transfer(address(msg.sender),SafeMath.sub(eggValue,fee)) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#137)
+BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169) ignores return value by ERC20(busd).transferFrom(address(msg.sender),address(this),amount) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#147)
+BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169) ignores return value by ERC20(busd).transfer(ceoAddress,fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#161)
+BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169) ignores return value by ERC20(busd).transfer(ceoAddress2,fee - fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#163)
+BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215) ignores return value by ERC20(busd).transferFrom(address(msg.sender),address(this),amount) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#207)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215) uses a dangerous strict equality:
+	- require(bool)(marketEggs == 0) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dangerous-strict-equalities
+
+Reentrancy in BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169):
+	External calls:
+	- ERC20(busd).transferFrom(address(msg.sender),address(this),amount) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#147)
+	- balance = ERC20(busd).balanceOf(address(this)) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#151)
+	- ERC20(busd).transfer(ceoAddress,fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#161)
+	- ERC20(busd).transfer(ceoAddress2,fee - fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#163)
+	State variables written after the call(s):
+	- hatchEggs(ref) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#167)
+		- marketEggs = SafeMath.add(marketEggs,SafeMath.div(eggsUsed,5)) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#111)
+Reentrancy in BUSD_MINER.sellEggs() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#115-139):
+	External calls:
+	- eggValue = calculateEggSell(hasEggs) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#121)
+		- calculateTrade(eggs,marketEggs,ERC20(busd).balanceOf(address(this))) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#183)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = 0 (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#127)
+	- lastHatch[msg.sender] = now (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#129)
+	- marketEggs = SafeMath.add(marketEggs,hasEggs) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#131)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169):
+	External calls:
+	- ERC20(busd).transferFrom(address(msg.sender),address(this),amount) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#147)
+	- balance = ERC20(busd).balanceOf(address(this)) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#151)
+	- ERC20(busd).transfer(ceoAddress,fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#161)
+	- ERC20(busd).transfer(ceoAddress2,fee - fee2) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#163)
+	State variables written after the call(s):
+	- claimedEggs[msg.sender] = SafeMath.add(claimedEggs[msg.sender],eggsBought) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#165)
+	- hatchEggs(ref) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#167)
+		- claimedEggs[msg.sender] = 0 (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#97)
+		- claimedEggs[referrals[msg.sender]] = SafeMath.add(claimedEggs[referrals[msg.sender]],SafeMath.div(eggsUsed,8)) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#105)
+	- hatchEggs(ref) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#167)
+		- hatcheryMiners[msg.sender] = SafeMath.add(hatcheryMiners[msg.sender],newMiners) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#95)
+	- hatchEggs(ref) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#167)
+		- lastHatch[msg.sender] = now (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#99)
+	- hatchEggs(ref) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#167)
+		- referrals[msg.sender] = ref (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#87)
+Reentrancy in BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215):
+	External calls:
+	- ERC20(busd).transferFrom(address(msg.sender),address(this),amount) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#207)
+	State variables written after the call(s):
+	- initialized = true (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#211)
+	- marketEggs = 54000000000 (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#213)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(marketEggs == 0) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#209)
+BUSD_MINER.min(uint256,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#243-247) uses timestamp for comparisons
+	Dangerous comparisons:
+	- a < b (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#245)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.4.26 (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#13) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract BUSD_MINER (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#39-249) is not in CapWords
+Variable BUSD_MINER.EGGS_TO_HATCH_1MINERS (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#45) is not in mixedCase
+Variable BUSD_MINER.PSN (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#47) is not in mixedCase
+Variable BUSD_MINER.PSNH (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#49) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215) uses literals with too many digits:
+	- marketEggs = 54000000000 (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#213)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+BUSD_MINER.EGGS_TO_HATCH_1MINERS (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#45) should be constant
+BUSD_MINER.PSN (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#47) should be constant
+BUSD_MINER.PSNH (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#49) should be constant
+BUSD_MINER.busd (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#43) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#19)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#21)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#23)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#25)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#27)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#29)
+sellEggs() should be declared external:
+	- BUSD_MINER.sellEggs() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#115-139)
+buyEggs(address,uint256) should be declared external:
+	- BUSD_MINER.buyEggs(address,uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#141-169)
+calculateEggBuySimple(uint256) should be declared external:
+	- BUSD_MINER.calculateEggBuySimple(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#193-197)
+seedMarket(uint256) should be declared external:
+	- BUSD_MINER.seedMarket(uint256) (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#205-215)
+getBalance() should be declared external:
+	- BUSD_MINER.getBalance() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#217-221)
+getMyMiners() should be declared external:
+	- BUSD_MINER.getMyMiners() (0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol#223-227)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0x6d9ed054a57321b6b95a784b92d1fd573154af6.sol analyzed (3 contracts with 75 detectors), 37 result(s) found
+

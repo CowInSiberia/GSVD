@@ -1,0 +1,63 @@
+
+SafetyFirstBSC._owner (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#189) shadows:
+	- Ownable._owner (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#143)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variable-shadowing
+
+Contract locking ether found:
+	Contract SafetyFirstBSC (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#183-400) has payable functions:
+	 - SafetyFirstBSC.receive() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#309)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+SafetyFirstBSC.allowance(address,address).owner (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#285) shadows:
+	- Ownable.owner() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#155-159) (function)
+SafetyFirstBSC._approve(address,address,uint256).owner (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#323) shadows:
+	- Ownable.owner() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#155-159) (function)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#local-variable-shadowing
+
+Context._msgData() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#125-131) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#99-109) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#87-97) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.7 (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#29) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable SafetyFirstBSC._owner (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#189) is not in mixedCase
+Constant SafetyFirstBSC._name (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#193) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant SafetyFirstBSC._symbol (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#195) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant SafetyFirstBSC._decimals (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#197) is not in UPPER_CASE_WITH_UNDERSCORES
+Variable SafetyFirstBSC._totalSupply (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#201) is not in mixedCase
+Variable SafetyFirstBSC._maxWalletToken (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#203) is not in mixedCase
+Variable SafetyFirstBSC._balances (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#207) is not in mixedCase
+Variable SafetyFirstBSC._allowances (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#209) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Redundant expression "this (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#127)" inContext (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#117-133)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#redundant-statements
+
+SafetyFirstBSC.slitherConstructorVariables() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#183-400) uses literals with too many digits:
+	- _totalSupply = 1000000 * (10 ** _decimals) (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#201)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+SafetyFirstBSC._maxWalletToken (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#203) should be constant
+SafetyFirstBSC._totalSupply (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#201) should be constant
+SafetyFirstBSC.hundred (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#217) should be constant
+SafetyFirstBSC.strlimit (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#219) should be constant
+SafetyFirstBSC.totalFee (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#215) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#169-175)
+totalSupply() should be declared external:
+	- SafetyFirstBSC.totalSupply() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#253-257)
+allowance(address,address) should be declared external:
+	- SafetyFirstBSC.allowance(address,address) (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#285-289)
+approve(address,uint256) should be declared external:
+	- SafetyFirstBSC.approve(address,uint256) (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#291-297)
+getCirculatingSupply() should be declared external:
+	- SafetyFirstBSC.getCirculatingSupply() (0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol#313-317)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xf195275F07DfA19fB4a824E168774Fe70825fBD.sol analyzed (5 contracts with 75 detectors), 29 result(s) found
+

@@ -1,0 +1,88 @@
+
+my.withdrawERC20(address) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#327-337) ignores return value by myContract.transfer(owner,balances_) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#335)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract quickSwapContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#157-183) has payable functions:
+	 - quickSwapContract.swapExactETHForTokens(uint256,address[],address,uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#181)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Owned.transferOwnership(address)._newOwner (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#91) lacks a zero-check on :
+		- newOwner = _newOwner (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#93)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+SafeMath.div(uint256,uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#45-51) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+my.wethcontract_ (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#213) is set pre-construction with a non-constant function or state variable:
+	- wethContract(weth)
+my.usdcContract_ (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#215) is set pre-construction with a non-constant function or state variable:
+	- usdcContract(usdc)
+my.quickSwapContract_ (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#217) is set pre-construction with a non-constant function or state variable:
+	- quickSwapContract(quickSwap)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#function-initializing-state
+
+Pragma version>=0.5.0 (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#9) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+erc20Contract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#113-141) should inherit from wethContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#145-149)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-inheritance
+
+Parameter Owned.transferOwnership(address)._newOwner (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#91) is not in mixedCase
+Contract erc20Contract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#113-141) is not in CapWords
+Contract wethContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#145-149) is not in CapWords
+Contract usdcContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#151-155) is not in CapWords
+Contract quickSwapContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#157-183) is not in CapWords
+Contract my (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#193-344) is not in CapWords
+Function my.SwapEthToUsdcByQuick(uint256,address[]) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#229-233) is not in mixedCase
+Function my.EthToQuick(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#269-275) is not in mixedCase
+Parameter my.EthToQuick(uint256).EthAmount (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#269) is not in mixedCase
+Function my.EthToUsdcByQuick(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#277-281) is not in mixedCase
+Function my.UsdcToEthBySushi(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#283-287) is not in mixedCase
+Parameter my.UsdcToEthBySushi(uint256).UsdcIn (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#283) is not in mixedCase
+Function my.EthToSushi(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#295-301) is not in mixedCase
+Parameter my.EthToSushi(uint256).EthAmount (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#295) is not in mixedCase
+Function my.EthToUsdcBySushi(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#303-307) is not in mixedCase
+Function my.UsdcToEthByQuick(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#309-313) is not in mixedCase
+Parameter my.UsdcToEthByQuick(uint256).UsdcIn (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#309) is not in mixedCase
+Variable my.weth_usdc_quickSwap (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#203) is not in mixedCase
+Variable my.weth_usdc_sushi (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#209) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+quickSwapContract (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#157-183) does not implement functions:
+	- quickSwapContract.swapExactETHForTokens(uint256,address[],address,uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#181)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unimplemented-functions
+
+my.sushiRouter (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#211) is never used in my (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#193-344)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-state-variable
+
+my.quickSwap (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#205) should be constant
+my.sushiRouter (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#211) should be constant
+my.usdc (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#199) should be constant
+my.weth (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#197) should be constant
+my.weth_usdc_quickSwap (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#203) should be constant
+my.weth_usdc_sushi (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#209) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+transferOwnership(address) should be declared external:
+	- Owned.transferOwnership(address) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#91-95)
+acceptOwnership() should be declared external:
+	- Owned.acceptOwnership() (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#97-107)
+transfer(address,uint256) should be declared external:
+	- erc20Contract.transfer(address,uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#123-133)
+balanceOf(address) should be declared external:
+	- erc20Contract.balanceOf(address) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#135-139)
+SwapEthToUsdcByQuick(uint256,address[]) should be declared external:
+	- my.SwapEthToUsdcByQuick(uint256,address[]) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#229-233)
+EthToQuick(uint256) should be declared external:
+	- my.EthToQuick(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#269-275)
+EthToSushi(uint256) should be declared external:
+	- my.EthToSushi(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#295-301)
+withdrawETH(uint256) should be declared external:
+	- my.withdrawETH(uint256) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#319-323)
+withdrawERC20(address) should be declared external:
+	- my.withdrawERC20(address) (0x83f6cdf8eb7f78396166488b3d86736b762f174.sol#327-337)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/5_UltimateResult/0x83f6cdf8eb7f78396166488b3d86736b762f174.sol analyzed (7 contracts with 75 detectors), 45 result(s) found
+

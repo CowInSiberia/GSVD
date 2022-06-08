@@ -1,0 +1,62 @@
+
+TokenAirdrop.transferTo(address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#49-61) sends eth to arbitrary user
+	Dangerous calls:
+	- receivers[i].transfer(amounts[i]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#55)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+ERC20 (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#13-29) has incorrect ERC20 function interface:ERC20.transfer(address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#21)
+ERC20 (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#13-29) has incorrect ERC20 function interface:ERC20.transferFrom(address,address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#25)
+ERC20 (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#13-29) has incorrect ERC20 function interface:ERC20.approve(address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#27)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-erc20-interface
+
+TokenAirdrop.transferTo(address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#49-61) has external calls inside a loop: receivers[i].transfer(amounts[i]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#55)
+TokenAirdrop.transferERC20Token(address,address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#69-89) has external calls inside a loop: token.transferFrom(msg.sender,receivers[i],amounts[i]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#81)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation/#calls-inside-a-loop
+
+Reentrancy in TokenAirdrop.transferERC20Token(address,address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#69-89):
+	External calls:
+	- token.transferFrom(msg.sender,receivers[i],amounts[i]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#81)
+	Event emitted after the call(s):
+	- transfer(msg.sender,receivers[i],amounts[i],tokenAddress) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#85)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version^0.4.23 (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable ERC20._totalSupply (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#15) is not in mixedCase
+Event TokenAirdroptransfer(address,address,uint256,address) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#43) is not in CapWords
+Parameter TokenAirdrop.getAllSendingAmount(uint256[])._amounts (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#95) is not in mixedCase
+Variable TokenAirdrop.eth_address (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#39) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Reentrancy in TokenAirdrop.transferTo(address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#49-61):
+	External calls:
+	- receivers[i].transfer(amounts[i]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#55)
+	Event emitted after the call(s):
+	- transfer(msg.sender,receivers[i],amounts[i],eth_address) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#57)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+ERC20._totalSupply (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#15) should be constant
+TokenAirdrop.eth_address (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#39) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#17)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#21)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#25)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#27)
+transferTo(address[],uint256[]) should be declared external:
+	- TokenAirdrop.transferTo(address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#49-61)
+transferERC20Token(address,address[],uint256[]) should be declared external:
+	- TokenAirdrop.transferERC20Token(address,address[],uint256[]) (0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol#69-89)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/4_UltimateResult/0x2CE12DeffcB4F6ba6Fcb81ee48618261a8C00A1.sol analyzed (2 contracts with 75 detectors), 24 result(s) found
+

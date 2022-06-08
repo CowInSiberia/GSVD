@@ -1,0 +1,96 @@
+
+SLOV.transferAsset(address,address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#187-189) ignores return value by IERC20(asset).transferFrom(address(this),newAccount,_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#188)
+SLOV.transferDeposit(address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#191-193) ignores return value by IERC20(LOVContract).transferFrom(address(this),newAccount,_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#192)
+SLOV.deposit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199-208) ignores return value by IERC20(LOVContract).transferFrom(msg.sender,address(this),_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in SLOV.deposit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199-208):
+	External calls:
+	- IERC20(LOVContract).transferFrom(msg.sender,address(this),_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#203)
+	State variables written after the call(s):
+	- claimed[msg.sender] = claimed[msg.sender] + _value (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#204)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SLOV.approveAsset(address,address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#166-168) ignores return value by IERC20(asset).approve(addr,amount) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#167)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+SLOV.setOwner(address) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#233-235) should emit an event for: 
+	- owner = newOwner (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#234) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-access-control
+
+SLOV.setClaimLimit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#170-173) should emit an event for: 
+	- claimLimit = amount * 10 ** 18 (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#172) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+SLOV.setOwner(address).newOwner (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#233) lacks a zero-check on :
+		- owner = newOwner (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#234)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in SLOV.deposit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199-208):
+	External calls:
+	- IERC20(LOVContract).transferFrom(msg.sender,address(this),_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#203)
+	State variables written after the call(s):
+	- _totalSupply = _totalSupply.add(_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#206)
+	- balanceOf[msg.sender] = balanceOf[msg.sender].add(_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#205)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in SLOV.deposit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199-208):
+	External calls:
+	- IERC20(LOVContract).transferFrom(msg.sender,address(this),_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#203)
+	Event emitted after the call(s):
+	- Deposit(msg.sender,_value) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#207)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+SafeMath.div(uint256,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#90-92) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#105-112) is never used and should be removed
+SafeMath.mod(uint256,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#125-127) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#140-143) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#65-77) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#36-38) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#49-54) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Parameter SLOV.transferAsset(address,address,uint256)._value (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#187) is not in mixedCase
+Parameter SLOV.transferDeposit(address,uint256)._value (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#191) is not in mixedCase
+Parameter SLOV.getAmountLeft(address)._address (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#195) is not in mixedCase
+Parameter SLOV.deposit(uint256)._value (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199) is not in mixedCase
+Variable SLOV.LOVContract (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#152) is not in mixedCase
+Variable SLOV.LPs (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#164) is not in mixedCase
+Modifier SLOV._ownerOnly() (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#214-217) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+SLOV.slitherConstructorVariables() (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#145-256) uses literals with too many digits:
+	- claimLimit = 100000 * 10 ** 18 (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#150)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+SLOV.LOVContract (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#152) should be constant
+SLOV.decimals (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#149) should be constant
+SLOV.name (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#147) should be constant
+SLOV.symbol (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#148) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+approveAsset(address,address,uint256) should be declared external:
+	- SLOV.approveAsset(address,address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#166-168)
+setClaimLimit(uint256) should be declared external:
+	- SLOV.setClaimLimit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#170-173)
+addLPs(address[]) should be declared external:
+	- SLOV.addLPs(address[]) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#175-179)
+deleteLPs(address[]) should be declared external:
+	- SLOV.deleteLPs(address[]) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#181-185)
+transferAsset(address,address,uint256) should be declared external:
+	- SLOV.transferAsset(address,address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#187-189)
+transferDeposit(address,uint256) should be declared external:
+	- SLOV.transferDeposit(address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#191-193)
+deposit(uint256) should be declared external:
+	- SLOV.deposit(uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#199-208)
+totalSupply() should be declared external:
+	- SLOV.totalSupply() (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#219-221)
+approve(address,uint256) should be declared external:
+	- SLOV.approve(address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#223-227)
+transfer(address,uint256) should be declared external:
+	- SLOV.transfer(address,uint256) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#229-231)
+setOwner(address) should be declared external:
+	- SLOV.setOwner(address) (0x9315370C59487C6a6F20242c3779E5561D87DF8.sol#233-235)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/7_UltimateResult/0x9315370C59487C6a6F20242c3779E5561D87DF8.sol analyzed (3 contracts with 75 detectors), 40 result(s) found
+

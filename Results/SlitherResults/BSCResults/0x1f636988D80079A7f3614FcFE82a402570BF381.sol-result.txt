@@ -1,0 +1,45 @@
+
+DepositBUSD_TEST.deposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#73-83) ignores return value by IBEP20(BUSDTokenAddress).transferFrom(msg.sender,address(depositAddress),_amount) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#79)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+DepositBUSD_TEST.deposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#73-83) ignores return value by IBEP20(BUSDTokenAddress).approve(address(depositAddress),_amount) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#77)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+DepositBUSD_TEST.setMinimumDeposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#87-93) should emit an event for: 
+	- minimumDeposit = _newMinDeposit (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#91) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+DepositBUSD_TEST.setDepositAddress(address)._newDepositAddress (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#97) lacks a zero-check on :
+		- depositAddress = _newDepositAddress (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#101)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in DepositBUSD_TEST.deposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#73-83):
+	External calls:
+	- IBEP20(BUSDTokenAddress).approve(address(depositAddress),_amount) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#77)
+	- IBEP20(BUSDTokenAddress).transferFrom(msg.sender,address(depositAddress),_amount) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#79)
+	Event emitted after the call(s):
+	- DepositEvent(msg.sender,_amount) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#81)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Pragma version>=0.7.0<0.9.0 (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#13) is too complex
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract DepositBUSD_TEST (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#49-108) is not in CapWords
+Parameter DepositBUSD_TEST.deposit(uint256)._amount (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#73) is not in mixedCase
+Parameter DepositBUSD_TEST.setMinimumDeposit(uint256)._newMinDeposit (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#87) is not in mixedCase
+Parameter DepositBUSD_TEST.setDepositAddress(address)._newDepositAddress (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#97) is not in mixedCase
+Variable DepositBUSD_TEST.BUSDTokenAddress (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#55) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+DepositBUSD_TEST.BUSDTokenAddress (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#55) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+deposit(uint256) should be declared external:
+	- DepositBUSD_TEST.deposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#73-83)
+setMinimumDeposit(uint256) should be declared external:
+	- DepositBUSD_TEST.setMinimumDeposit(uint256) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#87-93)
+setDepositAddress(address) should be declared external:
+	- DepositBUSD_TEST.setDepositAddress(address) (0x1f636988D80079A7f3614FcFE82a402570BF381.sol#97-103)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/7_UltimateResult/0x1f636988D80079A7f3614FcFE82a402570BF381.sol analyzed (2 contracts with 75 detectors), 15 result(s) found
+

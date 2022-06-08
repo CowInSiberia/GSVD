@@ -1,0 +1,59 @@
+
+TokenLock.transferRTokens(address,address,uint256) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#203-211) ignores return value by Token(_tokenAddress).transfer(_to,_amount) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#209)
+TokenLock.transferRTokensP(address,address,uint256,uint256) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215-225) ignores return value by Token(_tokenAddress).transfer(_to,Pbalance) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#223)
+TokenLock.claimAll() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#229-237) ignores return value by Token(tokenAddress).transfer(msg.sender,balanceT) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#235)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in TokenLock.claim() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#161-179):
+	External calls:
+	- contractBalance = Token(tokenAddress).balanceOf(address(this)) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#165)
+	- require(bool,string)(Token(tokenAddress).transfer(owner,amountToSend),Could not transfer Tokens.) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#175)
+	State variables written after the call(s):
+	- lastClaimedTime = now (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#177)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+TokenLock.claim() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#161-179) uses timestamp for comparisons
+	Dangerous comparisons:
+	- contractBalance < pendingUnlocked (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#169)
+	- require(bool,string)(Token(tokenAddress).transfer(owner,amountToSend),Could not transfer Tokens.) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#175)
+TokenLock.claimAll() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#229-237) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(block.timestamp > currentUnlockTime) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#233)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+SafeMath.add(uint256,uint256) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#55-63) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+TokenLock.currentUnlockTime (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#145) is set pre-construction with a non-constant function or state variable:
+	- deployTime + lockDuration
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#function-initializing-state
+
+Parameter TokenLock.transferRTokens(address,address,uint256)._tokenAddress (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#203) is not in mixedCase
+Parameter TokenLock.transferRTokens(address,address,uint256)._to (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#203) is not in mixedCase
+Parameter TokenLock.transferRTokens(address,address,uint256)._amount (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#203) is not in mixedCase
+Parameter TokenLock.transferRTokensP(address,address,uint256,uint256)._tokenAddress (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215) is not in mixedCase
+Parameter TokenLock.transferRTokensP(address,address,uint256,uint256)._to (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215) is not in mixedCase
+Parameter TokenLock.transferRTokensP(address,address,uint256,uint256)._num (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215) is not in mixedCase
+Parameter TokenLock.transferRTokensP(address,address,uint256,uint256)._den (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215) is not in mixedCase
+Parameter TokenLock.extendLockTime(uint256)._increaseAmt (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#249) is not in mixedCase
+Constant TokenLock.tokenAddress (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#131) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant TokenLock.tokensLocked (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#135) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant TokenLock.unlockRate (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#137) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant TokenLock.lockDuration (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#139) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+TokenLock.slitherConstructorConstantVariables() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#125-258) uses literals with too many digits:
+	- tokensLocked = 10000000000 * (10 ** 9) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#135)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#99-107)
+claim() should be declared external:
+	- TokenLock.claim() (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#161-179)
+transferRTokens(address,address,uint256) should be declared external:
+	- TokenLock.transferRTokens(address,address,uint256) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#203-211)
+transferRTokensP(address,address,uint256,uint256) should be declared external:
+	- TokenLock.transferRTokensP(address,address,uint256,uint256) (0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol#215-225)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x4e79006F98Cb53Eb9FBA6A83F9bCb740730E32F.sol analyzed (4 contracts with 75 detectors), 25 result(s) found
+

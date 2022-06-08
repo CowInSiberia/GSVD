@@ -1,0 +1,105 @@
+
+TokenSale.claimTokens() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#242-248) ignores return value by _token.transfer(msg.sender,tokensAmt) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#247)
+TokenSale.takeTokens(IERC20) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#308-313) ignores return value by tokenBEP.transfer(_wallet,availableTokensICO) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#311)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in TokenSale.takeTokens(IERC20) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#308-313):
+	External calls:
+	- tokenBEP.transfer(_wallet,availableTokensICO) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#311)
+	State variables written after the call(s):
+	- availableTokensICO = 0 (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#312)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191-208) should emit an event for: 
+	- endICO = endDate (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#201) 
+	- minPurchase = _minPurchase (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#203) 
+	- maxPurchase = _maxPurchase (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#204) 
+	- hardCap = _hardCap (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#206) 
+TokenSale.setRate(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#276-278) should emit an event for: 
+	- _rate = newRate (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#277) 
+TokenSale.setAvailableTokens(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#280-282) should emit an event for: 
+	- availableTokensICO = amount (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#281) 
+TokenSale.setHardCap(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#292-294) should emit an event for: 
+	- hardCap = value (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#293) 
+TokenSale.setMaxPurchase(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#300-302) should emit an event for: 
+	- maxPurchase = value (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#301) 
+TokenSale.setMinPurchase(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#304-306) should emit an event for: 
+	- minPurchase = value (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#305) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+TokenSale.setWalletReceiver(address).newWallet (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#288) lacks a zero-check on :
+		- _wallet = newWallet (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#289)
+TokenSale.refundMe().recipient (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#321) lacks a zero-check on :
+		- recipient.transfer(amount) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#322)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+TokenSale.receive() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#179-187) uses timestamp for comparisons
+	Dangerous comparisons:
+	- endICO > 0 && block.timestamp < endICO (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#180)
+TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191-208) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(endDate > block.timestamp,duration should be > 0) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#196)
+TokenSale.claimTokens() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#242-248) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(block.timestamp > endICO + 86400) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#244)
+TokenSale.withdraw() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#258-262) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(startRefund == false || (refundStartDate + 259200) < block.timestamp) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#259)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+TokenSale.claimTokens() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#242-248) compares to a boolean constant:
+	-require(bool)(startRefund == false) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#243)
+TokenSale.withdraw() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#258-262) compares to a boolean constant:
+	-require(bool)(startRefund == false || (refundStartDate + 259200) < block.timestamp) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#259)
+TokenSale.refundMe() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#315-326) compares to a boolean constant:
+	-require(bool,string)(startRefund == true,no refund available) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#316)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Context._msgData() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#10-13) is never used and should be removed
+SafeMath.mod(uint256,uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#119-121) is never used and should be removed
+SafeMath.mod(uint256,uint256,string) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#123-126) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#84-86) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#88-93) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Parameter TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256)._minPurchase (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191) is not in mixedCase
+Parameter TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256)._maxPurchase (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191) is not in mixedCase
+Parameter TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256)._softCap (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191) is not in mixedCase
+Parameter TokenSale.startICO(uint256,uint256,uint256,uint256,uint256,uint256)._hardCap (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#191) is not in mixedCase
+Variable TokenSale._contributions (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#148) is not in mixedCase
+Variable TokenSale._token (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#150) is not in mixedCase
+Variable TokenSale._wallet (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#152) is not in mixedCase
+Variable TokenSale._rate (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#153) is not in mixedCase
+Variable TokenSale._weiRaised (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#154) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Redundant expression "this (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#11)" inContext (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#5-14)
+Redundant expression "this (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#239)" inTokenSale (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#145-338)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#redundant-statements
+
+Reentrancy in TokenSale.refundMe() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#315-326):
+	External calls:
+	- recipient.transfer(amount) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#322)
+	Event emitted after the call(s):
+	- Refund(msg.sender,amount) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#323)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-4
+
+owner() should be declared external:
+	- Ownable.owner() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#29-31)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#39-43)
+totalICO() should be declared external:
+	- TokenSale.totalICO() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#264-266)
+tokenRaised() should be declared external:
+	- TokenSale.tokenRaised() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#268-270)
+checkContribution(address) should be declared external:
+	- TokenSale.checkContribution(address) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#272-274)
+setAvailableTokens(uint256) should be declared external:
+	- TokenSale.setAvailableTokens(uint256) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#280-282)
+takeTokens(IERC20) should be declared external:
+	- TokenSale.takeTokens(IERC20) (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#308-313)
+refundMe() should be declared external:
+	- TokenSale.refundMe() (0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol#315-326)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/6_UltimateResult/0x2e55DEFeD12153eB551FDd85DE1824cC9599e9d.sol analyzed (6 contracts with 75 detectors), 43 result(s) found
+

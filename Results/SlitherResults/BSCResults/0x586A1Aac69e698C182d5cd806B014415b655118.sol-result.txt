@@ -1,0 +1,83 @@
+
+BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313) ignores return value by Token.transfer(msg.sender,temp * (10000 - poudage) / 10000) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#283)
+BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313) ignores return value by Token.transfer(msg.sender,temp) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#301)
+BLK_IDO.claimLeftToken(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#317-323) ignores return value by Token.transfer(addr_,temp) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#321)
+BLK_IDO.safePull(address,address,uint256) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#325-329) ignores return value by IERC20(token_).transfer(wallet,amount_) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#327)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313) performs a multiplication on the result of a division:
+	-temp = userInfo[msg.sender].total * 2 / 10 (0x586A1Aac69e698C182d5cd806B014415b655118.sol#281)
+	-Token.transfer(msg.sender,temp * (10000 - poudage) / 10000) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#283)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313):
+	External calls:
+	- Token.transfer(msg.sender,temp * (10000 - poudage) / 10000) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#283)
+	State variables written after the call(s):
+	- userInfo[msg.sender].claimed += userInfo[msg.sender].total * 2 / 10 (0x586A1Aac69e698C182d5cd806B014415b655118.sol#285)
+	- userInfo[msg.sender].counting ++ (0x586A1Aac69e698C182d5cd806B014415b655118.sol#287)
+	- userInfo[msg.sender].timestamp = block.timestamp (0x586A1Aac69e698C182d5cd806B014415b655118.sol#289)
+	- userInfo[msg.sender].rate = userInfo[msg.sender].total * acc * 8 / 10 / totalTime (0x586A1Aac69e698C182d5cd806B014415b655118.sol#291)
+	- userInfo[msg.sender].endTime = block.timestamp + totalTime (0x586A1Aac69e698C182d5cd806B014415b655118.sol#293)
+Reentrancy in BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313):
+	External calls:
+	- Token.transfer(msg.sender,temp) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#301)
+	State variables written after the call(s):
+	- userInfo[msg.sender].timestamp = block.timestamp (0x586A1Aac69e698C182d5cd806B014415b655118.sol#303)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+BLK_IDO.setPoudage(uint256) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#211-215) should emit an event for: 
+	- poudage = com_ (0x586A1Aac69e698C182d5cd806B014415b655118.sol#213) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Reentrancy in BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313):
+	External calls:
+	- Token.transfer(msg.sender,temp * (10000 - poudage) / 10000) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#283)
+	- Token.transfer(msg.sender,temp) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#301)
+	Event emitted after the call(s):
+	- ClaimIDO(msg.sender,temp) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#309)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+BLK_IDO.countingClaim(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#217-255) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < userInfo[addr_].endTime (0x586A1Aac69e698C182d5cd806B014415b655118.sol#237)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Context._msgData() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#77-81) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0x586A1Aac69e698C182d5cd806B014415b655118.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract BLK_IDO (0x586A1Aac69e698C182d5cd806B014415b655118.sol#157-334) is not in CapWords
+Variable BLK_IDO.Token (0x586A1Aac69e698C182d5cd806B014415b655118.sol#159) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+BLK_IDO.acc (0x586A1Aac69e698C182d5cd806B014415b655118.sol#161) should be constant
+BLK_IDO.totalTime (0x586A1Aac69e698C182d5cd806B014415b655118.sol#163) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+renounceOwnership() should be declared external:
+	- Ownable.renounceOwnership() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#123-127)
+transferOwnership(address) should be declared external:
+	- Ownable.transferOwnership(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#133-139)
+setToken(address) should be declared external:
+	- BLK_IDO.setToken(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#197-201)
+setAmount(address,uint256) should be declared external:
+	- BLK_IDO.setAmount(address,uint256) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#205-209)
+setPoudage(uint256) should be declared external:
+	- BLK_IDO.setPoudage(uint256) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#211-215)
+display(address) should be declared external:
+	- BLK_IDO.display(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#257-261)
+checkUserAmount(address) should be declared external:
+	- BLK_IDO.checkUserAmount(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#265-269)
+claimIDO() should be declared external:
+	- BLK_IDO.claimIDO() (0x586A1Aac69e698C182d5cd806B014415b655118.sol#271-313)
+claimLeftToken(address) should be declared external:
+	- BLK_IDO.claimLeftToken(address) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#317-323)
+safePull(address,address,uint256) should be declared external:
+	- BLK_IDO.safePull(address,address,uint256) (0x586A1Aac69e698C182d5cd806B014415b655118.sol#325-329)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x586A1Aac69e698C182d5cd806B014415b655118.sol analyzed (4 contracts with 75 detectors), 27 result(s) found
+

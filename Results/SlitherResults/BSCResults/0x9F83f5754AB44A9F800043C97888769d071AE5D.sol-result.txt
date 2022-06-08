@@ -1,0 +1,37 @@
+
+tokenSwap.swap(address,address,uint256,uint256,address) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185-241) ignores return value by IERC20(_tokenIn).transferFrom(msg.sender,address(this),_amountIn) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#193)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Contract locking ether found:
+	Contract tokenSwap (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#133-292) has payable functions:
+	 - tokenSwap.swap(address,address,uint256,uint256,address) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185-241)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+tokenSwap.swap(address,address,uint256,uint256,address) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185-241) ignores return value by IERC20(_tokenIn).approve(UNISWAP_V2_ROUTER,_amountIn) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#201)
+tokenSwap.swap(address,address,uint256,uint256,address) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185-241) ignores return value by IUniswapV2Router(UNISWAP_V2_ROUTER).swapExactTokensForTokens(_amountIn,_amountOutMin,path,_to,block.timestamp) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#239)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.7.0 (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#3) allows old versions
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract tokenSwap (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#133-292) is not in CapWords
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._tokenIn (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._tokenOut (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._amountIn (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._amountOutMin (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is not in mixedCase
+Parameter tokenSwap.swap(address,address,uint256,uint256,address)._to (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._tokenIn (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#251) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._tokenOut (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#251) is not in mixedCase
+Parameter tokenSwap.getAmountOutMin(address,address,uint256)._amountIn (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#251) is not in mixedCase
+Constant tokenSwap.chi (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#141) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+Variable tokenSwap.swap(address,address,uint256,uint256,address)._amountOutMin (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#185) is too similar to tokenSwap.getAmountOutMin(address,address,uint256).amountOutMins (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#285)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#variable-names-are-too-similar
+
+tokenSwap.slitherConstructorConstantVariables() (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#133-292) uses literals with too many digits:
+	- chi = ChiToken(0x0000000000004946c0e9F43F4Dee607b0eF1fA1c) (0x9F83f5754AB44A9F800043C97888769d071AE5D.sol#141)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_BSC/7_UltimateResult/0x9F83f5754AB44A9F800043C97888769d071AE5D.sol analyzed (6 contracts with 75 detectors), 17 result(s) found
+

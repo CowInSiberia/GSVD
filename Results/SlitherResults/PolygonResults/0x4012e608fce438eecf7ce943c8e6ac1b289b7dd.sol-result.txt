@@ -1,0 +1,80 @@
+
+StakingRewards.stake(uint256,uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#115-137) ignores return value by KRL.transferFrom(msg.sender,address(this),_amount) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#135)
+StakingRewards.withdraw(uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#141-163) ignores return value by KRL.transfer(msg.sender,_amount) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#161)
+StakingRewards._getReward(address) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#175-185) ignores return value by KRL.transfer(account,reward) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#183)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in StakingRewards.stake(uint256,uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#115-137):
+	External calls:
+	- _getReward(msg.sender) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#121)
+		- KRL.transfer(account,reward) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#183)
+	State variables written after the call(s):
+	- _balances[msg.sender] += _amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#127)
+	- rewards[msg.sender] = 0 (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#133)
+	- userLastupdate[msg.sender] = block.timestamp (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#131)
+Reentrancy in StakingRewards.withdraw(uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#141-163):
+	External calls:
+	- _getReward(msg.sender) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#149)
+		- KRL.transfer(account,reward) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#183)
+	State variables written after the call(s):
+	- _balances[msg.sender] -= _amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#155)
+	- rewards[msg.sender] = 0 (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#159)
+	- userLastupdate[msg.sender] = block.timestamp (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#157)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Reentrancy in StakingRewards.stake(uint256,uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#115-137):
+	External calls:
+	- _getReward(msg.sender) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#121)
+		- KRL.transfer(account,reward) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#183)
+	State variables written after the call(s):
+	- _totalSupply += _amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#125)
+	- userTimeLock[msg.sender] = duration (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#129)
+Reentrancy in StakingRewards.withdraw(uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#141-163):
+	External calls:
+	- _getReward(msg.sender) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#149)
+		- KRL.transfer(account,reward) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#183)
+	State variables written after the call(s):
+	- _totalSupply -= _amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+StakingRewards.withdraw(uint256) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#141-163) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp >= __time,UserError: TOKEN LOCK PERIOD) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#145)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+StakingRewards.estimate(uint256,uint256,bool) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#69-79) compares to a boolean constant:
+	-_wei == true (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#71)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#boolean-equality
+
+Pragma version^0.8 (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#11) is too complex
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter StakingRewards.estimate(uint256,uint256,bool)._bal (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#69) is not in mixedCase
+Parameter StakingRewards.estimate(uint256,uint256,bool)._time (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#69) is not in mixedCase
+Parameter StakingRewards.estimate(uint256,uint256,bool)._wei (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#69) is not in mixedCase
+Parameter StakingRewards.stake(uint256,uint256)._amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#115) is not in mixedCase
+Parameter StakingRewards.withdraw(uint256)._amount (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#141) is not in mixedCase
+Variable StakingRewards.KRL (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#17) is not in mixedCase
+Variable StakingRewards._totalSupply (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#33) is not in mixedCase
+Variable StakingRewards._balances (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#35) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+StakingRewards.rewardRate (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#19) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+rewardPerToken() should be declared external:
+	- StakingRewards.rewardPerToken() (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#47-51)
+estimate(uint256,uint256,bool) should be declared external:
+	- StakingRewards.estimate(uint256,uint256,bool) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#69-79)
+balanceOf(address) should be declared external:
+	- StakingRewards.balanceOf(address) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#83-87)
+currentReward(address) should be declared external:
+	- StakingRewards.currentReward(address) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#91-95)
+totalRewardsEarned(address) should be declared external:
+	- StakingRewards.totalRewardsEarned(address) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#99-103)
+stakePeriod(address) should be declared external:
+	- StakingRewards.stakePeriod(address) (0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol#107-111)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0x4012e608fce438eecf7ce943c8e6ac1b289b7dd.sol analyzed (2 contracts with 75 detectors), 26 result(s) found
+

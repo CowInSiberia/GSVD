@@ -1,0 +1,29 @@
+
+MMBotPumping._convertBNBToLFW(uint256) (0x211eC9043F66018a94C000105610ed7737ae4da.sol#101-129) sends eth to arbitrary user
+	Dangerous calls:
+	- (success) = msg.sender.call{value: address(this).balance}() (0x211eC9043F66018a94C000105610ed7737ae4da.sol#125)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#functions-that-send-ether-to-arbitrary-destinations
+
+MMBotPumping._convertBNBToLFW(uint256) (0x211eC9043F66018a94C000105610ed7737ae4da.sol#101-129) ignores return value by uniRouter.swapETHForExactTokens{value: msg.value}(LFWAmount,_getPathForBNBtoLFW(),address(this),deadline) (0x211eC9043F66018a94C000105610ed7737ae4da.sol#109-119)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.1 (0x211eC9043F66018a94C000105610ed7737ae4da.sol#3) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in MMBotPumping._convertBNBToLFW(uint256) (0x211eC9043F66018a94C000105610ed7737ae4da.sol#101-129):
+	- (success) = msg.sender.call{value: address(this).balance}() (0x211eC9043F66018a94C000105610ed7737ae4da.sol#125)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Parameter MMBotPumping.convertBNBToLFW(uint256).LFWAmount (0x211eC9043F66018a94C000105610ed7737ae4da.sol#67) is not in mixedCase
+Parameter MMBotPumping.convertBNBToLFWWithGasRefund(uint256).LFWAmount (0x211eC9043F66018a94C000105610ed7737ae4da.sol#75) is not in mixedCase
+Constant MMBotPumping.chi (0x211eC9043F66018a94C000105610ed7737ae4da.sol#39) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant MMBotPumping.uniRouter (0x211eC9043F66018a94C000105610ed7737ae4da.sol#41) is not in UPPER_CASE_WITH_UNDERSCORES
+Constant MMBotPumping.wbnb (0x211eC9043F66018a94C000105610ed7737ae4da.sol#45) is not in UPPER_CASE_WITH_UNDERSCORES
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+MMBotPumping.slitherConstructorConstantVariables() (0x211eC9043F66018a94C000105610ed7737ae4da.sol#37-138) uses literals with too many digits:
+	- chi = ChiToken(0x0000000000004946c0e9F43F4Dee607b0eF1fA1c) (0x211eC9043F66018a94C000105610ed7737ae4da.sol#39)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x211eC9043F66018a94C000105610ed7737ae4da.sol analyzed (4 contracts with 75 detectors), 11 result(s) found
+

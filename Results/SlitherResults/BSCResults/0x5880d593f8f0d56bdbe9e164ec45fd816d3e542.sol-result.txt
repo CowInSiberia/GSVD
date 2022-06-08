@@ -1,0 +1,91 @@
+Compilation warnings/errors on /home/cowie/VersionClassification_BSC/8_UltimateResult/0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol:
+Warning: SPDX license identifier not provided in source file. Before publishing, consider adding a comment containing "SPDX-License-Identifier: <SPDX-License>" to each source file. Use "SPDX-License-Identifier: UNLICENSED" for non-open-source code. Please see https://spdx.org for more information.
+--> 0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol
+
+
+
+ICEBERGPROTOCOL.Deposit(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#199-231) ignores return value by ICEBERG.transferFrom(msg.sender,address(this),amount) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#203)
+ICEBERGPROTOCOL.withdraw(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#235-263) ignores return value by ICEBERG.transfer(msg.sender,amount) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#257)
+ICEBERGPROTOCOL.Burn() (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#267-283) ignores return value by ICEBERG.transfer(msg.sender,rewards) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#281)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in ICEBERGPROTOCOL.Deposit(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#199-231):
+	External calls:
+	- ICEBERG.transferFrom(msg.sender,address(this),amount) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#203)
+	State variables written after the call(s):
+	- totalLocked += amount (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#207)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+ICEBERGPROTOCOL.ModifiyToken(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#287-307) should emit an event for: 
+	- BurnPerICEBERGPerBlock = amount (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#303) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+Reentrancy in ICEBERGPROTOCOL.Deposit(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#199-231):
+	External calls:
+	- ICEBERG.transferFrom(msg.sender,address(this),amount) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#203)
+	State variables written after the call(s):
+	- addDepositr(msg.sender) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#223)
+		- DepositrIndexes[Depositr] = Depositrs.length (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#313)
+	- addDepositr(msg.sender) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#223)
+		- Depositrs.push(Depositr) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#315)
+	- DepositrsRewards[msg.sender] += (balance[msg.sender] * BurnPerICEBERGPerBlock * (block.number - _lastUpdate)) / 1e18 (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#219)
+	- balance[msg.sender] += amount (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#229)
+	- lastUpdate[msg.sender] = block.number (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#213)
+Reentrancy in ICEBERGPROTOCOL.withdraw(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#235-263):
+	External calls:
+	- ICEBERG.transfer(msg.sender,amount) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#257)
+	State variables written after the call(s):
+	- totalLocked -= amount (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#261)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+SafeMath.add(uint256,uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#15-25) is never used and should be removed
+SafeMath.div(uint256,uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#65-69) is never used and should be removed
+SafeMath.div(uint256,uint256,string) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#71-79) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#45-63) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#27-31) is never used and should be removed
+SafeMath.sub(uint256,uint256,string) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#33-43) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.8.0 (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#9) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter ICEBERGPROTOCOL.getRewardsEarned(address).Depositr (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#141) is not in mixedCase
+Parameter ICEBERGPROTOCOL.getLastUpdate(address).Depositr (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#149) is not in mixedCase
+Parameter ICEBERGPROTOCOL.getDepositrBalance(address).Depositr (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#157) is not in mixedCase
+Function ICEBERGPROTOCOL.Deposit(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#199-231) is not in mixedCase
+Function ICEBERGPROTOCOL.Burn() (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#267-283) is not in mixedCase
+Function ICEBERGPROTOCOL.ModifiyToken(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#287-307) is not in mixedCase
+Parameter ICEBERGPROTOCOL.addDepositr(address).Depositr (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#311) is not in mixedCase
+Parameter ICEBERGPROTOCOL.removeDepositr(address).Depositr (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#321) is not in mixedCase
+Variable ICEBERGPROTOCOL.ICEBERG (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#165) is not in mixedCase
+Variable ICEBERGPROTOCOL.BurnPerICEBERGPerBlock (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#173) is not in mixedCase
+Variable ICEBERGPROTOCOL.DepositrsRewards (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#177) is not in mixedCase
+Variable ICEBERGPROTOCOL.Depositrs (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#185) is not in mixedCase
+Variable ICEBERGPROTOCOL.DepositrIndexes (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#187) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+ICEBERGPROTOCOL.slitherConstructorVariables() (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#115-334) uses literals with too many digits:
+	- maximumLocked = 100000000 * 1e18 (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#169)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#too-many-digits
+
+ICEBERGPROTOCOL.maximumLocked (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#169) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+getRewardsEarned(address) should be declared external:
+	- ICEBERGPROTOCOL.getRewardsEarned(address) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#141-145)
+getLastUpdate(address) should be declared external:
+	- ICEBERGPROTOCOL.getLastUpdate(address) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#149-153)
+getDepositrBalance(address) should be declared external:
+	- ICEBERGPROTOCOL.getDepositrBalance(address) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#157-161)
+Deposit(uint256) should be declared external:
+	- ICEBERGPROTOCOL.Deposit(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#199-231)
+withdraw(uint256) should be declared external:
+	- ICEBERGPROTOCOL.withdraw(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#235-263)
+Burn() should be declared external:
+	- ICEBERGPROTOCOL.Burn() (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#267-283)
+ModifiyToken(uint256) should be declared external:
+	- ICEBERGPROTOCOL.ModifiyToken(uint256) (0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol#287-307)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x5880d593f8f0d56bdbe9e164ec45fd816d3e542.sol analyzed (3 contracts with 75 detectors), 37 result(s) found
+

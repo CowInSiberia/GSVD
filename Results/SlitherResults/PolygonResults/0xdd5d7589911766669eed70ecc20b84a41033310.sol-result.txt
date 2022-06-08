@@ -1,0 +1,28 @@
+
+JPYC_Example.withdraw_jpyc() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#145-153) ignores return value by jpyc.transferFrom(address(this),owner,jpyc.balanceOf(address(this))) (0xdd5d7589911766669eed70ecc20b84a41033310.sol#151)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+JPYC_Example.approveJpycFromContract() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#135-139) ignores return value by jpyc.approve(address(this),jpyc.balanceOf(address(this))) (0xdd5d7589911766669eed70ecc20b84a41033310.sol#137)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unused-return
+
+Pragma version^0.8.0 (0xdd5d7589911766669eed70ecc20b84a41033310.sol#17) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Contract JPYC_Example (0xdd5d7589911766669eed70ecc20b84a41033310.sol#59-158) is not in CapWords
+Function JPYC_Example.withdraw_jpyc() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#145-153) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+getname() should be declared external:
+	- JPYC_Example.getname() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#105-109)
+getsymbol() should be declared external:
+	- JPYC_Example.getsymbol() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#115-119)
+jpycAmount() should be declared external:
+	- JPYC_Example.jpycAmount() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#125-129)
+approveJpycFromContract() should be declared external:
+	- JPYC_Example.approveJpycFromContract() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#135-139)
+withdraw_jpyc() should be declared external:
+	- JPYC_Example.withdraw_jpyc() (0xdd5d7589911766669eed70ecc20b84a41033310.sol#145-153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_Polygon/8_UltimateResult/0xdd5d7589911766669eed70ecc20b84a41033310.sol analyzed (2 contracts with 75 detectors), 11 result(s) found
+

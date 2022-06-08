@@ -1,0 +1,113 @@
+
+TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) ignores return value by IERC20(coinbs).transferFrom(_msgSender(),address(this),afterfee) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#159)
+TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) ignores return value by IERC20(a2).transfer(_msgSender(),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#161)
+TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) ignores return value by IERC20(a1).transferFrom(_msgSender(),address(this),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#185)
+TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) ignores return value by IERC20(coinbs).transfer(_msgSender(),afterfee_scope_2) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#187)
+TTSPair.subFee(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#201-217) ignores return value by IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+TTSPair.subFee(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#201-217) ignores return value by IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+TTSPair.wERC(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#253-259) ignores return value by IERC20(con).transfer(addr,amount) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#257)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+TTSPair._w (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#65) is never initialized. It is used in:
+	- TTSPair.subFee(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#201-217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-state-variables
+
+TTSPair.subFee(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#201-217) performs a multiplication on the result of a division:
+	-ttsfee = tts * 3 / 1000 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#205)
+	-IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+TTSPair.subFee(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#201-217) performs a multiplication on the result of a division:
+	-ttsfee = tts * 3 / 1000 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#205)
+	-IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+TTSPair.swap(address,address,uint256).pStep_scope_1 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#175) is a local variable never initialized
+TTSPair.swap(address,address,uint256).ttsAmount_scope_0 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#175) is a local variable never initialized
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#uninitialized-local-variables
+
+TTSPair.setAddr(address,address,address).a1 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#93) lacks a zero-check on :
+		- coinbs = a1 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#97)
+TTSPair.setAddr(address,address,address).a2 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#93) lacks a zero-check on :
+		- addr15 = a2 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#97)
+TTSPair.setAddr(address,address,address).a3 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#93) lacks a zero-check on :
+		- addr85 = a3 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#97)
+TTSPair.wETH(address,uint256).addr (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#263) lacks a zero-check on :
+		- address(addr).transfer(amount) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#267)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Variable 'TTSPair.swap(address,address,uint256).ttsAmount (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#151)' in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) potentially used before declaration: (ttsAmount,pStep) = getTtsAndStep(a1,coins,1) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#175)
+Variable 'TTSPair.swap(address,address,uint256).pStep (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#151)' in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) potentially used before declaration: (ttsAmount,pStep) = getTtsAndStep(a1,coins,1) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#175)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#pre-declaration-usage-of-local-variables
+
+Reentrancy in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197):
+	External calls:
+	- afterfee = subFee(_msgSender(),ttsAmount) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#157)
+		- IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+		- IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+	- IERC20(coinbs).transferFrom(_msgSender(),address(this),afterfee) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#159)
+	- IERC20(a2).transfer(_msgSender(),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#161)
+	State variables written after the call(s):
+	- _t[a2] += ttsAmount (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#165)
+Reentrancy in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197):
+	External calls:
+	- afterfee_scope_2 = subFee(_msgSender(),ttsAmount_scope_0) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#183)
+		- IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+		- IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+	- IERC20(a1).transferFrom(_msgSender(),address(this),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#185)
+	- IERC20(coinbs).transfer(_msgSender(),afterfee_scope_2) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#187)
+	State variables written after the call(s):
+	- _t[a1] -= ttsAmount_scope_0 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#191)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197):
+	External calls:
+	- afterfee = subFee(_msgSender(),ttsAmount) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#157)
+		- IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+		- IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+	- IERC20(coinbs).transferFrom(_msgSender(),address(this),afterfee) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#159)
+	- IERC20(a2).transfer(_msgSender(),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#161)
+	Event emitted after the call(s):
+	- Swap(a1,a2,ttsAmount,_n[a2][0]) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#167)
+Reentrancy in TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197):
+	External calls:
+	- afterfee_scope_2 = subFee(_msgSender(),ttsAmount_scope_0) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#183)
+		- IERC20(coinbs).transferFrom(addr,addr15,ttsfee * 15 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#207)
+		- IERC20(coinbs).transferFrom(addr,addr85,ttsfee * 85 / 100) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#209)
+	- IERC20(a1).transferFrom(_msgSender(),address(this),coins) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#185)
+	- IERC20(coinbs).transfer(_msgSender(),afterfee_scope_2) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#187)
+	Event emitted after the call(s):
+	- Swap(a1,a2,ttsAmount_scope_0,_n[a1][0]) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#193)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool)(_n[a2][4] < block.timestamp) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#147)
+	- require(bool)(_n[a1][4] < block.timestamp) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.10 (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#13) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Variable TTSPair._n (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#57) is not in mixedCase
+Variable TTSPair._t (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#61) is not in mixedCase
+Variable TTSPair._w (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#65) is not in mixedCase
+Variable TTSPair._r (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#69) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+setAddr(address,address,address) should be declared external:
+	- TTSPair.setAddr(address,address,address) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#93-99)
+setRole(address,bool) should be declared external:
+	- TTSPair.setRole(address,bool) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#103-109)
+addPair(address,uint256[5]) should be declared external:
+	- TTSPair.addPair(address,uint256[5]) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#113-119)
+getPair(address) should be declared external:
+	- TTSPair.getPair(address) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#123-139)
+swap(address,address,uint256) should be declared external:
+	- TTSPair.swap(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#143-197)
+wERC(address,address,uint256) should be declared external:
+	- TTSPair.wERC(address,address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#253-259)
+wETH(address,uint256) should be declared external:
+	- TTSPair.wETH(address,uint256) (0xe12de003df384e768beb741ca2bfd9b95aa437f.sol#263-269)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xe12de003df384e768beb741ca2bfd9b95aa437f.sol analyzed (2 contracts with 75 detectors), 36 result(s) found
+

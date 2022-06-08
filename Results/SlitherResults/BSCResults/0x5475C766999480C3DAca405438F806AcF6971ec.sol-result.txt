@@ -1,0 +1,107 @@
+
+Staking.stake(uint8,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155-191) ignores return value by TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#167)
+Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221) ignores return value by TKN.transfer(feeAddress,_fee) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#213)
+Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221) ignores return value by TKN.transfer(msg.sender,total) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#215)
+Staking.returnAccidentallySent(IERC20) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#237-245) ignores return value by _TKN.transfer(msg.sender,_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#243)
+Staking.increaseRewardsPool(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#249-257) ignores return value by TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#251)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+Reentrancy in Staking.stake(uint8,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155-191):
+	External calls:
+	- TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#167)
+	State variables written after the call(s):
+	- stakes.push(Stake(_class,_amount,_finalAmount,block.timestamp,false)) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#173-185)
+	- stakesOf[msg.sender].push(_index) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#171)
+Reentrancy in Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221):
+	External calls:
+	- TKN.transfer(feeAddress,_fee) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#213)
+	- TKN.transfer(msg.sender,total) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#215)
+	State variables written after the call(s):
+	- _s.unstaked = true (0x5475C766999480C3DAca405438F806AcF6971ec.sol#217)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+Staking.constructor(IERC20,address)._feeAddress (0x5475C766999480C3DAca405438F806AcF6971ec.sol#279) lacks a zero-check on :
+		- feeAddress = _feeAddress (0x5475C766999480C3DAca405438F806AcF6971ec.sol#285)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in Staking.increaseRewardsPool(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#249-257):
+	External calls:
+	- TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#251)
+	State variables written after the call(s):
+	- rewardsPool += _amount (0x5475C766999480C3DAca405438F806AcF6971ec.sol#253)
+Reentrancy in Staking.stake(uint8,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155-191):
+	External calls:
+	- TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#167)
+	State variables written after the call(s):
+	- ownerOf[_index] = msg.sender (0x5475C766999480C3DAca405438F806AcF6971ec.sol#187)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Reentrancy in Staking.increaseRewardsPool(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#249-257):
+	External calls:
+	- TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#251)
+	Event emitted after the call(s):
+	- IncreaseRewardsPool(msg.sender,_amount,rewardsPool) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#255)
+Reentrancy in Staking.stake(uint8,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155-191):
+	External calls:
+	- TKN.transferFrom(msg.sender,address(this),_amount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#167)
+	Event emitted after the call(s):
+	- Staked(msg.sender,_class,_amount,_finalAmount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#189)
+Reentrancy in Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221):
+	External calls:
+	- TKN.transfer(feeAddress,_fee) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#213)
+	- TKN.transfer(msg.sender,total) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#215)
+	Event emitted after the call(s):
+	- Unstaked(msg.sender,_s.class,_s.finalAmount) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#219)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-3
+
+Staking.stakesInfoAll() (0x5475C766999480C3DAca405438F806AcF6971ec.sol#109-115) uses timestamp for comparisons
+	Dangerous comparisons:
+	- i < stakes.length (0x5475C766999480C3DAca405438F806AcF6971ec.sol#113)
+Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221) uses timestamp for comparisons
+	Dangerous comparisons:
+	- require(bool,string)(block.timestamp >= _s.timestamp + periods[_s.class],Staking period not finished) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#203)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+
+Pragma version^0.8.11 (0x5475C766999480C3DAca405438F806AcF6971ec.sol#19) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter Staking.stakesInfo(uint256,uint256)._from (0x5475C766999480C3DAca405438F806AcF6971ec.sol#99) is not in mixedCase
+Parameter Staking.stakesInfo(uint256,uint256)._to (0x5475C766999480C3DAca405438F806AcF6971ec.sol#99) is not in mixedCase
+Parameter Staking.myStakes(address)._me (0x5475C766999480C3DAca405438F806AcF6971ec.sol#127) is not in mixedCase
+Parameter Staking.myActiveStakesCount(address)._me (0x5475C766999480C3DAca405438F806AcF6971ec.sol#145) is not in mixedCase
+Parameter Staking.stake(uint8,uint256)._class (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155) is not in mixedCase
+Parameter Staking.stake(uint8,uint256)._amount (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155) is not in mixedCase
+Parameter Staking.unstake(uint256)._index (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195) is not in mixedCase
+Parameter Staking.transferOwnership(address)._newOwner (0x5475C766999480C3DAca405438F806AcF6971ec.sol#225) is not in mixedCase
+Parameter Staking.returnAccidentallySent(IERC20)._TKN (0x5475C766999480C3DAca405438F806AcF6971ec.sol#237) is not in mixedCase
+Parameter Staking.increaseRewardsPool(uint256)._amount (0x5475C766999480C3DAca405438F806AcF6971ec.sol#249) is not in mixedCase
+Parameter Staking.updateMax(uint256)._max (0x5475C766999480C3DAca405438F806AcF6971ec.sol#261) is not in mixedCase
+Variable Staking.TKN (0x5475C766999480C3DAca405438F806AcF6971ec.sol#35) is not in mixedCase
+Constant Staking.feeRate (0x5475C766999480C3DAca405438F806AcF6971ec.sol#45) is not in UPPER_CASE_WITH_UNDERSCORES
+Variable Staking.MAX_STAKES (0x5475C766999480C3DAca405438F806AcF6971ec.sol#49) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+stakesInfo(uint256,uint256) should be declared external:
+	- Staking.stakesInfo(uint256,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#99-105)
+stakesInfoAll() should be declared external:
+	- Staking.stakesInfoAll() (0x5475C766999480C3DAca405438F806AcF6971ec.sol#109-115)
+stakesLength() should be declared external:
+	- Staking.stakesLength() (0x5475C766999480C3DAca405438F806AcF6971ec.sol#119-123)
+myStakes(address) should be declared external:
+	- Staking.myStakes(address) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#127-141)
+stake(uint8,uint256) should be declared external:
+	- Staking.stake(uint8,uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#155-191)
+unstake(uint256) should be declared external:
+	- Staking.unstake(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#195-221)
+transferOwnership(address) should be declared external:
+	- Staking.transferOwnership(address) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#225-233)
+returnAccidentallySent(IERC20) should be declared external:
+	- Staking.returnAccidentallySent(IERC20) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#237-245)
+increaseRewardsPool(uint256) should be declared external:
+	- Staking.increaseRewardsPool(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#249-257)
+updateMax(uint256) should be declared external:
+	- Staking.updateMax(uint256) (0x5475C766999480C3DAca405438F806AcF6971ec.sol#261-265)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0x5475C766999480C3DAca405438F806AcF6971ec.sol analyzed (2 contracts with 75 detectors), 41 result(s) found
+

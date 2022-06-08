@@ -1,0 +1,65 @@
+
+BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73) ignores return value by ERC20(busd).transferFrom(msg.sender,address(this),_amount) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#53)
+BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73) ignores return value by ERC20(busd).transfer(admin,fee) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#65)
+BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73) ignores return value by ERC20(busd).transfer(liquidity,liquidityfee) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#67)
+BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73) ignores return value by ERC20(bfarm).transfer(msg.sender,tokenAmount) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#69)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73) performs a multiplication on the result of a division:
+	-fee = busdAmount / 4 (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#61)
+	-liquidityfee = fee * 3 (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#63)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Contract locking ether found:
+	Contract BUSDFARM2PCO (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#35-77) has payable functions:
+	 - BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73)
+	But does not have a function to withdraw the ether
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#contracts-that-lock-ether
+
+Reentrancy in BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73):
+	External calls:
+	- ERC20(busd).transferFrom(msg.sender,address(this),_amount) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#53)
+	- ERC20(busd).transfer(admin,fee) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#65)
+	- ERC20(busd).transfer(liquidity,liquidityfee) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#67)
+	- ERC20(bfarm).transfer(msg.sender,tokenAmount) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#69)
+	State variables written after the call(s):
+	- QNT1 -= 1 (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#71)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+SafeMath.add(uint256,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#151-159) is never used and should be removed
+SafeMath.div(uint256,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#115-125) is never used and should be removed
+SafeMath.mul(uint256,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#91-105) is never used and should be removed
+SafeMath.sub(uint256,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#135-141) is never used and should be removed
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#dead-code
+
+Pragma version^0.4.26 (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#9) allows old versions
+solc-0.4.26 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Parameter BUSDFARM2PCO.buyBFARM1(uint256)._amount (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51) is not in mixedCase
+Variable BUSDFARM2PCO.QNT1 (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#47) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+BUSDFARM2PCO.admin (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#43) should be constant
+BUSDFARM2PCO.bfarm (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#39) should be constant
+BUSDFARM2PCO.busd (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#41) should be constant
+BUSDFARM2PCO.liquidity (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#45) should be constant
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#state-variables-that-could-be-declared-constant
+
+totalSupply() should be declared external:
+	- ERC20.totalSupply() (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#15)
+balanceOf(address) should be declared external:
+	- ERC20.balanceOf(address) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#17)
+allowance(address,address) should be declared external:
+	- ERC20.allowance(address,address) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#19)
+transfer(address,uint256) should be declared external:
+	- ERC20.transfer(address,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#21)
+approve(address,uint256) should be declared external:
+	- ERC20.approve(address,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#23)
+transferFrom(address,address,uint256) should be declared external:
+	- ERC20.transferFrom(address,address,uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#25)
+buyBFARM1(uint256) should be declared external:
+	- BUSDFARM2PCO.buyBFARM1(uint256) (0xe4b34505b0696032a2365705531f3f1e69534f4.sol#51-73)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/4_UltimateResult/0xe4b34505b0696032a2365705531f3f1e69534f4.sol analyzed (3 contracts with 75 detectors), 26 result(s) found
+

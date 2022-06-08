@@ -1,0 +1,95 @@
+
+CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153) ignores return value by IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#117)
+CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153) ignores return value by IERC20(token).transfer(_address,rewardsdistribute) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#133)
+CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153) ignores return value by IERC20(token).transfer(_address,rewardsdistribute_scope_0) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#145)
+CSDOGESALE.tokentransferBUSD(uint256,address) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157-185) ignores return value by IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#167)
+CSDOGESALE.tokentransferBUSD(uint256,address) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157-185) ignores return value by IERC20(token).transfer(_address,rewardsdistribute) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#179)
+CSDOGESALE.withdrawBUSD(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#263-271) ignores return value by IERC20(BUSDtoken).transfer(devwallet,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#269)
+CSDOGESALE.withdrawCSDOGEToken(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#275-283) ignores return value by IERC20(token).transfer(devwallet,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#281)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#unchecked-transfer
+
+CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153) performs a multiplication on the result of a division:
+	-amount = (msg.value * BNBprice) / (uint256(10 ** 9)) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#115)
+	-rewardsdistribute_scope_0 = (amount * presalerewards) / uint256(100) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#143)
+CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153) performs a multiplication on the result of a division:
+	-amount = (msg.value * BNBprice) / (uint256(10 ** 9)) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#115)
+	-rewardsdistribute = (amount * airdroprewards) / uint256(100) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#131)
+CSDOGESALE.tokentransferBUSD(uint256,address) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157-185) performs a multiplication on the result of a division:
+	-amount = (BUSDamount * BUSDprice) / (uint256(10 ** 9)) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#165)
+	-rewardsdistribute = (amount * presalerewards) / uint256(100) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#177)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#divide-before-multiply
+
+Reentrancy in CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153):
+	External calls:
+	- IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#117)
+	- IERC20(token).transfer(_address,rewardsdistribute) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#133)
+	State variables written after the call(s):
+	- userinfo[_address].rewards += rewardsdistribute (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#135)
+Reentrancy in CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153):
+	External calls:
+	- IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#117)
+	- IERC20(token).transfer(_address,rewardsdistribute_scope_0) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#145)
+	State variables written after the call(s):
+	- userinfo[_address].rewards += rewardsdistribute_scope_0 (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#147)
+Reentrancy in CSDOGESALE.tokentransferBUSD(uint256,address) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157-185):
+	External calls:
+	- IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#167)
+	- IERC20(token).transfer(_address,rewardsdistribute) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#179)
+	State variables written after the call(s):
+	- userinfo[_address].rewards += rewardsdistribute (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#181)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-1
+
+CSDOGESALE.setpresale(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#201-209) should emit an event for: 
+	- presalerewards = percentage (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#207) 
+CSDOGESALE.setairdrop(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#213-221) should emit an event for: 
+	- airdroprewards = percentage (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#219) 
+CSDOGESALE.bnbtokenprice(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#225-233) should emit an event for: 
+	- BNBprice = price (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#231) 
+CSDOGESALE.busdtokenprice(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#237-245) should emit an event for: 
+	- BUSDprice = price (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#243) 
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-events-arithmetic
+
+CSDOGESALE.constructor(address,address,address,uint256,uint256,uint256,uint256)._address (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#83) lacks a zero-check on :
+		- token = _address (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#87)
+CSDOGESALE.constructor(address,address,address,uint256,uint256,uint256,uint256)._devwallet (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#83) lacks a zero-check on :
+		- devwallet = _devwallet (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#97)
+CSDOGESALE.constructor(address,address,address,uint256,uint256,uint256,uint256)._BUSDtoken (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#83) lacks a zero-check on :
+		- BUSDtoken = _BUSDtoken (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#99)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#missing-zero-address-validation
+
+Reentrancy in CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153):
+	External calls:
+	- IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#117)
+	State variables written after the call(s):
+	- userinfo[msg.sender].amount += msg.value (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#119)
+	- userinfo[msg.sender].token += amount (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#121)
+Reentrancy in CSDOGESALE.tokentransferBUSD(uint256,address) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157-185):
+	External calls:
+	- IERC20(token).transfer(msg.sender,amount) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#167)
+	State variables written after the call(s):
+	- userinfo[msg.sender].amount += BUSDamount (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#169)
+	- userinfo[msg.sender].token += amount (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#171)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#reentrancy-vulnerabilities-2
+
+Pragma version^0.8.0 (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#11) necessitates a version too recent to be trusted. Consider deploying with 0.6.12/0.7.6
+solc-0.8.12 is not recommended for deployment
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#incorrect-versions-of-solidity
+
+Low level call in CSDOGESALE.withdrawbnb(uint256) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#249-259):
+	- (success) = devwallet.call{value: amount}() (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#255)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#low-level-calls
+
+Struct CSDOGESALE.presale (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#49-59) is not in CapWords
+Parameter CSDOGESALE.tokentransferBNB(address,bool)._address (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107) is not in mixedCase
+Parameter CSDOGESALE.tokentransferBUSD(uint256,address).BUSDamount (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157) is not in mixedCase
+Parameter CSDOGESALE.tokentransferBUSD(uint256,address)._address (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#157) is not in mixedCase
+Variable CSDOGESALE.BUSDtoken (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#65) is not in mixedCase
+Variable CSDOGESALE.BNBprice (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#67) is not in mixedCase
+Variable CSDOGESALE.BUSDprice (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#69) is not in mixedCase
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#conformance-to-solidity-naming-conventions
+
+tokentransferBNB(address,bool) should be declared external:
+	- CSDOGESALE.tokentransferBNB(address,bool) (0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol#107-153)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#public-function-that-could-be-declared-external
+/home/cowie/VersionClassification_BSC/8_UltimateResult/0xbe7e9fa2cf234dbbc76659df06d8453b809053a.sol analyzed (2 contracts with 75 detectors), 33 result(s) found
+
