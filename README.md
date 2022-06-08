@@ -9,7 +9,7 @@ To Download：
 
 GSVD<sup>Minor</sup>: Already uploaded to the *Mino*r file in this repo, please check it out.
 
-GSVD<sup>Major</sup>: Uploading to cloud, please wait for a little more time.
+GSVD<sup>Major</sup>: Already uploaded to cloud, please visit: https://pan.baidu.com/s/1yOYgWEXUt_dgLUtHlO0CKA. Google Cloud source coming soon.
 
 <br>
 
